@@ -1,0 +1,18 @@
+{
+  "name": "aikon-role-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+ 	"wp:start": "wp-env start --xdebug",
+	"wp:stop": "wp-env stop",
+	"cli": "wp-env run cli",
+	"composer": "wp-env run cli composer" 
+ },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@wordpress/env": "^10.16.0",
+    "@wordpress/scripts": "^30.9.0"
+  }
+}

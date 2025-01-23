@@ -1,0 +1,4 @@
+.vscode
+.php-cs-fixer.cache
+vendor
+node_modules
