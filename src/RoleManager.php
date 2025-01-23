@@ -41,6 +41,7 @@ class RoleManager
 
         // find the value in the config array
         foreach ($keys as $k) {
+            // @phpstan-ignore-next-line
             if (isset($config[$k])) {
                 $config = $config[$k];
             } else {
