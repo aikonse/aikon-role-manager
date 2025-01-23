@@ -43,7 +43,11 @@ class OptionsPage
 
     public function page(): void
     {
-        $tabFromUrl = $_GET['tab'] ?? $this->default_tab;
+        $tabFromUrl = $_GET['tab'] ?? null;
+        $tabFromUrl = is_string($tabFromUrl) 
+            ? $tabFromUrl 
+            : $this->default_tab;
+
         $tab = in_array(
             $tabFromUrl,
             array_keys($this->views)
