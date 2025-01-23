@@ -15,7 +15,7 @@ class RolesTab implements TabInterface
     use HasTemplate;
 
     public function __construct(
-        private ?RoleManager $manager
+        private RoleManager $manager
     ) {
         $this->title = 'Roles';
         $this->slug = 'roles';

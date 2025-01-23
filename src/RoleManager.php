@@ -11,7 +11,7 @@ class RoleManager
     protected WP_Roles $wp_roles;
 
     /**
-     * @param array<string, mixed> $config
+     * @param array<string, array<string>|mixed> $config
      * @return void
      */
     public function __construct(
@@ -57,6 +57,7 @@ class RoleManager
      */
     public function current_roles(): array
     {
+        /** @var array<string, array<string, array{name: string, capabilities: array<string>}>> */
         return $this->wp_roles->roles;
     }
 
@@ -117,7 +118,11 @@ class RoleManager
             $query = new \WP_User_Query([
                 'role' => $role,
             ]);
-            foreach ($query->get_results() as $user) {
+
+            /** @var \WP_User[] */
+            $users = $query->get_results();
+
+            foreach ($users as $user) {
                 $user->remove_role($role);
                 $user->add_role($slug);
             }
@@ -148,7 +153,8 @@ class RoleManager
         foreach ($users as $user) {
             $user->remove_role($role);
             if (empty($user->roles)) {
-                $default_role = get_option('default_role');
+                /** @var string */
+                $default_role = get_option('default_role', 'subscriber');
                 $user->add_role($default_role);
             }
         }

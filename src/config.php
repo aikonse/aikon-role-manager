@@ -3,7 +3,7 @@
 /**
  * Plugin configuration
  *
- * @var array<string, mixed>
+ * @var array<string, array<string>|mixed>
  */
 return [
     // Query to get show post types and their capabilities
