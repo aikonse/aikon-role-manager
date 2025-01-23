@@ -1,7 +1,6 @@
 {
     "name": "aikon/aikon-role-manager",
     "description": "A simple role manager for WordPress",
-    "version": "1.0.0",
     "type": "wordpress-plugin",
     "license": "MIT",
     "autoload": {
