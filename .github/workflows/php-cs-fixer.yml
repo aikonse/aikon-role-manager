@@ -1,0 +1,9 @@
+name: PHP CS Fixer
+on: [push, pull_request]
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run php-cs-fixer
+        run: php-cs-fixer fix --dry-run --diff
