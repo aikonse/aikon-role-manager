@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aikon\RoleManager\OptionsPage;
 
 use Aikon\RoleManager\OptionsPage\Interfaces\TabInterface;
