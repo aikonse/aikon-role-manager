@@ -1,0 +1,9 @@
+name: PHPStan
+on: [push, pull_request]
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run PHPStan
+        run: phpstan analyse src
