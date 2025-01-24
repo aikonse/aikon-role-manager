@@ -32,10 +32,6 @@ trait HandlesAction
             return;
         }
 
-        if (!is_callable($callback)) {
-            throw new \Exception('Post action callback is not callable');
-        }
-
         $this->run_middleware();
 
         $callback($_REQUEST);
@@ -58,10 +54,6 @@ trait HandlesAction
             $action !== $action_value
         ) {
             return;
-        }
-
-        if (!is_callable($callback)) {
-            throw new \Exception('Get action callback is not callable');
         }
 
         $this->run_middleware();
