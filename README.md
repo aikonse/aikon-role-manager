@@ -2,7 +2,6 @@
 
 Aikon Role Manager empowers you to take full control of user roles and capabilities in WordPress. With this plugin, you can manage roles responsibly, define custom capabilities, and assign multiple roles to users effortlessly.
 
----
 
 ## Features
 
@@ -20,7 +19,6 @@ Aikon Role Manager empowers you to take full control of user roles and capabilit
 - Enhance user flexibility by allowing multiple roles per user.
 - Combine capabilities from different roles to create a customized experience for each user.
 
----
 
 ## Development
 
@@ -67,14 +65,10 @@ We welcome contributions to improve the Aikon Role Manager! Feel free to submit 
 - Use the CI tools
 - Write clear and concise commit messages.
 
----
 
 ## License
-This project is licensed under the [GPL-2.0-or-later License](https://www.gnu.org/licenses/gpl-2.0.html).
+This project is licensed under the [MIT License](https://opensource.org/license/mit).
 
----
 
 ## Support
-If you encounter issues or have questions, please reach out via our [support page](https://github.com/your-repo/aikon-role-manager/issues) or contact us directly through the WordPress plugin directory.
-
-****
+If you encounter issues or have questions, please reach out via our [support page](https://github.com/aikonse/role-manager/issues) or contact us directly through the WordPress plugin directory.
