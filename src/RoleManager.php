@@ -52,6 +52,41 @@ class RoleManager
     }
 
     /**
+     * Validate role slug
+     *
+     * @param string $slug The slug to validate
+     * @return string|null The validated slug or null if invalid
+     */
+    public function validate_role_slug(string $slug): ?string
+    {
+        $slug = sanitize_key($slug);
+        return strlen($slug) > 2 ? $slug : null;
+    }
+
+    /**
+     * Validate role name
+     *
+     * @param string $name
+     * @return string|null
+     */
+    public function validate_role_name(string $name): ?string
+    {
+        $name = sanitize_text_field($name);
+        return strlen($name) > 2 ? $name : null;
+    }
+
+    /**
+     * Validate capability
+     *
+     * @param string $cap
+     * @return string|null
+     */
+    public function validate_capability(string $cap): ?string
+    {
+        return $this->validate_role_slug($cap);
+    }
+
+    /**
      * Get the current roles
      *
      * @return array<string, array<string, array{name: string, capabilities: array<string>}>>
