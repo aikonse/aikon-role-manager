@@ -2,3 +2,5 @@ parameters:
     level: max
     bootstrapFiles:
         - aikon-role-manager.php
+    paths:
+        - src
