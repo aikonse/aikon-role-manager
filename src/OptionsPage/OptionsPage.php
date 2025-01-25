@@ -6,15 +6,21 @@ namespace Aikon\RoleManager\OptionsPage;
 
 use Aikon\RoleManager\OptionsPage\Interfaces\TabInterface;
 
+use function Aikon\RoleManager\template;
+
 class OptionsPage
 {
+    /** Options page title */
     protected string $page_title = 'Aikon Roles Manager';
 
+    /** Options page tagline */
+    protected string $tagline = 'Manage roles and capabilities';
+
+    /** Options page slug */
     protected string $page_slug = 'aikon-roles-manager';
 
+    /** Options page menu title */
     protected string $menu_title = 'Roles Manager';
-
-    protected string $tagline = 'Manage roles and capabilities';
 
     protected string $default_tab;
 
@@ -23,7 +29,7 @@ class OptionsPage
 
     /**
      * @param TabInterface[] $views
-        */
+    */
     public function __construct(
         array $views
     ) {
@@ -44,6 +50,11 @@ class OptionsPage
         $this->assets();
     }
 
+    /**
+     * Enqueue the assets
+     *
+     * @return void
+     */
     public function assets(): void
     {
         /** @var array{dependencies: array<string>, version: string} */
@@ -60,6 +71,11 @@ class OptionsPage
         });
     }
 
+    /**
+     * Renders the options page
+     *
+     * @return void
+     */
     public function page(): void
     {
         $tabFromUrl = $_GET['tab'] ?? null;
@@ -72,17 +88,13 @@ class OptionsPage
             array_keys($this->views)
         ) ? $tabFromUrl : $this->default_tab;
 
-        //$this->views[$tab]->handle();
-        ?>
-        <div class="wrap">
-            <h1><?php echo $this->page_title;?></h1>
-            <p><?php echo $this->tagline;?></p>
-            <?php $this->render_tab_nav($tab); ?>
-            <div class="tab-content">
-                <?php $this->views[$tab]->render(); ?>
-            </div>
-        </div>
-        <?php
+        template('page', [
+            'page' => $this,
+            'title' => $this->page_title,
+            'tagline' => $this->tagline,
+            'tab' => $this->views[$tab],
+            'current_tab' => $tab,
+        ]);
     }
 
     /**
@@ -91,16 +103,17 @@ class OptionsPage
      * @param string $current_tab The current tab
      * @return void
      */
-    private function render_tab_nav(string $current_tab): void
+    public function render_tab_nav(string $current_tab): void
     {
-        ?>
-        <h2 class="nav-tab-wrapper">
-            <?php foreach ($this->views as $tab => $view) : ?>
-                <a href="?page=<?php echo $this->page_slug;?>&tab=<?php echo $tab; ?>" class="nav-tab <?php echo $current_tab === $tab ? 'nav-tab-active' : ''; ?>">
-                    <?php echo $view->title(); ?>
-                </a>
-            <?php endforeach; ?>
-        </h2>
-        <?php
+        $tabs = array_combine(
+            array_keys($this->views),
+            array_map(fn (TabInterface $view) => $view->title(), $this->views)
+        );
+
+        template('page-tabs', [
+            'tabs' => $tabs,
+            'current_tab' => $current_tab,
+            'page_slug' => $this->page_slug
+        ]);
     }
 }
