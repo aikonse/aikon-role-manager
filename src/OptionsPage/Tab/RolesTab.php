@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Aikon\RoleManager\OptionsPage\Tab;
 
+use Aikon\RoleManager\Manager\RoleManager;
 use Aikon\RoleManager\OptionsPage\Interfaces\TabInterface;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesAction;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesNotice;
-use Aikon\RoleManager\OptionsPage\Traits\HasTemplate;
 use Aikon\RoleManager\OptionsPage\Traits\HasTitleAnSlug;
-use Aikon\RoleManager\RoleManager;
+
+use function Aikon\RoleManager\template;
 
 class RolesTab implements TabInterface
 {
     use HasTitleAnSlug;
-    use HasTemplate;
-    use HandlesAction;
     use HandlesNotice;
+    use HandlesAction;
 
     public function __construct(
         private RoleManager $manager
@@ -27,13 +27,13 @@ class RolesTab implements TabInterface
 
     public function handle(): void
     {
-        $this->middleware(function ($request): void {
-            if (!current_user_can('manage_options')) {
-                throw new \Exception('You do not have permission to manage roles and capabilities');
-            }
-        });
+        // $this->middleware(function ($request): void {
+        //     if (!current_user_can('manage_options')) {
+        //         throw new \Exception('You do not have permission to manage roles and capabilities');
+        //     }
+        // });
 
-        $this->post_action('action', 'add_role', [$this, 'handle_add_role']);
+        // $this->post_action('action', 'add_role', [$this, 'handle_add_role']);
 
     }
 
@@ -72,7 +72,7 @@ class RolesTab implements TabInterface
     public function render(): void
     {
 
-        $this->template('roles', [
+        template('roles', [
             'roles' => $this->manager->current_roles(),
             'manager' => $this->manager,
         ]);

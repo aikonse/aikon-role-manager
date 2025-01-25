@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Aikon\RoleManager;
+namespace Aikon\RoleManager\Manager;
 
 use WP_Roles;
 
