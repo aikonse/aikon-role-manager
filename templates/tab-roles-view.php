@@ -55,11 +55,13 @@ $role_slug_invalid = false ///$view->action_errors('slug');
                 <?php
                 foreach($roles as $role):
                     $delete_url = url_parser([
+                        'tab' => $tab,
                         'action' => 'delete_role',
                         'delete_role' => $role['slug'],
                     ]);
 
                     $edit_url = url_parser([
+                        'tab' => $tab,
                         'edit_role' => $role['slug'],
                     ]);
 

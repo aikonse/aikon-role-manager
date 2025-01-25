@@ -1,17 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Aikon\RoleManager\OptionsPage\Traits;
 
-trait HandlesAction
+trait HandlesActions
 {
     /**
      * The middleware
      *
      * @var callable[]
      */
-    private array $middleware = [];
+    public array $middleware = [];
 
     /**
      * Add post action
@@ -83,5 +81,4 @@ trait HandlesAction
             $middleware($_REQUEST);
         }
     }
-
 }
