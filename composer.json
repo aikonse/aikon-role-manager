@@ -6,7 +6,10 @@
     "autoload": {
         "psr-4": {
             "Aikon\\RoleManager\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "scripts": {
         "phpstan": "phpstan analyse src",

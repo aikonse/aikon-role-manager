@@ -1,5 +1,7 @@
 <?php
 
+use function Aikon\RoleManager\url_parser;
+
 $roles = array_map(function ($slug, $role) {
     return [
         'slug' => $slug,
@@ -52,16 +54,16 @@ $role_slug_invalid = false ///$view->action_errors('slug');
             <tbody id="the-list">
                 <?php
                 foreach($roles as $role):
-                    $delete_url = $view->url_parser([
+                    $delete_url = url_parser([
                         'action' => 'delete_role',
                         'delete_role' => $role['slug'],
                     ]);
 
-                    $edit_url = $view->url_parser([
+                    $edit_url = url_parser([
                         'edit_role' => $role['slug'],
                     ]);
 
-                    $edit_caps_url = $view->url_parser([
+                    $edit_caps_url = url_parser([
                         'tab' => 'handle_role_caps',
                         'show_role' => $role['slug'],
                     ]);
