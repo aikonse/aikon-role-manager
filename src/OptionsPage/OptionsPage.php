@@ -39,6 +39,25 @@ class OptionsPage
             $this->page_slug,
             [$this, 'page']
         );
+
+        // TODO: Only load assets on the plugin's page
+        $this->assets();
+    }
+
+    public function assets(): void
+    {
+        /** @var array{dependencies: array<string>, version: string} */
+        $asset_config = require ARM_PATH . 'assets/build/main.asset.php';
+
+        [
+            'dependencies'  => $dependencies,
+            'version'       => $version
+        ] = $asset_config;
+
+        add_action('admin_enqueue_scripts', function () use ($version, $dependencies): void {
+            wp_enqueue_style('aikon-roles-manager/main', ARM_URL . 'assets/build/main.css', $dependencies, $version);
+            wp_enqueue_script('aikon-roles-manager/main', ARM_URL . 'assets/build/main.js', $dependencies, $version, true);
+        });
     }
 
     public function page(): void

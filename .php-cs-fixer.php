@@ -4,7 +4,8 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->name('aikon-role-manager.php')
     ->exclude('vendor')
-    ->exclude('node_modules');
+    ->exclude('node_modules')
+    ->exclude('assets');
 
 return (new PhpCsFixer\Config())
     ->setRules([
