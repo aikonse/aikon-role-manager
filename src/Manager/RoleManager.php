@@ -29,11 +29,12 @@ class RoleManager
 
     /**
      * Get a config value
-     *
+     * @template T
      * @param string $key
+     * @param T $fallback
      * @return mixed
      */
-    public function config(string $key): mixed
+    public function config(string $key, mixed $fallback = null): mixed
     {
         // allow dot notation
         $keys = explode('.', $key);
@@ -45,10 +46,33 @@ class RoleManager
             if (isset($config[$k])) {
                 $config = $config[$k];
             } else {
-                return null;
+                return $fallback;
             }
         }
         return $config;
+    }
+
+    /**
+     * Check if a role is a default role
+     *
+     * @param string $slug
+     * @return boolean
+     */
+    public function is_default_role(string $slug): bool
+    {
+
+        /** @var ?(string|int)[] */
+        static $defaults;
+
+        if ($defaults === null) {
+            $config_defaults = $this->config('default_capabilities', []);
+
+            $defaults = is_array($config_defaults)
+                ? array_keys($config_defaults)
+                : [];
+        }
+
+        return in_array($slug, $defaults);
     }
 
     /**
