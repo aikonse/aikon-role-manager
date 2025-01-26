@@ -41,6 +41,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Aikon\RoleManager\Manager\RoleManager;
 use Aikon\RoleManager\OptionsPage\OptionsPage;
+use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 
 /** Register the Options page and pass the RoleManager with a config */
@@ -51,7 +52,8 @@ add_action('admin_menu', function () {
     $manager = new RoleManager($config);
 
     new OptionsPage([
-        new RolesTab($manager)
+        new RolesTab($manager),
+        new CapabilitiesTab($manager),
     ]);
 }, 10);
 
