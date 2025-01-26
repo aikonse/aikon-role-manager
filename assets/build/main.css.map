@@ -1,0 +1,1 @@
+{"version":3,"file":"main.css","mappings":";;;AAAA;IACI,gBAAgB;AACpB,C","sources":["webpack://aikon-role-manager/./assets/src/css/main.css"],"sourcesContent":["::root {\n    --aim-test: #f00;\n}"],"names":[],"sourceRoot":""}
