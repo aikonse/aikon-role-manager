@@ -21,8 +21,9 @@ class RolesTab implements TabInterface
     public function __construct(
         private RoleManager $manager
     ) {
-        $this->title = __('Roles', 'aikon-role-manager');
+        $this->title = __('Manage roles', 'aikon-role-manager');
         $this->slug = 'roles';
+        $this->icon = 'dashicons-admin-users';
     }
 
     public function handle(): void

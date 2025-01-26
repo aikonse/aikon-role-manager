@@ -21,6 +21,12 @@ trait HasTitleAnSlug
     public string $slug;
 
     /**
+     * The dashicon
+     * @var string
+     */
+    public string $icon;
+
+    /**
      * Get the title
      *
      * @return string
@@ -38,5 +44,15 @@ trait HasTitleAnSlug
     public function slug(): string
     {
         return $this->slug;
+    }
+
+    /**
+     * Get the icon
+     *
+     * @return string
+     */
+    public function icon(): string
+    {
+        return $this->icon;
     }
 }
