@@ -71,6 +71,7 @@ class RolesTab implements TabInterface
         }
 
         $this->manager->add_role( $slug,  $name,);
+        $this->add_notice(__('Role added', 'aikon-role-manager'), 'success');
         wp_redirect(url_parser(['tab' => $this->slug]));
         exit;
     }
