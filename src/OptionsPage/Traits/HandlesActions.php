@@ -12,6 +12,13 @@ trait HandlesActions
     public array $middleware = [];
 
     /**
+     * Errors
+     * 
+     * @var array<string, string>
+     */
+    public array $errors = [];
+
+    /**
      * Add post action
      *
      * @param string $action_key The keý in request to check
@@ -57,6 +64,31 @@ trait HandlesActions
         $this->run_middleware();
 
         $callback($_REQUEST);
+    }
+
+    /**
+     * Add an error
+     * @param string $key The key of the error
+     * @param string $message The message to show
+     * @return void
+     */
+    public function add_error(string $key, string $message): void
+    {
+        $this->errors[$key] = $message;
+    }
+
+    /**
+     *  Get errors
+     * @param string|null $key The key of the error
+     * @return array<string,string>|string
+     */
+    public function errors(string $key = null): array|string
+    {
+        if ($key) {
+            return $this->errors[$key] ?? '';
+        }
+
+        return $this->errors;
     }
 
     /**
