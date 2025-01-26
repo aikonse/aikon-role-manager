@@ -122,6 +122,17 @@ class RoleManager
     }
 
     /**
+     * Check if a role exists
+     *
+     * @param string $role
+     * @return boolean
+     */
+    public function role_exists(string $role): bool
+    {
+        return isset($this->current_roles()[$role]);
+    }
+
+    /**
      * Get the current role
      *
      * @param string $role
