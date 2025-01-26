@@ -11,6 +11,7 @@ use Aikon\RoleManager\OptionsPage\Traits\HandlesNotice;
 use Aikon\RoleManager\OptionsPage\Traits\HasTitleAnSlug;
 
 use function Aikon\RoleManager\template;
+use function Aikon\RoleManager\url_parser;
 
 class RolesTab implements TabInterface
 {
@@ -148,10 +149,33 @@ class RolesTab implements TabInterface
 
     public function render(): void
     {
-        template('tab-roles-view', [
-            'tab' => $this->slug,
-            'roles' => $this->manager->current_roles(),
-            'manager' => $this->manager,
-        ]);
+        // View roles
+        $template = 'tab-roles-view';
+        $args = [
+           'tab' => $this->slug,
+           'roles' => $this->manager->current_roles(),
+           'manager' => $this->manager,
+           'view' => $this,
+           'errors' => $this->errors(),
+        ];
+
+        // Edit role
+        if (
+            isset($_GET['edit_role']) &&
+            $this->manager->role_exists(
+                $this->manager->validate_role_slug($_GET['edit_role'])
+            )
+        ) {
+            $template = 'tab-roles-edit';
+            $role_slug = $this->manager->validate_role_slug($_GET['edit_role']);
+            $args = [
+                'slug'       => $role_slug,
+                'role'       => $this->manager->current_roles()[$role_slug],
+                'is_default' => $this->manager->is_default_role($role_slug),
+                'errors'     => $this->errors(),
+            ];
+        }
+
+        template($template, $args);
     }
 }
