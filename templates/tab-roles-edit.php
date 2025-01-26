@@ -5,8 +5,8 @@ use function Aikon\RoleManager\url_parser;
 $delete_url = url_parser(['action' => 'delete_role', 'delete_role' => $slug]);
 $view_url = url_parser(['tab' => 'edit_roles', 'edit_role' => false]);
 
-$invalid_name = false; //$view->action_errors('name');
-$invalid_slug = false; //$view->action_errors('slug');
+$invalid_name = $errors['name'] ?? false;
+$invalid_slug = $errors['slug'] ?? false;
 ?>
 <h2><?php _e('Edit role'); ?></h2>
 <form method="post" class="validate" id="edittag">
@@ -18,7 +18,8 @@ $invalid_slug = false; //$view->action_errors('slug');
             <tr
                 class="form-field form-required term-name-wrap <?php echo $invalid_name ? 'form-invalid' : ''; ?>">
                 <th scope="row"><label for="name"><?php _e('Name'); ?></label></th>
-                <td><input name="name" id="name" type="text" value="<?php echo $_POST['name'] ?? $role['name']; ?>" size="40" aria-required="true" aria-describedby="name-description">
+                <td>
+                    <input name="name" id="name" type="text" value="<?php echo $_POST['name'] ?? $name; ?>" size="40" aria-required="true" aria-describedby="name-description">
                     <p class="description" id="name-description"><?php _e('The role name'); ?></p>
                 </td>
             </tr>

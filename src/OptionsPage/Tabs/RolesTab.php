@@ -84,9 +84,9 @@ class RolesTab implements TabInterface
      */
     public function handle_update_role(array $request): void
     {
-        $updating = $this->manager->validate_role_slug($request['edit_role'] ?? '');
-        $role = $this->manager->validate_role_name($request['name'] ?? '');
-        $slug = $this->manager->validate_role_slug($request['slug'] ?? '');
+        $updating = $this->manager->validate_role_slug($request['role'] ?? '');
+        $name = $this->manager->validate_role_name($request['name'] ?? '');
+        $slug = $this->manager->validate_role_slug($request['slug'] ?? $updating ?? ''); // Use the current slug if not provided
 
         // Trying to update a role that does not exist
         if (
@@ -97,7 +97,7 @@ class RolesTab implements TabInterface
             return;
         }
 
-        if (!$role) {
+        if (!$name) {
             $this->add_notice(__('Role name is required', 'aikon-role-manager'), 'warning');
             $this->add_error('name', __('Role name is required', 'aikon-role-manager'));
         }
@@ -107,7 +107,7 @@ class RolesTab implements TabInterface
             $this->add_error('slug', __('Role slug is required', 'aikon-role-manager'));
         }
 
-        if (!$role || !$slug) {
+        if (!$name || !$slug) {
             return;
         }
 
@@ -119,8 +119,11 @@ class RolesTab implements TabInterface
             return;
         }
 
-        $this->manager->update_role($updating, $slug, $role);
+        $this->manager->update_role($updating, $name, $slug);
         $this->add_notice(__('Role updated', 'aikon-role-manager'), 'success');
+
+        wp_redirect(url_parser([], ['edit_role', 'action', 'role']));
+        exit;
     }
 
     /**
