@@ -70,7 +70,7 @@ class RolesTab implements TabInterface
             return;
         }
 
-        $this->manager->add_role( $slug,  $name,);
+        $this->manager->add_role($slug, $name, );
         $this->add_notice(__('Role added', 'aikon-role-manager'), 'success');
         wp_redirect(url_parser(['tab' => $this->slug]));
         exit;
@@ -123,10 +123,15 @@ class RolesTab implements TabInterface
         $this->add_notice(__('Role updated', 'aikon-role-manager'), 'success');
     }
 
+    /**
+     * Delete a role
+     *
+     * @param array<string, string> $request
+     * @return void
+     */
     private function handle_delete_role($request)
     {
         $role_slug = $this->manager->validate_role_slug($request['delete_role'] ?? '');
-
 
         if (
             !$role_slug ||
@@ -161,17 +166,24 @@ class RolesTab implements TabInterface
         ];
 
         // Edit role
+        $edit_role = (isset($_GET['edit_role']) && is_string($_GET['edit_role']))
+            ? $_GET['edit_role']
+            : false;
+
+        if ($edit_role !== false) {
+            $edit_role = $this->manager->validate_role_slug($edit_role);
+        }
+
         if (
-            isset($_GET['edit_role']) &&
-            $this->manager->role_exists(
-                $this->manager->validate_role_slug($_GET['edit_role'])
-            )
+            is_string($edit_role) &&
+            $this->manager->validate_role_slug($edit_role) &&
+            $this->manager->role_exists($edit_role)
         ) {
             $template = 'tab-roles-edit';
-            $role_slug = $this->manager->validate_role_slug($_GET['edit_role']);
+            $role_slug = $edit_role;
             $args = [
                 'slug'       => $role_slug,
-                'role'       => $this->manager->current_roles()[$role_slug],
+                'role'       => $role_slug,
                 'is_default' => $this->manager->is_default_role($role_slug),
                 'errors'     => $this->errors(),
             ];

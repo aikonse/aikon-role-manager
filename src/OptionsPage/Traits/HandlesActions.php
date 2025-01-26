@@ -13,7 +13,7 @@ trait HandlesActions
 
     /**
      * Errors
-     * 
+     *
      * @var array<string, string>
      */
     public array $errors = [];
