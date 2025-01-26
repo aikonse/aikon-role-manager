@@ -24,7 +24,7 @@ class RolesTab implements TabInterface
     ) {
         $this->title = __('Manage roles', 'aikon-role-manager');
         $this->slug = 'roles';
-        $this->icon = 'dashicons-admin-users';
+        $this->icon = 'dashicons-open-folder';
     }
 
     public function handle(): void
@@ -186,7 +186,7 @@ class RolesTab implements TabInterface
             $role_slug = $edit_role;
             $args = [
                 'slug'       => $role_slug,
-                'role'       => $role_slug,
+                'name'       => $this->manager->current_roles()[$role_slug]['name'],
                 'is_default' => $this->manager->is_default_role($role_slug),
                 'errors'     => $this->errors(),
             ];
