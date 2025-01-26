@@ -1,7 +1,19 @@
 import '../css/main.css';
 
-import { capabilities } from './modules/capabilities';
+import { rolesInit } from './modules/roles';
 
 window.addEventListener( 'load', () => {
-	capabilities();
+	rolesInit({
+			deleteSelector: '.delete_role_button',
+			addRoleValidator: {
+				name: {
+					selector: '#role_name',
+					reg: /^[a-zA-Z0-9_]+$/,
+				},
+				slug: {
+					selector: '#role_slug',
+					reg: /^[a-zA-Z0-9_]+$/,
+				},
+			}
+	});
 } );
