@@ -17,7 +17,7 @@ $roles = array_map(function ($slug, $role) {
         'view' => $view,
         'errors' => $errors,
     ]);
-?>
+    ?>
 
     <div id="col-right" class="col-wrap">
 
@@ -33,22 +33,22 @@ $roles = array_map(function ($slug, $role) {
 
             <tbody id="the-list">
                 <?php
-            foreach ($roles as $role):
-                $delete_url = url_parser([
-                    'tab' => $tab,
-                    'action' => 'delete_role',
-                    'delete_role' => $role['slug'],
-                ]);
+                foreach ($roles as $role):
+                    $delete_url = url_parser([
+                        'tab' => $tab,
+                        'action' => 'delete_role',
+                        'delete_role' => $role['slug'],
+                    ]);
 
-                $edit_url = url_parser([
-                    'tab' => $tab,
-                    'edit_role' => $role['slug'],
-                ]);
+                    $edit_url = url_parser([
+                        'tab' => $tab,
+                        'edit_role' => $role['slug'],
+                    ]);
 
-                $edit_caps_url = url_parser([
-                    'tab' => 'handle_role_caps',
-                    'show_role' => $role['slug'],
-                ]);
+                    $edit_caps_url = url_parser([
+                        'tab' => 'handle_role_caps',
+                        'show_role' => $role['slug'],
+                    ]);
                 ?>
                     <tr class="iedit author-self level-0 post-1 type-post status-publish format-standard hentry">
                         <td class="title column-title has-row-actions column-primary page-title" data-colname="Role">
