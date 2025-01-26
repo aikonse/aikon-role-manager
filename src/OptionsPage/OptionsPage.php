@@ -38,6 +38,14 @@ class OptionsPage
         }
         $this->default_tab = array_keys($this->views)[0];
 
+        // Load assets and handle actions
+        if ($this->is_current_page()) {
+            $slug = $this->current_tab();
+            $this->views[$slug]->handle();
+            $this->assets();
+        }
+
+        // Add the options page
         add_users_page(
             $this->page_title,
             $this->menu_title,
@@ -45,9 +53,26 @@ class OptionsPage
             $this->page_slug,
             [$this, 'page']
         );
+    }
 
-        // TODO: Only load assets on the plugin's page
-        $this->assets();
+    public function is_current_page(): bool
+    {
+        return isset($_GET['page']) && $_GET['page'] === $this->page_slug;
+    }
+
+    public function current_tab(): string
+    {
+        $tabFromUrl = $_GET['tab'] ?? null;
+        $tabFromUrl = is_string($tabFromUrl)
+            ? $tabFromUrl
+            : $this->default_tab;
+
+        $tab = in_array(
+            $tabFromUrl,
+            array_keys($this->views)
+        ) ? $tabFromUrl : $this->default_tab;
+
+        return $tab;
     }
 
     /**
@@ -78,15 +103,8 @@ class OptionsPage
      */
     public function page(): void
     {
-        $tabFromUrl = $_GET['tab'] ?? null;
-        $tabFromUrl = is_string($tabFromUrl)
-            ? $tabFromUrl
-            : $this->default_tab;
-
-        $tab = in_array(
-            $tabFromUrl,
-            array_keys($this->views)
-        ) ? $tabFromUrl : $this->default_tab;
+        $tab = $this->current_tab();
+        do_action('admin_notices');
 
         template('page', [
             'page' => $this,
@@ -105,15 +123,19 @@ class OptionsPage
      */
     public function render_tab_nav(string $current_tab): void
     {
-        $tabs = array_combine(
-            array_keys($this->views),
-            array_map(fn (TabInterface $view) => $view->title(), $this->views)
-        );
+        $tabs = [];
+        foreach ($this->views as $slug => $view) {
+            $tabs[] = [
+                'title' => $view->title(),
+                'slug' => $slug,
+                'icon' => $view->icon(),
+            ];
+        }
 
         template('page-tabs', [
+            'page' => $this->page_slug,
             'tabs' => $tabs,
             'current_tab' => $current_tab,
-            'page_slug' => $this->page_slug
         ]);
     }
 }
