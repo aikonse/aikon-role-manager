@@ -4,52 +4,48 @@ declare(strict_types=1);
 
 namespace Aikon\RoleManager\Manager;
 
+use function Aikon\RoleManager\config;
+
 use WP_Roles;
 
-class RoleManager
+final class RoleManager
 {
+    /** @var self|null */
+    public static $instance = null;
+
     protected WP_Roles $wp_roles;
 
     /**
-     * @param array<string, array<string>|mixed> $config
      * @return void
      */
-    public function __construct(
-        private array $config
-    ) {
+    private function __construct()
+    {
         /**  @var WP_Roles */
         global $wp_roles;
         $this->wp_roles = $wp_roles;
     }
 
-    private function store_roles(): void
+    private function __clone()
     {
-        update_option($this->wp_roles->role_key, $this->wp_roles->roles);
     }
 
     /**
-     * Get a config value
-     * @template T
-     * @param string $key
-     * @param T $fallback
-     * @return mixed
+     * Get the instance of the RoleManager
+     *
+     * @return RoleManager
      */
-    public function config(string $key, mixed $fallback = null): mixed
+    public static function getInstance(): RoleManager
     {
-        // allow dot notation
-        $keys = explode('.', $key);
-        $config = $this->config;
-
-        // find the value in the config array
-        foreach ($keys as $k) {
-            // @phpstan-ignore-next-line
-            if (isset($config[$k])) {
-                $config = $config[$k];
-            } else {
-                return $fallback;
-            }
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
-        return $config;
+
+        return self::$instance;
+    }
+
+    private function store_roles(): void
+    {
+        update_option($this->wp_roles->role_key, $this->wp_roles->roles);
     }
 
     /**
@@ -65,7 +61,7 @@ class RoleManager
         static $defaults;
 
         if ($defaults === null) {
-            $config_defaults = $this->config('default_capabilities', []);
+            $config_defaults = config('default_capabilities', []);
 
             $defaults = is_array($config_defaults)
                 ? array_keys($config_defaults)

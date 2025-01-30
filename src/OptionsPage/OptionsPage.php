@@ -132,7 +132,7 @@ class OptionsPage
             ];
         }
 
-        template('page-tabs', [
+        template('partials/page-tabs', [
             'page' => $this->page_slug,
             'tabs' => $tabs,
             'current_tab' => $current_tab,

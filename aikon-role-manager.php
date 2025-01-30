@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:			Aikon Role Manager
  * Plugin Url:			https://github.com/aikonse/role-manager
@@ -39,21 +38,15 @@ define('ARM_TEMPLATE_PATH', ARM_PATH . 'templates');
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Aikon\RoleManager\Manager\RoleManager;
 use Aikon\RoleManager\OptionsPage\OptionsPage;
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 
 /** Register the Options page and pass the RoleManager with a config */
 add_action('admin_menu', function () {
-    $config = require_once __DIR__ . '/src/config.php';
-    $config = apply_filters('aikon_role_manager_config', $config);
-
-    $manager = new RoleManager($config);
-
     new OptionsPage([
-        new RolesTab($manager),
-        new CapabilitiesTab($manager),
+        new RolesTab(),
+        new CapabilitiesTab(),
     ]);
 }, 10);
 

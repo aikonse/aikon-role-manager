@@ -19,12 +19,15 @@ class RolesTab implements TabInterface
     use HandlesNotice;
     use HandlesActions;
 
-    public function __construct(
-        private RoleManager $manager
-    ) {
+    private RoleManager $manager;
+
+    public function __construct()
+    {
         $this->title = __('Manage roles', 'aikon-role-manager');
         $this->slug = 'roles';
         $this->icon = 'dashicons-open-folder';
+
+        $this->manager = RoleManager::getInstance();
     }
 
     public function handle(): void
