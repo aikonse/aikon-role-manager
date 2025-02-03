@@ -1,0 +1,19 @@
+
+/**
+*   Post-Type Capabilities view
+*/
+.arm_capabilities-card-view {
+    max-width: 800px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.arm_capabilities-card {
+    border: 1px solid #c3c4c7;
+    background-color: #fff;
+    padding: 1rem;
+}
+.arm_capabilities-card h2 {
+    margin-top: 0;
+}

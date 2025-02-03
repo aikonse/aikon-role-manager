@@ -1,3 +1,8 @@
+@import './components/_accordion.css';
+@import './components/_capabilities_form.css';
+@import './components/_cababilities_card.css';
+
 ::root {
     --aim-test: #f00;
 }
+

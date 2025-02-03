@@ -1,0 +1,23 @@
+/* Toggle button */
+.arm_roles-manager-form li button { 
+    visibility: hidden;
+    color: #dc3545 !important;
+}
+.arm_roles-manager-form li:hover button { 
+    visibility: visible;
+    background: none;
+    border:none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Save cappabilities toolbar */
+.arm_roles-manager-form-toolbar {
+    position: sticky;
+    background-color: #f0f0f1cc;
+    padding: 10px;
+    border-top: 1px solid #dcdcde;
+    bottom:0;
+    display: flex;
+    justify-content: flex-end;
+}
