@@ -74,11 +74,15 @@ final class RoleManager
     /**
      * Validate role slug
      *
-     * @param string $slug The slug to validate
+     * @param mixed $slug The slug to validate
      * @return string|null The validated slug or null if invalid
      */
-    public function validate_role_slug(string $slug): ?string
+    public function validate_role_slug(mixed $slug): ?string
     {
+        if (!is_string($slug)) {
+            return null;
+        }
+
         $slug = sanitize_key($slug);
         return strlen($slug) > 2 ? $slug : null;
     }
@@ -86,11 +90,15 @@ final class RoleManager
     /**
      * Validate role name
      *
-     * @param string $name
+     * @param mixed $name
      * @return string|null
      */
-    public function validate_role_name(string $name): ?string
+    public function validate_role_name(mixed $name): ?string
     {
+        if (! is_string($name)) {
+            return null;
+        }
+
         $name = sanitize_text_field($name);
         return strlen($name) > 2 ? $name : null;
     }
@@ -98,10 +106,10 @@ final class RoleManager
     /**
      * Validate capability
      *
-     * @param string $cap
+     * @param mixed $cap
      * @return string|null
      */
-    public function validate_capability(string $cap): ?string
+    public function validate_capability(mixed $cap): ?string
     {
         return $this->validate_role_slug($cap);
     }
@@ -225,5 +233,53 @@ final class RoleManager
                 $user->add_role($default_role);
             }
         }
+    }
+
+    /**
+     * Role has capability
+     *
+     * @param string $role
+     * @param string $cap
+     * @return boolean
+     */
+    public function role_has_cap(string $role, string $cap): bool
+    {
+        return isset($this->current_roles()[$role]['capabilities'][$cap]);
+    }
+
+    /**
+     * Get all capabilities
+     *
+     * @return string[]
+     */
+    public function all_capabilities()
+    {
+        // Acumulate all capabilities
+        $capabilities = [];
+
+        // All current capabilities from roles
+        foreach ($this->current_roles() as $role) {
+            $capabilities = array_merge($capabilities, array_keys($role['capabilities']));
+        }
+
+        /** @var array<string, string[]> */
+        $default_capabilities = config('default_capabilities', []);
+
+        foreach ($default_capabilities as $caps) {
+            $capabilities = array_merge($capabilities, $caps);
+        }
+
+        /** @var array<string,bool> */
+        $args = config('post_type_query', [
+            'show_ui' => true
+        ]);
+
+        /** @var \WP_Post_Type[] */
+        $post_types = get_post_types($args, 'objects');
+        foreach ($post_types as $post_type) {
+            $capabilities = array_merge($capabilities, array_keys((array) $post_type->cap));
+        }
+
+        return array_unique($capabilities);
     }
 }
