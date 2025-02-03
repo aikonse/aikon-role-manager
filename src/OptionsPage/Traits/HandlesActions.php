@@ -2,6 +2,8 @@
 
 namespace Aikon\RoleManager\OptionsPage\Traits;
 
+use Aikon\RoleManager\Request;
+
 trait HandlesActions
 {
     /**
@@ -39,7 +41,7 @@ trait HandlesActions
 
         $this->run_middleware();
 
-        $callback($_REQUEST);
+        $callback(new Request());
     }
 
     /**
@@ -63,7 +65,7 @@ trait HandlesActions
 
         $this->run_middleware();
 
-        $callback($_REQUEST);
+        $callback(new Request());
     }
 
     /**

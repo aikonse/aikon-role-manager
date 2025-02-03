@@ -9,6 +9,7 @@ use Aikon\RoleManager\OptionsPage\Interfaces\TabInterface;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesActions;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesNotice;
 use Aikon\RoleManager\OptionsPage\Traits\HasTitleAnSlug;
+use Aikon\RoleManager\Request;
 
 use function Aikon\RoleManager\template;
 use function Aikon\RoleManager\url_parser;
@@ -46,13 +47,19 @@ class RolesTab implements TabInterface
     /**
      * Add a role
      *
-     * @param array<string, string> $request
+     * @param Request $request
      * @return void
      */
-    public function handle_add_role(array $request): void
+    public function handle_add_role(Request $request): void
     {
-        $name = $this->manager->validate_role_name($request['name'] ?? '');
-        $slug = $this->manager->validate_role_slug($request['slug'] ?? '');
+
+        $request->validate([
+            'name' => 'string|minlength:2',
+            'slug' => 'string|minlength:2',
+        ]);
+
+        $name = $this->manager->validate_role_name($request->get('name'));
+        $slug = $this->manager->validate_role_slug($request->get('slug'));
 
         if (!$name) {
             $this->add_notice(__('Role name is required', 'aikon-role-manager'), 'warning');
@@ -82,14 +89,20 @@ class RolesTab implements TabInterface
     /**
      * Update a role
      *
-     * @param array<string, string> $request
+     * @param Request $request
      * @return void
      */
-    public function handle_update_role(array $request): void
+    public function handle_update_role(Request $request): void
     {
-        $updating = $this->manager->validate_role_slug($request['role'] ?? '');
-        $name = $this->manager->validate_role_name($request['name'] ?? '');
-        $slug = $this->manager->validate_role_slug($request['slug'] ?? $updating ?? ''); // Use the current slug if not provided
+        $request->validate([
+            'role' => 'string|minlength:2',
+            'name' => 'string|minlength:2',
+            'slug' => 'string|minlength:2',
+        ]);
+
+        $updating   = $this->manager->validate_role_slug($request->get('role'));
+        $name       = $this->manager->validate_role_name($request->get('name'));
+        $slug       = $this->manager->validate_role_slug($request->get('slug', $updating)); // Use the current slug if not provided
 
         // Trying to update a role that does not exist
         if (
@@ -132,12 +145,13 @@ class RolesTab implements TabInterface
     /**
      * Delete a role
      *
-     * @param array<string, string> $request
+     * @param Request $request
      * @return void
      */
     private function handle_delete_role($request)
     {
-        $role_slug = $this->manager->validate_role_slug($request['delete_role'] ?? '');
+        $request->validate(['delete_role' => 'string|minlength:2']);
+        $role_slug = $this->manager->validate_role_slug($request->get('delete_role'));
 
         if (
             !$role_slug ||
