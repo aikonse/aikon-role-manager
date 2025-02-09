@@ -41,6 +41,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Aikon\RoleManager\OptionsPage\OptionsPage;
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
+use Aikon\RoleManager\UserProfile\UserProfileEdit;
 
 /** Register the Options page and pass the RoleManager with a config */
 add_action('admin_menu', function () {
@@ -48,6 +49,7 @@ add_action('admin_menu', function () {
         new RolesTab(),
         new CapabilitiesTab(),
     ]);
+    new UserProfileEdit();
 }, 10);
 
 /** When site is multisite the super_admin has the multisite_capabilities,

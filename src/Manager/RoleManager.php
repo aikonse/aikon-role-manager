@@ -282,4 +282,27 @@ final class RoleManager
 
         return array_unique($capabilities);
     }
+
+    /**
+      * Add array of roles to a user
+      *
+      * @param int $user_id
+      * @param string[] $roles
+      * @return void
+      */
+    public function add_roles_to_user(int $user_id, array $roles)
+    {
+        $user = get_user_by('id', $user_id);
+
+        if (! $user) {
+            return;
+        }
+
+        foreach ($roles as $role) {
+            if (isset($user->caps[$role])) {
+                continue;
+            }
+            $user->add_role($role);
+        }
+    }
 }
