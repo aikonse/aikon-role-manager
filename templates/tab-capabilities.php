@@ -9,7 +9,7 @@ use function Aikon\RoleManager\template;
     ]);
 ?>
 <p class="search-box">
-    <label class=label" for="post-search-input">Snabbfiltrera behörigheter</label>
+    <label class=label" for="post-search-input"><?php _e('Filter capabilities','aikon-role-manager');?></label>
     <input type="search" id="capability-filter" name="filter_roles value="">
 </p>
 <div id="nav-menus-frame" class="wp-clearfix metabox-sortables ui-sortable">
