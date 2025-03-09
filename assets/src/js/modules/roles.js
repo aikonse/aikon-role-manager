@@ -16,7 +16,9 @@ export function deleteRole(e) {
 }
 
 /**
- * 
+ * @typedef {Object} DefaultConfig
+ * @property {string} deleteSelector - Selectior for the delete role button.
+ *
  * @param {object} config 
  */
 export function rolesInit(config) {
