@@ -56,7 +56,7 @@ add_action('admin_menu', function () {
  *  if not multisite there should be no super_admin role and the administrator
  *  should have the multisite_capabilities
  */
-add_action('ai_role_manager_config', function ($config) {
+add_filter('aikon_role_manager_config', function ($config) {
     if (is_multisite()) {
         $config['default_capabilities']['super_admin'] = array_merge(
             $config['default_capabilities']['super_admin'],
