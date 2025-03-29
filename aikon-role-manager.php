@@ -52,9 +52,10 @@ add_action('admin_menu', function () {
     new UserProfileEdit();
 }, 10);
 
-/** When site is multisite the super_admin has the multisite_capabilities,
- *  if not multisite there should be no super_admin role and the administrator
- *  should have the multisite_capabilities
+/**
+ * When site is multisite the super_admin has the multisite_capabilities,
+ * if not multisite there should be no super_admin role and the administrator
+ * should have the multisite_capabilities
  */
 add_filter('aikon_role_manager_config', function ($config) {
     if (is_multisite()) {
@@ -63,10 +64,11 @@ add_filter('aikon_role_manager_config', function ($config) {
             $config['multisite_capabilities']
         );
     } else {
-        unset($config['default_capabilities']['administrator']);
         $config['default_capabilities']['administrator'] = array_merge(
             $config['default_capabilities']['administrator'],
             $config['multisite_capabilities']
         );
     }
+
+    return $config;
 }, 10, 1);
