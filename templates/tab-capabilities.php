@@ -9,7 +9,7 @@ use function Aikon\RoleManager\template;
     ]);
 ?>
 <p class="search-box">
-    <label class=label" for="post-search-input"><?php _e('Filter capabilities','aikon-role-manager');?></label>
+    <label class=label" for="capability-filter"><?php _e('Filter capabilities','aikon-role-manager');?></label>
     <input type="search" id="capability-filter" name="filter_roles value="">
 </p>
 <div id="nav-menus-frame" class="wp-clearfix metabox-sortables ui-sortable">
@@ -29,9 +29,9 @@ use function Aikon\RoleManager\template;
 
     <div id="menu-management-liquid">
         <div id="menu-management">
-            <form action="" method="post" class="arm-roles-manager-form">
+            <form action="" method="post" class="arm_roles-manager-form">
                 <h2><?php _e($role['name']); ?></h2>
-                <input type="hidden" name="action" value="save_role_caps">
+                <input type="hidden" name="action" value="save_capabilities">
                 <input type="hidden" name="role" value="<?php echo $current; ?>">
 
                 
@@ -45,14 +45,15 @@ use function Aikon\RoleManager\template;
                         <label>
                             <input type="checkbox" value="1" name="<?php echo $input_name; ?>" <?php echo $has_cap ? 'checked' : ''; ?>>
                             <?php echo $cap; ?>
-                            <?php /* if ($manager->is_default_default_capabilitiy_for_role($current_role_slug, $cap)) : ?>
-                                <small>(default)</small>
-                            <?php endif;*/ ?>
                         </label>
+                        <?php if ($manager->is_default_default_capabilitiy_for_role($current, $cap)) : ?>
+                                <small>(default)</small>
+                        <?php else: ?>
                         <button
                             type="button"
                             class="button button-small button-text-danger dashicons-before dashicons-trash"
-                        >Radera</button>
+                        >Remove</button>
+                        <?php endif; ?>
                     </li>
                     <?php endforeach; ?>
                 </ul>
