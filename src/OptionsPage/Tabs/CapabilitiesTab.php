@@ -12,6 +12,7 @@ use Aikon\RoleManager\OptionsPage\Traits\HandlesActions;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesNotice;
 
 use Aikon\RoleManager\OptionsPage\Traits\HasTitleAnSlug;
+use Aikon\RoleManager\Request;
 
 use function Aikon\RoleManager\template;
 
@@ -40,6 +41,43 @@ class CapabilitiesTab implements TabInterface
             }
         });
 
+        $this->post_action('action', 'save_capabilities', [$this, 'handle_save_capabilities']);
+
+    }
+
+    private function handle_save_capabilities(Request $request): void
+    {
+
+        $request->validate([
+            'role_caps' => 'required|array',
+            'role' => 'required|string|minlength:2',
+        ]);
+
+        $role = $request->get('role');
+        $capabilities = $request->get('role_caps', []);
+
+
+        if( !$this->manager->role_exists($role) ) {
+            $this->add_error('role', __('Role does not exist', 'aikon-role-manager'));
+            return;
+        }
+
+        if (empty($capabilities)) {
+            $this->add_error('capabilities', __('Capabilities are required', 'aikon-role-manager'));
+            return;
+        }
+
+        $capabilities = array_map('sanitize_key', $capabilities);
+        $capabilities = array_filter($capabilities, function ($cap) {
+            return $this->manager->validate_capability($cap);
+        });
+
+
+        $this->manager->update_role_capabilities(
+            $role,
+            $capabilities
+        );
+        $this->add_notice(__('Capabilities updated successfully', 'aikon-role-manager'), 'success');
     }
 
     /**
@@ -139,6 +177,7 @@ class CapabilitiesTab implements TabInterface
             'current' => $current,
             'role' => $roles[$current],
             'all_capabilities' => $this->manager->all_capabilities(),
+            'manager' => $this->manager,
         ]);
     }
 }
