@@ -69,7 +69,7 @@
     text-indent: -1px;
     color: #787c82;
 
-    content: "\f142";
+    content: "\f140";
     display: inline-block;
     font: normal 20px / 1 dashicons;
     -webkit-font-smoothing: antialiased;
@@ -77,7 +77,7 @@
     text-decoration: none;
 }
 .arm-postbox-accordion[aria-expanded="true"] .arm-postbox-accordion-header button::before {
-    content: "\f140";
+    content: "\f142";
 }
 
 .arm-postbox-footer {

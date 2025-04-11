@@ -1,6 +1,6 @@
 import { toggleAccordion } from "./accordion";
 import { quickFilter } from "./filter";
-import { addCapability, addNewCapability } from "./add-capability";
+import { addCapability, addCapabilityFromList, addNewCapability } from "./add-capability";
 
 /**
  * @typedef {Object} DefaultConfig
@@ -29,6 +29,11 @@ export function capabilitiesInit( config ) {
 			inputSelector: '#new-capability',
 			addBtnSelector: '#add-capability',
 		},
+		addCapabilityFromList: {
+			checkboxSelector: '#add-capabilities-list input[type="checkbox"]',
+			submitButtonSelector: '#add-capabilities',
+		},
+		accordionToggleSelector: '.arm-postbox-accordion-header',
 
 	};
 
@@ -42,7 +47,12 @@ export function capabilitiesInit( config ) {
 		config.addNewCapability.addBtnSelector, 
 		config.capabilityListSelector
 	);
-	addCapability();
+	addCapabilityFromList(
+		config.addCapabilityFromList.checkboxSelector, 
+		config.addCapabilityFromList.submitButtonSelector, 
+		config.capabilityListSelector
+	);
+	//addCapability();
 	quickFilter(
 		config.quickFilter.inputSelector, 
 		config.quickFilter.listItemsSelector,

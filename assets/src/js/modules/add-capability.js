@@ -45,3 +45,45 @@ function createCapabilityItem(capability, inputName) {
 
     return capabilityItem;
 }
+
+export function addCapabilityFromList(checkboxSelector, submitButtonSelector, listSelector) { 
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const checkBoxes = document.querySelectorAll(checkboxSelector);
+
+    /** @type {HTMLButtonElement} */
+    const submitButton = document.querySelector(submitButtonSelector);
+
+    /** @type {HTMLUListElement} */
+    const list = document.querySelector(listSelector);
+
+    if (!checkBoxes || !submitButton || !list) {
+        console.warn('Aikon Role Manager: One or more elements not found in addCapabilityFromList()');
+        return;
+    }
+
+    submitButton.disabled = true;
+
+    const checkHasChecked  = () => {
+        // Loop through all checkboxes and check if any is checked
+        const checkedCount = [...checkBoxes].filter(input => input.checked).length;
+        console.log(checkedCount);
+        return checkedCount > 0;
+    }
+
+    checkBoxes.forEach((box)=>{
+        box.addEventListener('change', () => {
+            submitButton.disabled = !checkHasChecked();
+        });
+    });
+
+    submitButton.addEventListener('click', (e) => {
+        const checked = [...checkBoxes].filter(input => input.checked);
+        checked.forEach((checkbox) => {
+            const capname = checkbox.parentElement.textContent.trim()
+            list.appendChild(createCapabilityItem(capname, checkbox.name));
+            checkbox.checked = false
+            checkbox.disabled = true;
+        });
+        submitButton.disabled = true;
+    });
+}
