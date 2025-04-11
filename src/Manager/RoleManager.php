@@ -72,6 +72,23 @@ final class RoleManager
     }
 
     /**
+     * Capability is default for role
+     *
+     * @param string $role
+     * @param string $cap
+     * @return boolean
+     */
+    public function is_default_default_capabilitiy_for_role(string $role, string $cap)
+    {
+        $role_capabilities = config('default_capabilities.'. $role);
+        if (!is_array($role_capabilities)) {
+            return false;
+        }
+
+        return in_array($cap, $role_capabilities);
+    }
+
+    /**
      * Validate role slug
      *
      * @param mixed $slug The slug to validate
@@ -202,6 +219,22 @@ final class RoleManager
                 $user->add_role($slug);
             }
         }
+        $this->store_roles();
+    }
+
+    /**
+     * Update roles and capabilities
+     *
+     * @param array $updated_roles_caps
+     * @return void
+     */
+    public function update_role_capabilities(string $role,array $updated_roles_caps): void
+    {
+        if ( !$this->role_exists($role) ) {
+            throw new \Exception('Role not found');
+        }
+
+        $this->wp_roles->roles[$role]['capabilities'] = $updated_roles_caps;
         $this->store_roles();
     }
 
