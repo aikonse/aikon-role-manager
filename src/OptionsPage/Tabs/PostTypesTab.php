@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Aikon\RoleManager\OptionsPage\Tabs;
 
+use function Aikon\RoleManager\config;
+
 use Aikon\RoleManager\OptionsPage\Interfaces\TabInterface;
 use Aikon\RoleManager\OptionsPage\Traits\HasTitleAnSlug;
+
 use function Aikon\RoleManager\template;
-use function Aikon\RoleManager\config;
 
 class PostTypesTab implements TabInterface
 {
