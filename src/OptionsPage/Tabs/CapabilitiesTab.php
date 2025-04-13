@@ -56,13 +56,12 @@ class CapabilitiesTab implements TabInterface
         $role = $request->get('role');
         $capabilities = $request->get('role_caps', []);
 
-
-        if( !$this->manager->role_exists($role) ) {
+        if (!is_string($role) || !$this->manager->role_exists($role)) {
             $this->add_error('role', __('Role does not exist', 'aikon-role-manager'));
             return;
         }
 
-        if (empty($capabilities)) {
+        if (!is_array($capabilities) || empty($capabilities)) {
             $this->add_error('capabilities', __('Capabilities are required', 'aikon-role-manager'));
             return;
         }
@@ -78,7 +77,7 @@ class CapabilitiesTab implements TabInterface
             $valid_capabilities[$cap] = $value === '1' ? true : false;
         }
 
-       $this->manager->update_role_capabilities(
+        $this->manager->update_role_capabilities(
             $role,
             $valid_capabilities
         );

@@ -224,13 +224,13 @@ final class RoleManager
 
     /**
      * Update roles and capabilities
-     *
-     * @param array $updated_roles_caps
+     *@ param string $role<
+    * @param array<string, bool> $updated_roles_caps
      * @return void
      */
-    public function update_role_capabilities(string $role,array $updated_roles_caps): void
+    public function update_role_capabilities(string $role, array $updated_roles_caps): void
     {
-        if ( !$this->role_exists($role) ) {
+        if (!$this->role_exists($role)) {
             throw new \Exception('Role not found');
         }
 
