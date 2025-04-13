@@ -67,16 +67,22 @@ class CapabilitiesTab implements TabInterface
             return;
         }
 
-        $capabilities = array_map('sanitize_key', $capabilities);
-        $capabilities = array_filter($capabilities, function ($cap) {
-            return $this->manager->validate_capability($cap);
-        });
+        $valid_capabilities = [];
+        foreach ($capabilities as $cap => $value) {
+            $cap = $this->manager->validate_capability($cap);
 
+            if (!$cap) {
+                throw new \Exception('Invalid capability');
+            }
 
-        $this->manager->update_role_capabilities(
+            $valid_capabilities[$cap] = $value === '1' ? true : false;
+        }
+
+       $this->manager->update_role_capabilities(
             $role,
-            $capabilities
+            $valid_capabilities
         );
+
         $this->add_notice(__('Capabilities updated successfully', 'aikon-role-manager'), 'success');
     }
 
