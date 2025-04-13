@@ -1,4 +1,13 @@
 <?php
+/**
+ * @var Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab $view
+ * @var array<string, string> $nav
+ * @var string $current
+ * @var array{name: string, capabilities: array<string,bool>} $role
+ * @var array<string, string> $all_capabilities
+ * @var Aikon\RoleManager\Manager\RoleManager $manager
+ */
+
 use function Aikon\RoleManager\template;
 
 ?>

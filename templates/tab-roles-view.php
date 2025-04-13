@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var string $tab
+ * @var array<string, array{name: string, capabilities: array<string,bool>}> $roles
+ * @var Aikon\RoleManager\Manager\RoleManager $manager
+ * @var Aikon\RoleManager\OptionsPage\Tabs\RolesTab $view
+ * @var array<string, string> $errors
+ */
 
 use function Aikon\RoleManager\template;
 use function Aikon\RoleManager\url_parser;

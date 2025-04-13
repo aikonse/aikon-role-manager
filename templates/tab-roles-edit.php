@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var string $slug
+ * @var string $name
+ * @var bool $is_default
+ * @var array<string, string> $errors
+ */
 
 use function Aikon\RoleManager\url_parser;
 
