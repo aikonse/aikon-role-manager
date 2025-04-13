@@ -3,9 +3,10 @@
 *   Post-Type Capabilities view
 */
 .arm_capabilities-card-view {
-    max-width: 800px;
+    margin-block: 2rem;
+    max-width: 940px;
     display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
     gap: 1rem;
 }
 
@@ -16,4 +17,15 @@
 }
 .arm_capabilities-card h2 {
     margin-top: 0;
+}
+
+.arm_capabilities-card li {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.arm_capabilities-card ul strong {
+    font-weight: 200;
+    color: #666;
 }
