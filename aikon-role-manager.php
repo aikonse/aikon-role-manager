@@ -40,6 +40,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Aikon\RoleManager\OptionsPage\OptionsPage;
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
+use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 use Aikon\RoleManager\UserProfile\UserProfileEdit;
 
@@ -48,6 +49,7 @@ add_action('admin_menu', function () {
     new OptionsPage([
         new RolesTab(),
         new CapabilitiesTab(),
+        new PostTypesTab(),
     ]);
     new UserProfileEdit();
 }, 10);
