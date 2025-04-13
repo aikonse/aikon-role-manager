@@ -46,8 +46,8 @@ $roles = array_map(function ($slug, $role) {
                     ]);
 
                     $edit_caps_url = url_parser([
-                        'tab' => 'handle_role_caps',
-                        'show_role' => $role['slug'],
+                        'tab' => 'capabilities',
+                        'role' => $role['slug'],
                     ]);
                 ?>
                     <tr class="iedit author-self level-0 post-1 type-post status-publish format-standard hentry">
