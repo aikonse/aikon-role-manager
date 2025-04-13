@@ -17,7 +17,7 @@ class PostTypesTab implements TabInterface
 
     public function __construct()
     {
-        $this->title = __('Post Types', 'aikon-role-manager');
+        $this->title = __('Post Types Capabilities', 'aikon-role-manager');
         $this->slug = 'post-types';
         $this->icon = 'dashicons-admin-post';
     }
