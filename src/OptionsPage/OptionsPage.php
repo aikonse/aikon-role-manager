@@ -11,16 +11,16 @@ use function Aikon\RoleManager\template;
 class OptionsPage
 {
     /** Options page title */
-    protected string $page_title = 'Aikon Roles Manager';
+    protected string $page_title = 'Aikon Role Manager';
 
     /** Options page tagline */
     protected string $tagline = 'Manage roles and capabilities';
 
     /** Options page slug */
-    protected string $page_slug = 'aikon-roles-manager';
+    protected string $page_slug = 'aikon-role-manager';
 
     /** Options page menu title */
-    protected string $menu_title = 'Roles Manager';
+    protected string $menu_title = 'Role Manager';
 
     protected string $default_tab;
 
