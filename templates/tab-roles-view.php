@@ -67,7 +67,7 @@ $roles = array_map(function ($slug, $role) {
                             <div class="row-actions">
                                 <span class="edit"><a href="<?php echo $edit_url; ?>"><?php _e('Edit'); ?></a> | </span>
                                 <?php if (!$manager->is_default_role($role['slug'])): ?>
-                                    <span class="trash"><a href="#0" data-action="<?php echo $delete_url; ?>" data-confirmationmessage="<?php _e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>" class="submitdelete delete_role_button"><?php _e('Delete'); ?></a> | </span>
+                                    <span class="trash"><a href="#0" data-action="<?php echo esc_attr($delete_url); ?>" data-confirmationmessage="<?php _e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>" class="submitdelete delete_role_button"><?php _e('Delete'); ?></a> | </span>
                                 <?php endif; ?>
                                 <span class="view"><a href="<?php echo esc_attr($edit_caps_url); ?>"><?php _e('Show/edit capabilities', 'aikon-role-manager'); ?></a></span>
                             </div>
