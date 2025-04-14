@@ -44,6 +44,11 @@ use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 use Aikon\RoleManager\UserProfile\UserProfileEdit;
 
+add_action('init', function () {
+    // Load text domain for translations
+    load_plugin_textdomain('aikon-role-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}, 10);
+
 /** Register the Options page and pass the RoleManager with a config */
 add_action('admin_menu', function () {
     new OptionsPage([

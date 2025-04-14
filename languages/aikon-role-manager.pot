@@ -1,0 +1,177 @@
+# Copyright (C) 2025 Aikon
+# This file is distributed under the MIT.
+msgid ""
+msgstr ""
+"Project-Id-Version: Aikon Role Manager 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/aikon-role-manager\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-04-14T20:19:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.9.0\n"
+"X-Domain: aikon-role-manager\n"
+
+#. Plugin Name of the plugin
+msgid "Aikon Role Manager"
+msgstr ""
+
+#. Description of the plugin
+msgid "Manage roles and permisisons, allow users multiple roles and gain control"
+msgstr ""
+
+#. Author of the plugin
+msgid "Aikon"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://aikon.se"
+msgstr ""
+
+#: aikon-role-manager.php:27
+msgid "Aikon Role Manager requires PHP 8.0 or higher."
+msgstr ""
+
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:29
+#: templates/partials/tab-capabilities-accordion.php:10
+msgid "Capabilities"
+msgstr ""
+
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:60
+#: src/OptionsPage/Tabs/RolesTab.php:112
+#: src/OptionsPage/Tabs/RolesTab.php:160
+msgid "Role does not exist"
+msgstr ""
+
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:65
+msgid "Capabilities are required"
+msgstr ""
+
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:85
+msgid "Capabilities updated successfully"
+msgstr ""
+
+#: src/OptionsPage/Tabs/PostTypesTab.php:20
+msgid "Post Types Capabilities"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:27
+msgid "Manage roles"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:65
+#: src/OptionsPage/Tabs/RolesTab.php:66
+#: src/OptionsPage/Tabs/RolesTab.php:117
+#: src/OptionsPage/Tabs/RolesTab.php:118
+msgid "Role name is required"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:70
+#: src/OptionsPage/Tabs/RolesTab.php:71
+#: src/OptionsPage/Tabs/RolesTab.php:122
+#: src/OptionsPage/Tabs/RolesTab.php:123
+msgid "Role slug is required"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:79
+#: src/OptionsPage/Tabs/RolesTab.php:134
+msgid "Role already exists"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:84
+msgid "Role added"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:139
+msgid "Role updated"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:165
+msgid "You cannot delete a default role"
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:170
+msgid "Role deleted"
+msgstr ""
+
+#: templates/partials/tab-capabilities-accordion.php:13
+msgid "Add new capability"
+msgstr ""
+
+#: templates/partials/tab-capabilities-accordion.php:15
+msgid "Use lowercase letters, underscores and numbers"
+msgstr ""
+
+#: templates/partials/tab-capabilities-accordion.php:16
+msgid "Add"
+msgstr ""
+
+#: templates/partials/tab-capabilities-accordion.php:41
+msgid "Add capabilities"
+msgstr ""
+
+#: templates/partials/tab-roles-add-form.php:15
+#: templates/partials/tab-roles-add-form.php:30
+msgid "Add new role"
+msgstr ""
+
+#: templates/partials/tab-roles-add-form.php:19
+msgid "Role name"
+msgstr ""
+
+#: templates/partials/tab-roles-add-form.php:21
+msgid "The new role display name"
+msgstr ""
+
+#: templates/partials/tab-roles-add-form.php:26
+#: templates/tab-roles-edit.php:37
+msgid "A slug is the url friendly version of the name. It has lowercase a-z letters and underscores."
+msgstr ""
+
+#: templates/tab-capabilities.php:21
+msgid "Filter capabilities"
+msgstr ""
+
+#: templates/tab-capabilities.php:48
+msgid "Restore"
+msgstr ""
+
+#: templates/tab-capabilities.php:49
+#: templates/tab-capabilities.php:68
+msgid "Remove"
+msgstr ""
+
+#: templates/tab-capabilities.php:74
+msgid "Save"
+msgstr ""
+
+#: templates/tab-roles-edit.php:29
+msgid "The role name"
+msgstr ""
+
+#: templates/tab-roles-edit.php:48
+msgid "Delete"
+msgstr ""
+
+#: templates/tab-roles-edit.php:53
+msgid "Back"
+msgstr ""
+
+#: templates/tab-roles-view.php:70
+msgid "Are you sure you want to delete this role?"
+msgstr ""
+
+#: templates/tab-roles-view.php:72
+msgid "Show/edit capabilities"
+msgstr ""
+
+#: templates/userprofile-edit.php:11
+#: templates/userprofile-edit.php:17
+msgid "Additional Roles"
+msgstr ""
+
+#: templates/userprofile-edit.php:12
+msgid "Select additional roles for this user."
+msgstr ""
