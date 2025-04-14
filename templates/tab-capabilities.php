@@ -43,25 +43,29 @@ use function Aikon\RoleManager\template;
                 <input type="hidden" name="action" value="save_capabilities">
                 <input type="hidden" name="role" value="<?php echo $current; ?>">
 
-                
-                <ul id="capability-list">
+                <ul 
+                    id="capability-list"
+                    data-restore-text="<?php _e('Restore','aikon-role-manager'); ?>"
+                    data-remove-text="<?php _e('Remove','aikon-role-manager'); ?>"
+                >
                     <?php
                         foreach ($role['capabilities'] as $cap => $has_cap) :
                             $input_name = 'role_caps[' . $cap . ']';
+                            $is_default = $manager->is_default_default_capabilitiy_for_role($current, $cap);
                     ?>
-                    <li>
+                    <li class="capability-item <?php echo $is_default ? 'default' : ''; ?>">
                         <input type="hidden" name="<?php echo $input_name; ?>" value="0">
                         <label>
                             <input type="checkbox" value="1" name="<?php echo $input_name; ?>" <?php echo $has_cap ? 'checked' : ''; ?>>
                             <?php echo $cap; ?>
                         </label>
-                        <?php if ($manager->is_default_default_capabilitiy_for_role($current, $cap)) : ?>
-                                <small>(default)</small>
+                        <?php if ($is_default) : ?>
+                                <small class="default-indicator">(default)</small>
                         <?php else: ?>
                         <button
                             type="button"
                             class="button button-small button-text-danger dashicons-before dashicons-trash"
-                        >Remove</button>
+                        ><?php _e('Remove','aikon-role-manager'); ?></button>
                         <?php endif; ?>
                     </li>
                     <?php endforeach; ?>

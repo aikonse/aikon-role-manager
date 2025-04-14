@@ -3,6 +3,7 @@
     visibility: hidden;
     color: #dc3545 !important;
 }
+
 .arm_roles-manager-form li:hover button { 
     visibility: visible;
     background: none;
@@ -20,4 +21,8 @@
     bottom:0;
     display: flex;
     justify-content: flex-end;
+}
+
+.arm_roles-manager-form .default-indicator {
+    color: #999;
 }

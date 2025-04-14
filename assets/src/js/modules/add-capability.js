@@ -22,7 +22,8 @@ export function addNewCapability(inputSelector, addBtnSelector, listSelector) {
         if (!input.validity.valid) {
             return;
         }
-        capabilitiesList.appendChild(createCapabilityItem(input.value.trim(), checkBoxName));
+        const name = `role_caps[${input.value.trim()}]`;
+        capabilitiesList.appendChild(createCapabilityItem(input.value.trim(), name, capabilitiesList));
         input.value = '';
     });
 }
@@ -31,17 +32,23 @@ export function addNewCapability(inputSelector, addBtnSelector, listSelector) {
 /**
  * Create a new capability item.
  * @param {string} capability 
+ * @param {string} name
+ * @param {HTMLUListElement} capabilityList
  * @returns HtmlElement
  */
-function createCapabilityItem(capability, inputName) {
-    const name = inputName + '[ ' + capability + ' ]';
+function createCapabilityItem(capability, name, capabilityList) {
+    const removeText = capabilityList.dataset.removeText || 'Remove';
     const capabilityItem = document.createElement('li');
     capabilityItem.innerHTML =
         `<input type="hidden" name="${name}" value="0"> 
         <label>
             <input type="checkbox" name="${name}" value="1">
             ${capability}
-        </label>`;
+        </label>
+        <button
+            type="button"
+            class="button button-small button-text-danger dashicons-before dashicons-trash"
+        >${removeText}</button>`;
 
     return capabilityItem;
 }
@@ -66,7 +73,6 @@ export function addCapabilityFromList(checkboxSelector, submitButtonSelector, li
     const checkHasChecked  = () => {
         // Loop through all checkboxes and check if any is checked
         const checkedCount = [...checkBoxes].filter(input => input.checked).length;
-        console.log(checkedCount);
         return checkedCount > 0;
     }
 
@@ -80,7 +86,7 @@ export function addCapabilityFromList(checkboxSelector, submitButtonSelector, li
         const checked = [...checkBoxes].filter(input => input.checked);
         checked.forEach((checkbox) => {
             const capname = checkbox.parentElement.textContent.trim()
-            list.appendChild(createCapabilityItem(capname, checkbox.name));
+            list.appendChild(createCapabilityItem(capname, checkbox.name, list));
             checkbox.checked = false
             checkbox.disabled = true;
         });

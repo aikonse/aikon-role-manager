@@ -1,6 +1,7 @@
 import { toggleAccordion } from "./accordion";
 import { quickFilter } from "./filter";
-import { addCapability, addCapabilityFromList, addNewCapability } from "./add-capability";
+import { addCapabilityFromList, addNewCapability } from "./add-capability";
+import { capabilityToggle } from "./toggle-capability";
 
 /**
  * @typedef {Object} DefaultConfig
@@ -25,6 +26,7 @@ export function capabilitiesInit( config ) {
 			wrapperSelector: '#nav-menus-frame'
 		},
 		capabilityListSelector: '#capability-list',
+		capabilityListToggleSelector: 'button',
 		addNewCapability: {
 			inputSelector: '#new-capability',
 			addBtnSelector: '#add-capability',
@@ -52,7 +54,10 @@ export function capabilitiesInit( config ) {
 		config.addCapabilityFromList.submitButtonSelector, 
 		config.capabilityListSelector
 	);
-	//addCapability();
+	capabilityToggle(
+		config.capabilityListSelector, 
+		config.capabilityListToggleSelector
+	)
 	quickFilter(
 		config.quickFilter.inputSelector, 
 		config.quickFilter.listItemsSelector,
