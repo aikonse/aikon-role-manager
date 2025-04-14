@@ -3,10 +3,10 @@ Contributors: andreas-andersson
 Tags: User, Role,
 Tested up to: 6.7.2
 Requires at least: 6.5
-Stable: 1.0.0
+Stable Tag: 1.0.0
 Requires PHP: 8.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: MIT
+License URI: https://opensource.org/license/mit
 
 Aikon Role Manager empowers you to take full control of user roles and capabilities in WordPress.
 

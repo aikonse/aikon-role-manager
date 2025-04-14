@@ -13,8 +13,8 @@
   "wps:format": "wp-scripts format ./assets/src",
   "zip": "wp-scripts plugin-zip"
  },
-  "author": "",
-  "license": "ISC",
+  "author": "Andreas Andersson",
+  "license": "MIT",
   "description": "",
   "devDependencies": {
     "@wordpress/env": "^10.16.0",
