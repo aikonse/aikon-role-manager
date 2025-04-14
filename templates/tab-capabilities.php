@@ -39,7 +39,7 @@ use function Aikon\RoleManager\template;
     <div id="menu-management-liquid">
         <div id="menu-management">
             <form action="" method="post" class="arm_roles-manager-form">
-                <h2><?php _e( esc_attr($role['name'])); ?></h2>
+                <h2><?php echo esc_attr($role['name']); ?></h2>
                 <input type="hidden" name="action" value="save_capabilities">
                 <input type="hidden" name="role" value="<?php echo esc_attr($current); ?>">
 
