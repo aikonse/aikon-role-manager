@@ -24,6 +24,7 @@ jobs:
         composer install --no-dev
         npm install
         npm run wps:build
+        npm run zip
 
     # - name: WordPress Plugin Deploy
 
@@ -54,4 +55,4 @@ jobs:
 
       with:
         # Provide what the file should be named when attached to the release (plugin-name.zip)
-        files: ${{ github.workspace }}/${{ github.event.repository.name }}.zip
+        files: aikon-role-manager.zip
