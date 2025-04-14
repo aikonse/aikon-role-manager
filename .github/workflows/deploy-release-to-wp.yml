@@ -23,7 +23,7 @@ jobs:
       run: |
         composer install --no-dev
         npm install
-        npm run build
+        npm run wps:build
 
     # - name: WordPress Plugin Deploy
 
