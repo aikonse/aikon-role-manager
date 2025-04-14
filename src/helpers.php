@@ -15,7 +15,7 @@ function template(string $template, array $data = []): void
 {
     $template_file = ARM_TEMPLATE_PATH . DIRECTORY_SEPARATOR . $template . '.php';
     if (!file_exists($template_file)) {
-        throw new \Exception("Template " . esc_html($template) . " not found.");
+        throw new \Exception('Template ' . esc_html($template) . ' not found.');
     }
 
     extract($data);
