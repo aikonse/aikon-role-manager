@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var string $page
+ * @var string $current_tab
+ * @var array<string, array<string, string>> $tabs
+ * @var string $title
+ * @var string $icon
+ */
+?>
 <h2 class="nav-tab-wrapper">
     <?php
     foreach ($tabs as $tab) :
