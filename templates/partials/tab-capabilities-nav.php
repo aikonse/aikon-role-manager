@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var array<string, string> $nav
+ * @var string $current
+ */
+
 use function Aikon\RoleManager\url_parser;
 ?>
 <ul class="subsubsub">

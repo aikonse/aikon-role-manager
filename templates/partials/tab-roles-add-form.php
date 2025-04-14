@@ -1,7 +1,11 @@
 <?php
+/**
+ * @var array<string, string> $errors
+ */
 
-$role_name_value = $_POST['name'] ?? '';
-$role_slug_value = $_POST['slug'] ?? '';
+$role_name_value = (string) $_POST['name'] ?? '';
+$role_slug_value = (string) $_POST['slug'] ?? '';
+
 $role_name_invalid = $errors['name'] ?? false;
 $role_slug_invalid = $errors['slug'] ?? false;
 

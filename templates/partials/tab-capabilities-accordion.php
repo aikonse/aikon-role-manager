@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var string $current
+ * @var Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab $view
+ * @var array<string, string> $all_capabilities
+ */
+?>
 <div id="add-capabilities-list" class="arm-postbox">
     <div class="arm-postbox-header">
         <h2><?php _e('Capabilities');?></h2>

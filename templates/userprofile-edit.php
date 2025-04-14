@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var array<string, array<string, array{name: string, capabilities: array<string>}>> $user
+ * @var array<string, array<string, array{name: string, capabilities: array<string>}>> $roles
+ * @var string $primary_role
+ * @var array<string, mixed> $user_other_roles
+ * @var string $form
+ * @var boolean $can_edit_roles
+ */
+?>
 <h3><?php _e('Additional Roles', 'aikon-role-manager'); ?></h3>
 <p><?php _e('Select additional roles for this user.', 'aikon-role-manager'); ?></p>
 
