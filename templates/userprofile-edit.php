@@ -24,10 +24,10 @@
                             <input 
                                 type="checkbox" 
                                 <?php if(!$can_edit_roles) echo 'disabled'; ?>
-                                name="<?php echo $form;?>[]" 
-                                value="<?php echo $role; ?>" <?php echo in_array($role, $user_other_roles) ? 'checked' : ''; ?>
+                                name="<?php echo esc_attr( $form);?>[]" 
+                                value="<?php echo esc_attr($role); ?>" <?php echo in_array($role, $user_other_roles) ? 'checked' : ''; ?>
                             >
-                            <?php echo $data['name']; ?>
+                            <?php echo esc_html($data['name']); ?>
                         </label>
                     </li>
                 <?php endforeach; ?>

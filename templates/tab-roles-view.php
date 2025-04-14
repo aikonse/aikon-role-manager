@@ -1,7 +1,7 @@
 <?php
 /**
  * @var string $tab
- * @var array<string, array{name: string, capabilities: array<string,bool>}> $roles
+ * @var array<string, array{slug: string, name: string, capabilities: array<string,bool>}> $roles
  * @var Aikon\RoleManager\Manager\RoleManager $manager
  * @var Aikon\RoleManager\OptionsPage\Tabs\RolesTab $view
  * @var array<string, string> $errors
@@ -61,19 +61,19 @@ $roles = array_map(function ($slug, $role) {
                         <td class="title column-title has-row-actions column-primary page-title" data-colname="Role">
 
                             <strong>
-                                <a href="<?php echo $edit_caps_url; ?>"><?php echo $role['name']; ?></a>
+                                <a href="<?php echo esc_attr($edit_caps_url); ?>"><?php echo esc_html($role['name']); ?></a>
                             </strong>
 
                             <div class="row-actions">
                                 <span class="edit"><a href="<?php echo $edit_url; ?>"><?php _e('Edit'); ?></a> | </span>
                                 <?php if (!$manager->is_default_role($role['slug'])): ?>
-                                    <span class="trash"><a href="#0" data-action="<?php echo $delete_url; ?>" data-confirmationmessage="<?php _e('Are you sure you want to delete this role?'); ?>" class="submitdelete delete_role_button"><?php _e('Delete'); ?></a> | </span>
+                                    <span class="trash"><a href="#0" data-action="<?php echo $delete_url; ?>" data-confirmationmessage="<?php _e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>" class="submitdelete delete_role_button"><?php _e('Delete'); ?></a> | </span>
                                 <?php endif; ?>
-                                <span class="view"><a href="<?php echo $edit_caps_url; ?>"><?php _e('Show/edit capabilities', 'aikon-role-manager'); ?></a></span>
+                                <span class="view"><a href="<?php echo esc_attr($edit_caps_url); ?>"><?php _e('Show/edit capabilities', 'aikon-role-manager'); ?></a></span>
                             </div>
                         </td>
                         <td class="slug column-slug" data-colname="Slug">
-                            <?php echo $role['slug']; ?>
+                            <?php echo esc_html($role['slug']); ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

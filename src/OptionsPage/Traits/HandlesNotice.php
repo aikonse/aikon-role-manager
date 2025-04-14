@@ -23,7 +23,7 @@ trait HandlesNotice
         ]) ? $type : 'success';
 
         add_action('admin_notices', function () use ($message, $type): void {
-            printf('<div class="notice notice-%s"><p>%s</p></div>', $type, $message);
+            printf('<div class="notice notice-%s"><p>%s</p></div>', esc_attr($type), esc_html($message));
         });
     }
 }

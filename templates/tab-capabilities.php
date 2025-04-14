@@ -39,9 +39,9 @@ use function Aikon\RoleManager\template;
     <div id="menu-management-liquid">
         <div id="menu-management">
             <form action="" method="post" class="arm_roles-manager-form">
-                <h2><?php _e($role['name']); ?></h2>
+                <h2><?php _e( esc_attr($role['name'])); ?></h2>
                 <input type="hidden" name="action" value="save_capabilities">
-                <input type="hidden" name="role" value="<?php echo $current; ?>">
+                <input type="hidden" name="role" value="<?php echo esc_attr($current); ?>">
 
                 <ul 
                     id="capability-list"
@@ -54,10 +54,10 @@ use function Aikon\RoleManager\template;
                             $is_default = $manager->is_default_default_capabilitiy_for_role($current, $cap);
                     ?>
                     <li class="capability-item <?php echo $is_default ? 'default' : ''; ?>">
-                        <input type="hidden" name="<?php echo $input_name; ?>" value="0">
+                        <input type="hidden" name="<?php echo esc_attr($input_name); ?>" value="0">
                         <label>
-                            <input type="checkbox" value="1" name="<?php echo $input_name; ?>" <?php echo $has_cap ? 'checked' : ''; ?>>
-                            <?php echo $cap; ?>
+                            <input type="checkbox" value="1" name="<?php echo esc_attr($input_name); ?>" <?php echo $has_cap ? 'checked' : ''; ?>>
+                            <?php echo esc_html($cap); ?>
                         </label>
                         <?php if ($is_default) : ?>
                                 <small class="default-indicator">(default)</small>
@@ -71,7 +71,7 @@ use function Aikon\RoleManager\template;
                     <?php endforeach; ?>
                 </ul>
                 <div class="gk-roles-manager-form-toolbar">
-                    <button type="submit" class="button button-primary">Spara</button>
+                    <button type="submit" class="button button-primary"><?php _e('Save', 'aikon-role-manager');?></button>
                 </div>
             </form>
         </div>

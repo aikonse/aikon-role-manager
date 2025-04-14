@@ -17,10 +17,10 @@
         ] = $tab;
     ?>
         <a
-            href="?page=<?php echo $page; ?>&tab=<?php echo $slug; ?>"
+            href="?page=<?php echo esc_attr($page); ?>&tab=<?php echo esc_attr($slug); ?>"
             class="nav-tab <?php echo $current_tab === $slug ? 'nav-tab-active' : ''; ?>">
-            <span class="dashicons <?php echo $icon; ?>"></span>
-            <?php echo $title; ?>
+            <span class="dashicons <?php echo esc_attr($icon); ?>"></span>
+            <?php echo esc_html($title); ?>
         </a>
     <?php endforeach; ?>
 </h2>

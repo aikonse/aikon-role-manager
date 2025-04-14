@@ -15,7 +15,7 @@ function template(string $template, array $data = []): void
 {
     $template_file = ARM_TEMPLATE_PATH . DIRECTORY_SEPARATOR . $template . '.php';
     if (!file_exists($template_file)) {
-        throw new \Exception("Template {$template} not found.");
+        throw new \Exception("Template " . esc_html($template) . " not found.");
     }
 
     extract($data);
@@ -51,7 +51,7 @@ function load_config(): array
         $config_file = ARM_PATH  . 'src' . DIRECTORY_SEPARATOR . 'config.php';
 
         if (!file_exists($config_file)) {
-            throw new \Exception('Config file not found: ' .$config_file);
+            throw new \Exception('Config file not found: ' .esc_html($config_file));
         }
         /** @phpstan-ignore-next-line */
         $config = require $config_file;
