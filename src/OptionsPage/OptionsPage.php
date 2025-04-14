@@ -104,7 +104,6 @@ class OptionsPage
     public function page(): void
     {
         $tab = $this->current_tab();
-        do_action('admin_notices');
 
         template('page', [
             'page' => $this,
