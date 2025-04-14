@@ -3,8 +3,8 @@
  * @var array<string, string> $errors
  */
 
-$role_name_value = (string) $_POST['name'] ?? '';
-$role_slug_value = (string) $_POST['slug'] ?? '';
+$role_name_value = isset($_POST['name']) ? (string) $_POST['name'] : '';
+$role_slug_value = isset($_POST['slug']) ? (string) $_POST['slug'] : '';
 
 $role_name_invalid = $errors['name'] ?? false;
 $role_slug_invalid = $errors['slug'] ?? false;
