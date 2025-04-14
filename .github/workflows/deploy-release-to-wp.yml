@@ -25,23 +25,23 @@ jobs:
         npm install
         npm run build
 
-    - name: WordPress Plugin Deploy
+    # - name: WordPress Plugin Deploy
 
-      id: deploy
+    #   id: deploy
 
-      uses: 10up/action-wordpress-plugin-deploy@stable
+    #   uses: 10up/action-wordpress-plugin-deploy@stable
 
-      with:
-        generate-zip: true
+    #   with:
+    #     generate-zip: true
 
-      # Steps can also set environment variables which can be configured in the Github settings for the
-      # repository. Here, we are using action secrets SVN_USERNAME, SVN_PASSWORD, and PLUGIN_SLUG which
-      # authenticate with WordPress and lets the action deploy our plugin to the repository.
-      #
-      # To learn more about setting and using secrets with Github Actions, check out: https://docs.github.com/en/actions/security-guides/encrypted-secrets?tool=webui#about-encrypted-secrets
-      env:
-        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+    #   # Steps can also set environment variables which can be configured in the Github settings for the
+    #   # repository. Here, we are using action secrets SVN_USERNAME, SVN_PASSWORD, and PLUGIN_SLUG which
+    #   # authenticate with WordPress and lets the action deploy our plugin to the repository.
+    #   #
+    #   # To learn more about setting and using secrets with Github Actions, check out: https://docs.github.com/en/actions/security-guides/encrypted-secrets?tool=webui#about-encrypted-secrets
+    #   env:
+    #     SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+    #     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
 
     # After the deploy, we also want to create a zip and upload it to the release on Github. We don't want
     # users to have to go to the repository to find our plugin :).
