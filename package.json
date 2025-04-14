@@ -28,6 +28,7 @@
     "templates",
     "vendor",
     "aikon-role-manager.php",
+    "composer.json",
     "LICENCE",
     "readme.txt"
   ]
