@@ -1,6 +1,9 @@
 {
 	"phpVersion": "8.0",
-	"plugins": [ "." ],
+	"plugins": [ 
+		"https://downloads.wordpress.org/plugin/plugin-check.1.4.0.zip",
+		"."
+	],
 	"config": {
 	},
 	"mappings": {
