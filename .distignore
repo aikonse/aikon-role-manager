@@ -1,0 +1,10 @@
+.github
+.vscode
+node_modules
+tests
+.php-cs-fixer.php
+.php-cd-fixer.cache
+.wp-env.json
+phpstan.neon
+README.md
+rector.php
