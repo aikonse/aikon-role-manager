@@ -3,21 +3,32 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
- 	"wp:start": "wp-env start --xdebug",
-	"wp:stop": "wp-env stop",
-	"cli": "wp-env run cli",
-	"composer": "wp-env run cli composer",
-  "wps:start": "wp-scripts start assets/src/js/main.js --output-path=assets/build --watch",
-  "wps:build": "wp-scripts build assets/src/js/main.js --output-path=assets/build",
-  "wps:lint": "wp-scripts lint-js assets/src/js/main.js",
-  "wps:format": "wp-scripts format ./assets/src",
-  "zip": "wp-scripts plugin-zip"
- },
+    "wp:start": "wp-env start --xdebug",
+    "wp:stop": "wp-env stop",
+    "cli": "wp-env run cli",
+    "composer": "wp-env run cli composer",
+    "wps:start": "wp-scripts start assets/src/js/main.js --output-path=assets/build --watch",
+    "wps:build": "wp-scripts build assets/src/js/main.js --output-path=assets/build",
+    "wps:lint": "wp-scripts lint-js assets/src/js/main.js",
+    "wps:format": "wp-scripts format ./assets/src",
+    "zip": "wp-scripts plugin-zip"
+  },
   "author": "Andreas Andersson",
   "license": "MIT",
   "description": "",
   "devDependencies": {
     "@wordpress/env": "^10.16.0",
     "@wordpress/scripts": "^30.9.0"
-  }
+  },
+  "files": [
+    "assets",
+    "assets/build",
+    "languages",
+    "src",
+    "templates",
+    "vendor",
+    "aikon-role-manager.php",
+    "LICENCE",
+    "readme.txt"
+  ]
 }
