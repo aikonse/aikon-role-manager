@@ -3,6 +3,8 @@
  * @var array<string, string> $errors
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 $role_name_value = isset($_POST['name']) ? (string) $_POST['name'] : '';
 $role_slug_value = isset($_POST['slug']) ? (string) $_POST['slug'] : '';
 

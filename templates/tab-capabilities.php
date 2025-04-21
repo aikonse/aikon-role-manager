@@ -8,6 +8,8 @@
  * @var Aikon\RoleManager\Manager\RoleManager $manager
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 use function Aikon\RoleManager\template;
 
 ?>

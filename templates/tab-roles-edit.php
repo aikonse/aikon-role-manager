@@ -6,6 +6,8 @@
  * @var array<string, string> $errors
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 use function Aikon\RoleManager\url_parser;
 
 $delete_url = url_parser(['action' => 'delete_role', 'delete_role' => $slug]);

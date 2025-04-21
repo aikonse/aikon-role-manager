@@ -6,6 +6,8 @@
  * @var string $title
  * @var string $icon
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 ?>
 <h2 class="nav-tab-wrapper">
     <?php

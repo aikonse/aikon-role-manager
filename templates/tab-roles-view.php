@@ -7,6 +7,8 @@
  * @var array<string, string> $errors
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 use function Aikon\RoleManager\template;
 use function Aikon\RoleManager\url_parser;
 

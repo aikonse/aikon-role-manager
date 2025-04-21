@@ -4,6 +4,8 @@
  * @var Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab $view
  * @var array<string, string> $all_capabilities
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 ?>
 <div id="add-capabilities-list" class="arm-postbox">
     <div class="arm-postbox-header">

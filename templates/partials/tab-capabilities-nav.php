@@ -4,6 +4,8 @@
  * @var string $current
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 use function Aikon\RoleManager\url_parser;
 ?>
 <ul class="subsubsub">

@@ -7,6 +7,8 @@
  * @var string $form
  * @var boolean $can_edit_roles
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 ?>
 <h3><?php _e('Additional Roles', 'aikon-role-manager'); ?></h3>
 <p><?php _e('Select additional roles for this user.', 'aikon-role-manager'); ?></p>
