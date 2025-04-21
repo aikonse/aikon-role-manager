@@ -15,7 +15,9 @@
 
 declare(strict_types=1);
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 
 // Check minimum PHP version
 if (version_compare(PHP_VERSION, '8.0', '<')) {

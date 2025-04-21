@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Aikon\RoleManager;
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 
 /**
  * Plugin configuration
