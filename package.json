@@ -22,7 +22,7 @@
   },
   "files": [
     "assets",
-    "assets/build",
+    "!assets/src",
     "languages",
     "src",
     "templates",
@@ -30,6 +30,7 @@
     "aikon-role-manager.php",
     "composer.json",
     "LICENCE",
-    "readme.txt"
+    "readme.txt",
+    "!README.md"
   ]
 }
