@@ -8,7 +8,9 @@
  * @var boolean $can_edit_roles
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 ?>
 <h3><?php _e('Additional Roles', 'aikon-role-manager'); ?></h3>
 <p><?php _e('Select additional roles for this user.', 'aikon-role-manager'); ?></p>
@@ -20,13 +22,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
         </th>
         <td>
             <ul>
-                <?php foreach($roles as $role => $data): if($role == $primary_role) continue; ?>
+                <?php foreach($roles as $role => $data): if($role == $primary_role) {
+                    continue;
+                } ?>
                     <li>
                         <label>
                             <input 
                                 type="checkbox" 
-                                <?php if(!$can_edit_roles) echo 'disabled'; ?>
-                                name="<?php echo esc_attr( $form);?>[]" 
+                                <?php if(!$can_edit_roles) {
+                                    echo 'disabled';
+                                } ?>
+                                name="<?php echo esc_attr($form);?>[]" 
                                 value="<?php echo esc_attr($role); ?>" <?php echo in_array($role, $user_other_roles) ? 'checked' : ''; ?>
                             >
                             <?php echo esc_html($data['name']); ?>

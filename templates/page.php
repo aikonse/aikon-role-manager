@@ -7,7 +7,9 @@
  * @var Aikon\RoleManager\Manager\Tab $tab
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 ?>
 <div class="wrap">
     <h1><?php echo esc_html($title); ?></h1>

@@ -7,7 +7,9 @@
  * @var string $icon
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 ?>
 <h2 class="nav-tab-wrapper">
     <?php
@@ -17,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
             'slug' => $slug,
             'icon' => $icon
         ] = $tab;
-    ?>
+        ?>
         <a
             href="?page=<?php echo esc_attr($page); ?>&tab=<?php echo esc_attr($slug); ?>"
             class="nav-tab <?php echo $current_tab === $slug ? 'nav-tab-active' : ''; ?>">

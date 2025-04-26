@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:			Aikon Role Manager
  * Plugin Url:			https://github.com/aikonse/role-manager

@@ -8,19 +8,21 @@
  * @var Aikon\RoleManager\Manager\RoleManager $manager
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 
 use function Aikon\RoleManager\template;
 
 ?>
 <?php
-    template('partials/tab-capabilities-nav', [
-        'nav' => $nav,
-        'current' => $current,
-    ]);
+template('partials/tab-capabilities-nav', [
+    'nav' => $nav,
+    'current' => $current,
+]);
 ?>
 <p class="search-box">
-    <label class=label" for="capability-filter"><?php _e('Filter capabilities','aikon-role-manager');?></label>
+    <label class=label" for="capability-filter"><?php _e('Filter capabilities', 'aikon-role-manager');?></label>
     <input type="search" id="capability-filter" name="filter_roles value="">
 </p>
 <div id="nav-menus-frame" class="wp-clearfix metabox-sortables ui-sortable">
@@ -30,12 +32,12 @@ use function Aikon\RoleManager\template;
             /**
              * Render the accordion for the capabilities
              */
-            template('partials/tab-capabilities-accordion',[
+            template('partials/tab-capabilities-accordion', [
                 'view'    => $view,
                 'current' => $current,
                 'all_capabilities' => $all_capabilities,
             ]);
-        ?>
+?>
     </div>
 
     <div id="menu-management-liquid">
@@ -47,13 +49,13 @@ use function Aikon\RoleManager\template;
 
                 <ul 
                     id="capability-list"
-                    data-restore-text="<?php _e('Restore','aikon-role-manager'); ?>"
-                    data-remove-text="<?php _e('Remove','aikon-role-manager'); ?>"
+                    data-restore-text="<?php _e('Restore', 'aikon-role-manager'); ?>"
+                    data-remove-text="<?php _e('Remove', 'aikon-role-manager'); ?>"
                 >
                     <?php
-                        foreach ($role['capabilities'] as $cap => $has_cap) :
-                            $input_name = 'role_caps[' . $cap . ']';
-                            $is_default = $manager->is_default_default_capabilitiy_for_role($current, $cap);
+                foreach ($role['capabilities'] as $cap => $has_cap) :
+                    $input_name = 'role_caps[' . $cap . ']';
+                    $is_default = $manager->is_default_default_capabilitiy_for_role($current, $cap);
                     ?>
                     <li class="capability-item <?php echo $is_default ? 'default' : ''; ?>">
                         <input type="hidden" name="<?php echo esc_attr($input_name); ?>" value="0">
@@ -67,7 +69,7 @@ use function Aikon\RoleManager\template;
                         <button
                             type="button"
                             class="button button-small button-text-danger dashicons-before dashicons-trash"
-                        ><?php _e('Remove','aikon-role-manager'); ?></button>
+                        ><?php _e('Remove', 'aikon-role-manager'); ?></button>
                         <?php endif; ?>
                     </li>
                     <?php endforeach; ?>

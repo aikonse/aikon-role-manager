@@ -3,7 +3,9 @@
  * @var array<string, array{label: string, capabilities: array<string,string>}> $post_types
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 ?>
 <div class="arm_capabilities-card-view">
     <?php foreach ($post_types as $type => $data): ?>

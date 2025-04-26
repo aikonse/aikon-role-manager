@@ -7,7 +7,9 @@
  * @var array<string, string> $errors
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) {
+    exit;
+}
 
 use function Aikon\RoleManager\template;
 use function Aikon\RoleManager\url_parser;
@@ -31,7 +33,7 @@ $roles = array_map(function ($slug, $role) {
         'view' => $view,
         'errors' => $errors,
     ]);
-    ?>
+?>
 
     <div id="col-right" class="col-wrap">
 
@@ -39,30 +41,30 @@ $roles = array_map(function ($slug, $role) {
             <thead>
                 <tr>
                     <th scope="col" id="title" class="manage-column column-title column-primary">
-                        <span><?php _e('Role','aikon-role-manager'); ?></span>
+                        <span><?php _e('Role', 'aikon-role-manager'); ?></span>
                     </th>
-                    <th scope="col" id="slug" class="manage-column column-slug"><?php _e('Slug','aikon-role-manager'); ?></th>
+                    <th scope="col" id="slug" class="manage-column column-slug"><?php _e('Slug', 'aikon-role-manager'); ?></th>
                 </tr>
             </thead>
 
             <tbody id="the-list">
                 <?php
-                foreach ($roles as $role):
-                    $delete_url = url_parser([
-                        'tab' => $tab,
-                        'action' => 'delete_role',
-                        'delete_role' => $role['slug'],
-                    ]);
+            foreach ($roles as $role):
+                $delete_url = url_parser([
+                    'tab' => $tab,
+                    'action' => 'delete_role',
+                    'delete_role' => $role['slug'],
+                ]);
 
-                    $edit_url = url_parser([
-                        'tab' => $tab,
-                        'edit_role' => $role['slug'],
-                    ]);
+                $edit_url = url_parser([
+                    'tab' => $tab,
+                    'edit_role' => $role['slug'],
+                ]);
 
-                    $edit_caps_url = url_parser([
-                        'tab' => 'capabilities',
-                        'role' => $role['slug'],
-                    ]);
+                $edit_caps_url = url_parser([
+                    'tab' => 'capabilities',
+                    'role' => $role['slug'],
+                ]);
                 ?>
                     <tr class="iedit author-self level-0 post-1 type-post status-publish format-standard hentry">
                         <td class="title column-title has-row-actions column-primary page-title" data-colname="Role">
@@ -72,7 +74,7 @@ $roles = array_map(function ($slug, $role) {
                             </strong>
 
                             <div class="row-actions">
-                                <span class="edit"><a href="<?php echo $edit_url; ?>"><?php _e('Edit','aikon-role-manager'); ?></a> | </span>
+                                <span class="edit"><a href="<?php echo $edit_url; ?>"><?php _e('Edit', 'aikon-role-manager'); ?></a> | </span>
                                 <?php if (!$manager->is_default_role($role['slug'])): ?>
                                     <span class="trash">
                                         <a 
@@ -80,7 +82,7 @@ $roles = array_map(function ($slug, $role) {
                                             data-action="<?php echo esc_attr($delete_url); ?>" 
                                             data-confirmationmessage="<?php _e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>" 
                                             class="submitdelete delete_role_button"
-                                        ><?php _e('Delete','aikon-role-manager'); ?></a> | 
+                                        ><?php _e('Delete', 'aikon-role-manager'); ?></a> | 
                                     </span>
                                 <?php endif; ?>
                                 <span class="view">
@@ -99,9 +101,9 @@ $roles = array_map(function ($slug, $role) {
             <tfoot>
                 <tr>
                     <th scope="col" class="manage-column column-title column-primary">
-                        <span><?php _e('Role','aikon-role-editor'); ?></span>
+                        <span><?php _e('Role', 'aikon-role-editor'); ?></span>
                     </th>
-                    <th scope="col" class="manage-column column-slug"><?php _e('Slug','aikon-role-editor'); ?></th>
+                    <th scope="col" class="manage-column column-slug"><?php _e('Slug', 'aikon-role-editor'); ?></th>
                 </tr>
             </tfoot>
         </table>
