@@ -1,6 +1,6 @@
 === Aikon Role Manager ===
 Contributors: andreas-andersson
-Tags: User, Role,
+Tags: User, Role, Security
 Tested up to: 6.8
 Requires at least: 6.5
 Stable Tag: 1.0.0
@@ -18,7 +18,6 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 
 ### Manage Roles
 - Create, edit, and delete user roles with ease.
-- Safeguard your site by managing roles responsibly – the plugin warns against removing roles that might lock you out of your website.
 - Maintain flexibility and control over your site's access permissions.
 
 ### Manage Capabilities
