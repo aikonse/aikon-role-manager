@@ -22,11 +22,10 @@ if (! defined('ABSPATH')) {
 // Check minimum PHP version
 if (version_compare(PHP_VERSION, '8.0', '<')) {
     add_action('admin_notices', function () {
-        ?>
-		<div class="notice notice-error">
-			<p><?php _e('Aikon Role Manager requires PHP 8.0 or higher.', 'aikon-role-manager');?></p>
-		</div>
-		<?php
+        sprintf(
+            '<div class="notice notice-error"><p>%s</p></div>',
+            esc_html__('Aikon Role Manager requires PHP 8.0 or higher.', 'aikon-role-manager')
+        );
     });
     exit;
 }

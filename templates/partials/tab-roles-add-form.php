@@ -23,7 +23,7 @@ $role_slug_invalid = $errors['slug'] ?? false;
                 <p id="name-description"><?php _e('The new role display name', 'aikon-role-manager'); ?></p>
             </div>
             <div class="form-field form-required term-slug-wrap <?php echo $role_slug_invalid ? 'form-invalid' : ''; ?>">
-                <label for="role-slug"><?php _e('Slug'); ?></label>
+                <label for="role-slug"><?php _e('Slug','aikon-role-manager'); ?></label>
                 <input name="slug" id="role-slug" type="text" value="<?php echo esc_attr($role_slug_value); ?>" size="40" aria-describedby="slug-description">
                 <p id="slug-description"><?php _e('A slug is the url friendly version of the name. It has lowercase a-z letters and underscores.', 'aikon-role-manager'); ?></p>
             </div>
