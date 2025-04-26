@@ -5,9 +5,8 @@ $finder = PhpCsFixer\Finder::create()
     ->name('aikon-role-manager.php')
     ->exclude('vendor')
     ->exclude('node_modules')
-    ->exclude('assets')
-    ->exclude('templates'); // NOTICE: Nedd better configuration for template files, ignore for now
-
+    ->exclude('assets');
+    
 return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR12' => true,
