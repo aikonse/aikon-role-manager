@@ -3,6 +3,7 @@
 namespace Aikon\RoleManager\UserProfile;
 
 use Aikon\RoleManager\Manager\RoleManager;
+use Aikon\RoleManager\Request;
 
 use function Aikon\RoleManager\template;
 
@@ -73,17 +74,18 @@ class UserProfileEdit
             return;
         }
 
-        if (!isset($_POST[$this->form]) || !is_array($_POST[$this->form])) {
-            return;
-        }
+        $request = new Request();
+        $request->validate([
+            $this->form => 'array:string'
+        ]);
 
         if (get_userdata($user_id) === false) {
             throw new \Exception('User not found');
         }
 
         /** @var string[] */
-        $other_roles = $_POST[$this->form];
-
+        $other_roles = $request->get($this->form, []);
+        $other_roles = array_map('sanitize_text_field', $other_roles);
         $available_roles = $this->manager->current_roles();
 
         // Only allow roles that are available

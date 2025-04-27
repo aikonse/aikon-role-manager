@@ -30,7 +30,9 @@ trait HandlesActions
      */
     public function post_action(string $action_key, string $action_value, callable $callback): void
     {
-        $action = $_POST[$action_key] ?? null;
+        $action = isset($_POST[$action_key]) && is_string($_POST[$action_key])
+            ? sanitize_text_field($_POST[$action_key])
+            : null;
 
         if (
             $_SERVER['REQUEST_METHOD'] !== 'POST' ||
@@ -54,7 +56,9 @@ trait HandlesActions
      */
     public function get_action(string $action_key, string $action_value, callable $callback): void
     {
-        $action = $_GET[$action_key] ?? null;
+        $action = isset($_GET[$action_key]) && is_string($_GET[$action_key])
+            ? sanitize_text_field($_GET[$action_key])
+            : null;
 
         if (
             $_SERVER['REQUEST_METHOD'] !== 'GET' ||
@@ -84,7 +88,7 @@ trait HandlesActions
      * @param string|null $key The key of the error
      * @return array<string,string>|string
      */
-    public function errors(string $key = null): array|string
+    public function errors(?string $key = null): array|string
     {
         if ($key) {
             return $this->errors[$key] ?? '';

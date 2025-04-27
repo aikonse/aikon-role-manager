@@ -57,14 +57,15 @@ class OptionsPage
 
     public function is_current_page(): bool
     {
-        return isset($_GET['page']) && $_GET['page'] === $this->page_slug;
+        return isset($_GET['page']) &&
+            is_string($_GET['page']) &&
+            sanitize_key($_GET['page']) === $this->page_slug;
     }
 
     public function current_tab(): string
     {
-        $tabFromUrl = $_GET['tab'] ?? null;
-        $tabFromUrl = is_string($tabFromUrl)
-            ? $tabFromUrl
+        $tabFromUrl = isset($_GET['tab']) && is_string($_GET['tab'])
+            ? sanitize_key($_GET['tab'])
             : $this->default_tab;
 
         $tab = in_array(

@@ -27,7 +27,7 @@ if (isset($_POST['slug'])) {
 }
 
 ?>
-<h2><?php _e('Edit role', 'aikon-role-manager'); ?></h2>
+<h2><?php esc_html_e('Edit role', 'aikon-role-manager'); ?></h2>
 <form method="post" class="validate" id="edittag">
     <input type="hidden" name="action" value="update_role">
     <input type="hidden" name="role" value="<?php echo esc_attr($slug); ?>">
@@ -35,17 +35,17 @@ if (isset($_POST['slug'])) {
     <table class="form-table" role="presentation">
         <tbody>
             <tr class="form-field form-required term-name-wrap <?php echo $invalid_name ? 'form-invalid' : ''; ?>">
-                <th scope="row"><label for="name"><?php _e('Name', 'aikon-role-manager'); ?></label></th>
+                <th scope="row"><label for="name"><?php esc_html_e('Name', 'aikon-role-manager'); ?></label></th>
                 <td>
                     <input name="name" id="name" type="text" value="<?php echo esc_attr($name); ?>" size="40" aria-required="true" aria-describedby="name-description">
-                    <p class="description" id="name-description"><?php _e('The role name', 'aikon-role-manager'); ?></p>
+                    <p class="description" id="name-description"><?php esc_html_e('The role name', 'aikon-role-manager'); ?></p>
                 </td>
             </tr>
             <tr class="form-field form-required term-slug-wrap <?php echo $invalid_slug ? 'form-invalid' : ''; ?>">
-                <th scope="row"><label for="slug"><?php _e('Slug', 'aikon-role-manager'); ?></label></th>
+                <th scope="row"><label for="slug"><?php esc_html_e('Slug', 'aikon-role-manager'); ?></label></th>
                 <td>
                     <input name="slug" id="slug" type="text" value="<?php echo esc_attr($slug); ?>" size="40" aria-describedby="slug-description" <?php echo $is_default ? 'disabled' : ''; ?>>
-                    <p class="description" id="slug-description"><?php _e('A slug is the url friendly version of the name. It has lowercase a-z letters and underscores.', 'aikon-role-manager'); ?></p>
+                    <p class="description" id="slug-description"><?php esc_html_e('A slug is the url friendly version of the name. It has lowercase a-z letters and underscores.', 'aikon-role-manager'); ?></p>
                 </td>
             </tr>
         </tbody>
@@ -53,7 +53,7 @@ if (isset($_POST['slug'])) {
 
     <div class="edit-tag-actions">
 
-        <input type="submit" class="button button-primary" value="<?php _e('Update', 'aikon-role-manager'); ?>">
+        <input type="submit" class="button button-primary" value="<?php esc_html_e('Update', 'aikon-role-manager'); ?>">
         <?php if (!$is_default): ?>
             <span id="delete-link">
                 <a 
@@ -61,11 +61,11 @@ if (isset($_POST['slug'])) {
                     data-url="<?php echo esc_attr($delete_url); ?>" 
                     data-role="<?php echo esc_attr($role['slug']); ?>" 
                     class="delete delete_role_button"
-                ><?php _e('Delete', 'aikon-role-manager'); ?></a>
+                ><?php esc_html_e('Delete', 'aikon-role-manager'); ?></a>
             </span>
         <?php endif; ?>
     </div>
     <div class="edit-tag-actions">
-        <a class="link" href="<?php echo esc_attr($view_url); ?>" class="button">&larr; <?php _e('Back', 'aikon-role-manager'); ?></a>
+        <a class="link" href="<?php echo esc_attr($view_url); ?>" class="button">&larr; <?php esc_html_e('Back', 'aikon-role-manager'); ?></a>
     </div>
 </form>

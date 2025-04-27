@@ -32,7 +32,7 @@ function template(string $template, array $data = []): void
 function url_parser(array $query = [], array $remove_query = []): string
 {
     // @phpstan-ignore-next-line
-    $url = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $url = sanitize_url((empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
     $url = add_query_arg($query, $url);
     $url = remove_query_arg($remove_query, $url);
 

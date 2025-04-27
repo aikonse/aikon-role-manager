@@ -73,6 +73,23 @@ class Request
                     }
                     break;
 
+                case 'array':
+                    if (!is_array($value)) {
+                        return false;
+                    }
+                    if (
+                        !empty($parameters[0])
+                    ) {
+                        foreach ($value as $item) {
+                            $valid = $this->validateValue($item, $parameters);
+
+                            if (!$valid) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+
                 case 'string':
                     if (!is_string($value)) {
                         return false;

@@ -187,7 +187,7 @@ class RolesTab implements TabInterface
 
         // Edit role
         $edit_role = (isset($_GET['edit_role']) && is_string($_GET['edit_role']))
-            ? $_GET['edit_role']
+            ? sanitize_text_field($_GET['edit_role'])
             : false;
 
         if ($edit_role !== false) {

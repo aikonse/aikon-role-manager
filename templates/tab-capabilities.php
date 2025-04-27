@@ -22,7 +22,7 @@ template('partials/tab-capabilities-nav', [
 ]);
 ?>
 <p class="search-box">
-    <label class=label" for="capability-filter"><?php _e('Filter capabilities', 'aikon-role-manager');?></label>
+    <label class=label" for="capability-filter"><?php esc_html_e('Filter capabilities', 'aikon-role-manager');?></label>
     <input type="search" id="capability-filter" name="filter_roles value="">
 </p>
 <div id="nav-menus-frame" class="wp-clearfix metabox-sortables ui-sortable">
@@ -49,8 +49,8 @@ template('partials/tab-capabilities-nav', [
 
                 <ul 
                     id="capability-list"
-                    data-restore-text="<?php _e('Restore', 'aikon-role-manager'); ?>"
-                    data-remove-text="<?php _e('Remove', 'aikon-role-manager'); ?>"
+                    data-restore-text="<?php esc_html_e('Restore', 'aikon-role-manager'); ?>"
+                    data-remove-text="<?php esc_html_e('Remove', 'aikon-role-manager'); ?>"
                 >
                     <?php
                 foreach ($role['capabilities'] as $cap => $has_cap) :
@@ -69,13 +69,13 @@ template('partials/tab-capabilities-nav', [
                         <button
                             type="button"
                             class="button button-small button-text-danger dashicons-before dashicons-trash"
-                        ><?php _e('Remove', 'aikon-role-manager'); ?></button>
+                        ><?php esc_html_e('Remove', 'aikon-role-manager'); ?></button>
                         <?php endif; ?>
                     </li>
                     <?php endforeach; ?>
                 </ul>
                 <div class="gk-roles-manager-form-toolbar">
-                    <button type="submit" class="button button-primary"><?php _e('Save', 'aikon-role-manager');?></button>
+                    <button type="submit" class="button button-primary"><?php esc_html_e('Save', 'aikon-role-manager');?></button>
                 </div>
             </form>
         </div>

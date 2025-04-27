@@ -41,9 +41,9 @@ $roles = array_map(function ($slug, $role) {
             <thead>
                 <tr>
                     <th scope="col" id="title" class="manage-column column-title column-primary">
-                        <span><?php _e('Role', 'aikon-role-manager'); ?></span>
+                        <span><?php esc_html_e('Role', 'aikon-role-manager'); ?></span>
                     </th>
-                    <th scope="col" id="slug" class="manage-column column-slug"><?php _e('Slug', 'aikon-role-manager'); ?></th>
+                    <th scope="col" id="slug" class="manage-column column-slug"><?php esc_html_e('Slug', 'aikon-role-manager'); ?></th>
                 </tr>
             </thead>
 
@@ -74,21 +74,21 @@ $roles = array_map(function ($slug, $role) {
                             </strong>
 
                             <div class="row-actions">
-                                <span class="edit"><a href="<?php echo $edit_url; ?>"><?php _e('Edit', 'aikon-role-manager'); ?></a> | </span>
+                                <span class="edit"><a href="<?php esc_attr_e($edit_url); ?>"><?php esc_html_e('Edit', 'aikon-role-manager'); ?></a> | </span>
                                 <?php if (!$manager->is_default_role($role['slug'])): ?>
                                     <span class="trash">
                                         <a 
                                             href="#0" 
                                             data-action="<?php echo esc_attr($delete_url); ?>" 
-                                            data-confirmationmessage="<?php _e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>" 
+                                            data-confirmationmessage="<?php esc_html_e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>" 
                                             class="submitdelete delete_role_button"
-                                        ><?php _e('Delete', 'aikon-role-manager'); ?></a> | 
+                                        ><?php esc_html_e('Delete', 'aikon-role-manager'); ?></a> | 
                                     </span>
                                 <?php endif; ?>
                                 <span class="view">
                                     <a 
                                         href="<?php echo esc_attr($edit_caps_url); ?>"
-                                    ><?php _e('Show/edit capabilities', 'aikon-role-manager'); ?></a>
+                                    ><?php esc_html_e('Show/edit capabilities', 'aikon-role-manager'); ?></a>
                                 </span>
                             </div>
                         </td>
@@ -101,9 +101,9 @@ $roles = array_map(function ($slug, $role) {
             <tfoot>
                 <tr>
                     <th scope="col" class="manage-column column-title column-primary">
-                        <span><?php _e('Role', 'aikon-role-editor'); ?></span>
+                        <span><?php esc_html_e('Role', 'aikon-role-manager'); ?></span>
                     </th>
-                    <th scope="col" class="manage-column column-slug"><?php _e('Slug', 'aikon-role-editor'); ?></th>
+                    <th scope="col" class="manage-column column-slug"><?php esc_html_e('Slug', 'aikon-role-manager'); ?></th>
                 </tr>
             </tfoot>
         </table>
