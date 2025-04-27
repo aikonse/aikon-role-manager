@@ -74,7 +74,7 @@ $roles = array_map(function ($slug, $role) {
                             </strong>
 
                             <div class="row-actions">
-                                <span class="edit"><a href="<?php esc_attr_e($edit_url); ?>"><?php esc_html_e('Edit', 'aikon-role-manager'); ?></a> | </span>
+                                <span class="edit"><a href="<?php echo esc_attr($edit_url); ?>"><?php esc_html_e('Edit', 'aikon-role-manager'); ?></a> | </span>
                                 <?php if (!$manager->is_default_role($role['slug'])): ?>
                                     <span class="trash">
                                         <a 
