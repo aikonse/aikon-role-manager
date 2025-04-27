@@ -12,7 +12,7 @@ class UserProfileEdit
     /** @var RoleManager */
     private $manager;
 
-    protected string $form = 'arm_other_roles';
+    protected string $form = 'aikon_role_manager_other_roles';
 
     public function __construct()
     {

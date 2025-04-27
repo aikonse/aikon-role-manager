@@ -13,7 +13,7 @@ namespace Aikon\RoleManager;
  */
 function template(string $template, array $data = []): void
 {
-    $template_file = ARM_TEMPLATE_PATH . DIRECTORY_SEPARATOR . $template . '.php';
+    $template_file = AIKON_ROLE_MANAGER_TEMPLATE_PATH . DIRECTORY_SEPARATOR . $template . '.php';
     if (!file_exists($template_file)) {
         throw new \Exception('Template ' . esc_html($template) . ' not found.');
     }
@@ -48,7 +48,7 @@ function load_config(): array
     static $config = false;
 
     if (!$config) {
-        $config_file = ARM_PATH  . 'src' . DIRECTORY_SEPARATOR . 'config.php';
+        $config_file = AIKON_ROLE_MANAGER_PATH  . 'src' . DIRECTORY_SEPARATOR . 'config.php';
 
         if (!file_exists($config_file)) {
             throw new \Exception('Config file not found: ' .esc_html($config_file));

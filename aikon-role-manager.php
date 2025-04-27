@@ -31,10 +31,10 @@ if (version_compare(PHP_VERSION, '8.0', '<')) {
     exit;
 }
 
-define('ARM_VERSION', '1.0.0');
-define('ARM_PATH', plugin_dir_path(__FILE__));
-define('ARM_URL', plugin_dir_url(__FILE__));
-define('ARM_TEMPLATE_PATH', ARM_PATH . 'templates');
+define('AIKON_ROLE_MANAGER_VERSION', '1.0.0');
+define('AIKON_ROLE_MANAGER_PATH', plugin_dir_path(__FILE__));
+define('AIKON_ROLE_MANAGER_URL', plugin_dir_url(__FILE__));
+define('AIKON_ROLE_MANAGER_TEMPLATE_PATH', AIKON_ROLE_MANAGER_PATH . 'templates');
 
 require_once __DIR__ . '/vendor/autoload.php';
 

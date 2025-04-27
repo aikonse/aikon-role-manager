@@ -84,7 +84,7 @@ class OptionsPage
     public function assets(): void
     {
         /** @var array{dependencies: array<string>, version: string} */
-        $asset_config = require ARM_PATH . 'assets/build/main.asset.php';
+        $asset_config = require AIKON_ROLE_MANAGER_PATH . 'assets/build/main.asset.php';
 
         [
             'dependencies'  => $dependencies,
@@ -92,8 +92,8 @@ class OptionsPage
         ] = $asset_config;
 
         add_action('admin_enqueue_scripts', function () use ($version, $dependencies): void {
-            wp_enqueue_style('aikon-roles-manager/main', ARM_URL . 'assets/build/main.css', $dependencies, $version);
-            wp_enqueue_script('aikon-roles-manager/main', ARM_URL . 'assets/build/main.js', $dependencies, $version, true);
+            wp_enqueue_style('aikon-roles-manager/main', AIKON_ROLE_MANAGER_URL . 'assets/build/main.css', $dependencies, $version);
+            wp_enqueue_script('aikon-roles-manager/main', AIKON_ROLE_MANAGER_URL . 'assets/build/main.js', $dependencies, $version, true);
         });
     }
 
