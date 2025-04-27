@@ -331,10 +331,15 @@ final class RoleManager
             return;
         }
 
+        $user_roles = $user->roles;
+        $primary_role = array_shift($user_roles);
+
+        if (!is_string($primary_role)) {
+            throw new \Exception('Primary role is not a string');
+        }
+
+        $user->set_role($primary_role);
         foreach ($roles as $role) {
-            if (isset($user->caps[$role])) {
-                continue;
-            }
             $user->add_role($role);
         }
     }
