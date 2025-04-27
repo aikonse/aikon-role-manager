@@ -21,8 +21,7 @@
     "@wordpress/scripts": "^30.9.0"
   },
   "files": [
-    "assets",
-    "!assets/src",
+    "assets/build",
     "languages",
     "src",
     "templates",
