@@ -6,14 +6,9 @@ on:
     types: [released]
 
 jobs:
-
-  deploy_to_wp_repository:
-
-    # The proper name for the job being run.
-    name: Deploy to WP.org
-
+  tag:
+    name: New release
     runs-on: ubuntu-latest
-
     steps:
 
     - name: Checkout code
@@ -26,21 +21,18 @@ jobs:
         php_version: 8.0
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '20'
 
     - name: Build assets
       run: |
         npm install
-        npm run build
+        npm run wps:build
 
     - name: WordPress Plugin Deploy
-
       id: deploy
-
       uses: 10up/action-wordpress-plugin-deploy@stable
-
       with:
         generate-zip: true
 
@@ -57,8 +49,7 @@ jobs:
         # the current repository this action runs in.
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.deploy.outputs.zip-path }}
-          asset_name: aikon-role-manager.zip
-          asset_content_type: application/zip
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ steps.deploy.outputs.zip-path }}
+        asset_name: aikon-role-manager.zip
+        asset_content_type: application/zip
