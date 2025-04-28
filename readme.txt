@@ -37,5 +37,8 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 
 == Changelog ==
 
+= 1.0.1 =
+* Fix issue in deployment
+
 = 1.0.0 =
 * First version
