@@ -17,14 +17,23 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Build
+    - name: Install Composer dependencies
+      uses: php-actions/composer@v6
+      with:
+        dev: no
+        php_version: 8.0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Build assets
       run: |
-        composer install --no-dev
         npm install
-        npm run wps:build
-        npm run zip
+        npm run build
 
     - name: WordPress Plugin Deploy
 
@@ -35,11 +44,6 @@ jobs:
       with:
         generate-zip: true
 
-      # Steps can also set environment variables which can be configured in the Github settings for the
-      # repository. Here, we are using action secrets SVN_USERNAME, SVN_PASSWORD, and PLUGIN_SLUG which
-      # authenticate with WordPress and lets the action deploy our plugin to the repository.
-      #
-      # To learn more about setting and using secrets with Github Actions, check out: https://docs.github.com/en/actions/security-guides/encrypted-secrets?tool=webui#about-encrypted-secrets
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
@@ -47,12 +51,14 @@ jobs:
     # After the deploy, we also want to create a zip and upload it to the release on Github. We don't want
     # users to have to go to the repository to find our plugin :).
     - name: Upload release asset
-      uses: softprops/action-gh-release@v2
+      uses: actions/upload-release-asset@v1
       env:
         # Note, this is an exception to action secrets: GH_TOKEN is always available and provides access to
         # the current repository this action runs in.
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       with:
-        # Provide what the file should be named when attached to the release (plugin-name.zip)
-        files: aikon-role-manager.zip
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.deploy.outputs.zip-path }}
+          asset_name: aikon-role-manager.zip
+          asset_content_type: application/zip
