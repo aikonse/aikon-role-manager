@@ -7,6 +7,9 @@
 .DS_Store
 .nvmrc
 .php-cs-fixer
+.phpcs.xml
+.phpcs.xml.dist
+.php-cs-fixer.php
 .wp-env.json
 assets/src
 Thumbs.db
@@ -25,9 +28,7 @@ phpstan.neon
 rector.php
 multisite.xml
 multisite.xml.dist
-.phpcs.xml
 phpcs.xml
-.phpcs.xml.dist
 phpcs.xml.dist
 README.md
 webpack.config.js
