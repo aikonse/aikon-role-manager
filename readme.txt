@@ -3,7 +3,7 @@ Contributors: andreas-andersson
 Tags: User, Role, Security
 Tested up to: 6.8
 Requires at least: 6.5
-Stable Tag: 1.0.0
+Stable Tag: 1.0.3
 Requires PHP: 8.0
 License: MIT
 License URI: https://opensource.org/license/mit
@@ -36,6 +36,9 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 3. Add additional roles to a user
 
 == Changelog ==
+
+= 1.0.3 =
+* Added banner, icon and screenshots
 
 = 1.0.1 =
 * Fix issue in deployment
