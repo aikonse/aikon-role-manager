@@ -59,7 +59,7 @@ Ensure a robust and maintainable plugin with these tools:
 ---
 
 ## Contributing
-We welcome contributions to improve the Aikon Role Manager! Feel free to submit issues or create pull requests on our [GitHub repository](https://github.com/aikonse/role-manager).
+We welcome contributions to improve the Aikon Role Manager! Feel free to submit issues or create pull requests on our [GitHub repository](https://github.com/aikonse/aikon-role-manager).
 
 ### Guidelines
 - Use the CI tools
