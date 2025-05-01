@@ -8,6 +8,7 @@
 .nvmrc
 .php-cs-fixer
 .wp-env.json
+assets/src
 Thumbs.db
 composer.lock
 dependencies.yml
