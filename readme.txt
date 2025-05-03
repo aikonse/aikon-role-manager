@@ -3,7 +3,7 @@ Contributors: andreas-andersson
 Tags: User, Role, Security
 Tested up to: 6.8
 Requires at least: 6.5
-Stable Tag: 1.0.3
+Stable Tag: 1.0.4
 Requires PHP: 8.0
 License: MIT
 License URI: https://opensource.org/license/mit
@@ -36,6 +36,10 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 3. Add additional roles to a user
 
 == Changelog ==
+
+= 1.0.4 =
+* Added blueprint.json to enable wp.org previews
+* Added warning when editing curent users role
 
 = 1.0.3 =
 * Added banner, icon and screenshots
