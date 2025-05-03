@@ -162,20 +162,31 @@ class CapabilitiesTab implements TabInterface
     {
         $roles = $this->manager->current_roles();
         $slugs = array_keys($roles);
-        $default_selected = $slugs[0];
+        /** @var string */
+        $default_selected = end($slugs);
 
         $nav = array_combine(
             $slugs,
             array_map(fn ($role) => $role['name'], $roles)
         );
 
-        $current = (isset($_GET['role']) && is_string($_GET['role']))
-            ? $this->manager->validate_role_slug($_GET['role'])
-            : $default_selected;
+        $request = new Request();
+        $request->validate([
+            'role' => 'string|minlength:2',
+        ]);
 
-        if (!in_array($current, $slugs)) {
+        $current = $this->manager->validate_role_slug(
+            $request->string('role', $default_selected)
+        );
+
+        if (
+            !is_string($current) ||
+            !in_array($current, $slugs)
+        ) {
             $current = $default_selected;
         }
+
+        $is_current_user_role = current_user_can($current);
 
         template('tab-capabilities', [
             'view' => $this,
@@ -184,6 +195,7 @@ class CapabilitiesTab implements TabInterface
             'role' => $roles[$current],
             'all_capabilities' => $this->manager->all_capabilities(),
             'manager' => $this->manager,
+            'is_current_user_role' => $is_current_user_role,
         ]);
     }
 }

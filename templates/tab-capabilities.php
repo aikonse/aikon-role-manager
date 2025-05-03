@@ -6,6 +6,7 @@
  * @var array{name: string, capabilities: array<string,bool>} $role
  * @var array<string, string> $all_capabilities
  * @var Aikon\RoleManager\Manager\RoleManager $manager
+ * @var bool $is_current_user_role
  */
 
 if (! defined('ABSPATH')) {
@@ -19,6 +20,10 @@ use function Aikon\RoleManager\template;
 template('partials/tab-capabilities-nav', [
     'nav' => $nav,
     'current' => $current,
+]);
+
+template('partials/tab-capabilities-warning', [
+    'is_current_user_role' => $is_current_user_role
 ]);
 ?>
 <p class="search-box">
