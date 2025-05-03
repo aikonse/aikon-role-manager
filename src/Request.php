@@ -178,7 +178,7 @@ class Request
     }
 
     /**
-     * Get a value from $_REQUEST with validation
+     * Get the validated value or the default
      *
      * @param string $key The key to look for
      * @param mixed $default Default value if key doesn't exist or validation fails
@@ -198,6 +198,32 @@ class Request
 
         // Otherwise, return the raw value or default
         return $this->request[$key] ?? $default;
+    }
+
+    /**
+     * Get a value as a string with validation
+     *
+     * @param string $key The key to look for
+     * @param string $default Default value if key doesn't exist or validation fails
+     * @return string The value or default
+     */
+    public function string(string $key, string $default = ''): string
+    {
+        $val = $this->get($key, $default);
+        return is_string($val) ? $val : $default;
+    }
+
+    /**
+     * Get a value as an integer with validation
+     *
+     * @param string $key
+     * @param integer $default
+     * @return integer
+     */
+    public function int(string $key, int $default = 0): int
+    {
+        $val = $this->get($key, $default);
+        return is_numeric($val) ? (int) $val : $default;
     }
 
     /**
