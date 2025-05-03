@@ -33,10 +33,11 @@ class RolesTab implements TabInterface
 
     public function handle(): void
     {
-        $this->middleware(function ($request): void {
+        $this->middleware(function (Request $request): Request {
             if (!current_user_can('manage_options')) {
                 throw new \Exception('You do not have permission to manage roles and capabilities');
             }
+            return $request;
         });
 
         $this->post_action('action', 'add_role', [$this, 'handle_add_role']);

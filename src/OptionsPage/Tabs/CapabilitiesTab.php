@@ -35,10 +35,11 @@ class CapabilitiesTab implements TabInterface
 
     public function handle(): void
     {
-        $this->middleware(function ($request): void {
+        $this->middleware(function (Request $request): Request {
             if (!current_user_can('manage_options')) {
                 throw new \Exception('You do not have permission to access this page.');
             }
+            return $request;
         });
 
         $this->post_action('action', 'save_capabilities', [$this, 'handle_save_capabilities']);

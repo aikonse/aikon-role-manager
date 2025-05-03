@@ -41,9 +41,9 @@ trait HandlesActions
             return;
         }
 
-        $this->run_middleware();
+        $request = $this->run_middleware();
 
-        $callback(new Request());
+        $callback($request);
     }
 
     /**
@@ -100,7 +100,7 @@ trait HandlesActions
     /**
      * Add middleware
      *
-     * @param callable $callback The callback to run, receives the request as argument
+    * @param callable $callback The callback to run, receives the request as an argument and must return an instance of Request
      * @return void
      */
     public function middleware(callable $callback): void
@@ -111,12 +111,18 @@ trait HandlesActions
     /**
      * Run middleware
      *
-     * @return void
+     * @return Request
      */
-    private function run_middleware(): void
+    private function run_middleware(): Request
     {
+        $request = new Request();
         foreach ($this->middleware as $middleware) {
-            $middleware($_REQUEST);
+            $result = $middleware($request);
+            if ($result instanceof Request) {
+                $request = $result;
+            }
         }
+
+        return $request;
     }
 }
