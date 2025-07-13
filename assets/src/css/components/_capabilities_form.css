@@ -20,7 +20,11 @@
     border-top: 1px solid #dcdcde;
     bottom:0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+.arm_roles-manager-form-toolbar .actions {
+    margin-right: auto;
 }
 
 .arm_roles-manager-form .default-indicator {

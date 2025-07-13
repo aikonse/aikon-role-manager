@@ -1,4 +1,177 @@
-.arm-postbox{background:#fff;border:1px solid #c3c4c7;box-shadow:0 1px 1px rgba(0,0,0,.04);min-width:255px;position:relative}.arm-postbox-accordion-header,.arm-postbox-header{align-items:center;border-bottom:1px solid #c3c4c7;display:flex;justify-content:space-between}.arm-postbox-accordion-header h2,.arm-postbox-header h2{flex:1;font-size:14px;line-height:1.4;margin:0;padding:8px 12px}.arm-postbox-accordion-header h2{cursor:pointer;font-weight:400}.arm-postbox-form{border-bottom:1px solid #c3c4c7;display:flex;flex-direction:column;gap:12px;padding:12px}.arm-postbox-form label{font-weight:600}.arm-postbox-accordion{display:flex;flex-direction:column;interpolate-size:allow-keywords}.arm-postbox-accordion-content{background-color:#f6f7f7;height:0;overflow:hidden;transition:height .3s}.arm-postbox-accordion[aria-expanded=true] .arm-postbox-accordion-content,[aria-expand-all=true] .arm-postbox-accordion-content{border-bottom:1px solid #c3c4c7;height:auto}.arm-postbox-accordion-header button{background:none;border:0;cursor:pointer;height:1.62rem;margin:0;padding:0;width:1.62rem}.arm-postbox-accordion-header button:before{color:#787c82;content:"\f140";display:inline-block;font:normal 20px/1 dashicons;position:relative;text-indent:-1px;top:.05rem;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-decoration:none}.arm-postbox-accordion[aria-expanded=true] .arm-postbox-accordion-header button:before{content:"\f142"}.arm-postbox-footer{background-color:#f0f0f1cc;border-top:1px solid #dcdcde;bottom:0;padding:10px;position:sticky}.arm-postbox-accordion-content ul{padding:0 12px 12px}
-.arm_roles-manager-form li button{color:#dc3545!important;visibility:hidden}.arm_roles-manager-form li:hover button{-webkit-appearance:none;-moz-appearance:none;appearance:none;background:none;border:none;cursor:pointer;visibility:visible}.arm_roles-manager-form-toolbar{background-color:#f0f0f1cc;border-top:1px solid #dcdcde;bottom:0;display:flex;justify-content:flex-end;padding:10px;position:sticky}.arm_roles-manager-form .default-indicator{color:#999}
-.arm_capabilities-card-view{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(345px,1fr));margin-block:2rem;max-width:940px}.arm_capabilities-card{background-color:#fff;border:1px solid #c3c4c7;padding:1rem}.arm_capabilities-card h2{margin-top:0}.arm_capabilities-card li{display:grid;gap:1rem;grid-template-columns:1fr 1fr}.arm_capabilities-card ul strong{color:#666;font-weight:200}
-::root{--aim-test:red}
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./assets/src/css/components/_accordion.css ***!
+  \**********************************************************************************************************************************************************************************************/
+
+/* Custom postbox - because why is it so hard to use the normal one */
+.arm-postbox {
+    min-width: 255px;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    background: #fff;
+    position: relative;
+}
+.arm-postbox-header,
+.arm-postbox-accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #c3c4c7;
+}
+.arm-postbox-header h2,
+.arm-postbox-accordion-header h2 {
+    flex: 1;
+    font-size: 14px;
+    padding: 8px 12px;
+    margin: 0;
+    line-height: 1.4;
+}
+.arm-postbox-accordion-header h2 {
+    cursor: pointer;
+    font-weight: 400;
+}
+.arm-postbox-form {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-bottom: 1px solid #c3c4c7;
+}
+.arm-postbox-form label {
+    font-weight: 600;
+}
+
+.arm-postbox-accordion {
+    display: flex;
+    flex-direction: column;
+    interpolate-size: allow-keywords;
+}
+.arm-postbox-accordion-content {
+    height: 0;
+    transition: height 0.3s;
+    overflow: hidden;
+    background-color: #f6f7f7;
+}
+.arm-postbox-accordion[aria-expanded="true"] .arm-postbox-accordion-content,
+[aria-expand-all="true"] .arm-postbox-accordion-content {
+    height: auto;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.arm-postbox-accordion-header button {
+    width: 1.62rem;
+    height: 1.62rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+.arm-postbox-accordion-header button::before {
+    position: relative;
+    top: 0.05rem;
+    text-indent: -1px;
+    color: #787c82;
+
+    content: "\f140";
+    display: inline-block;
+    font: normal 20px / 1 dashicons;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none;
+}
+.arm-postbox-accordion[aria-expanded="true"] .arm-postbox-accordion-header button::before {
+    content: "\f142";
+}
+
+.arm-postbox-footer {
+    position: sticky;
+    bottom: 0;
+    padding: 10px;
+    border-top: 1px solid #dcdcde;
+    background-color: #f0f0f1cc
+}
+
+.arm-postbox-accordion-content ul {
+    padding: 0 12px 12px 12px;
+}
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./assets/src/css/components/_capabilities_form.css ***!
+  \******************************************************************************************************************************************************************************************************/
+/* Toggle button */
+.arm_roles-manager-form li button { 
+    visibility: hidden;
+    color: #dc3545 !important;
+}
+
+.arm_roles-manager-form li:hover button { 
+    visibility: visible;
+    background: none;
+    border:none;
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    cursor: pointer;
+}
+
+/* Save cappabilities toolbar */
+.arm_roles-manager-form-toolbar {
+    position: sticky;
+    background-color: #f0f0f1cc;
+    padding: 10px;
+    border-top: 1px solid #dcdcde;
+    bottom:0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.arm_roles-manager-form-toolbar .actions {
+    margin-right: auto;
+}
+
+.arm_roles-manager-form .default-indicator {
+    color: #999;
+}
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./assets/src/css/components/_cababilities_card.css ***!
+  \******************************************************************************************************************************************************************************************************/
+
+/**
+*   Post-Type Capabilities view
+*/
+.arm_capabilities-card-view {
+    margin-block: 2rem;
+    max-width: 940px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+    gap: 1rem;
+}
+
+.arm_capabilities-card {
+    border: 1px solid #c3c4c7;
+    background-color: #fff;
+    padding: 1rem;
+}
+.arm_capabilities-card h2 {
+    margin-top: 0;
+}
+
+.arm_capabilities-card li {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.arm_capabilities-card ul strong {
+    font-weight: 200;
+    color: #666;
+}
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./assets/src/css/main.css ***!
+  \*****************************************************************************************************************************************************************************/
+::root {
+    --aim-test: #f00;
+}
+
+
+
+/*# sourceMappingURL=main.css.map*/

@@ -2,6 +2,8 @@ import { toggleAccordion } from "./accordion";
 import { quickFilter } from "./filter";
 import { addCapabilityFromList, addNewCapability } from "./add-capability";
 import { capabilityToggle } from "./toggle-capability";
+import { initToggleAllCapabilities } from "./toolbar_actions-capability";
+
 
 /**
  * @typedef {Object} DefaultConfig
@@ -65,4 +67,5 @@ export function capabilitiesInit( config ) {
 	);
 
 	toggleAccordion(config.accordionToggleSelector);
+	initToggleAllCapabilities();
 }

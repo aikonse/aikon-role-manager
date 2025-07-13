@@ -79,8 +79,12 @@ template('partials/tab-capabilities-warning', [
                     </li>
                     <?php endforeach; ?>
                 </ul>
-                <div class="gk-roles-manager-form-toolbar">
-                    <button type="submit" class="button button-primary"><?php esc_html_e('Save', 'aikon-role-manager');?></button>
+                <div class="arm_roles-manager-form-toolbar">
+                    <div class="actions">
+                        <button type="button" class="button button-secondary" id="check-all"><?php esc_html_e('Check all', 'aikon-role-manager'); ?></button>
+                        <button type="button" class="button button-secondary" id="check-none"><?php esc_html_e('Uncheck all', 'aikon-role-manager'); ?></button>
+                    </div>
+                    <button type="submit" class="button button-primary"><?php esc_html_e('Save capabilities', 'aikon-role-manager');?></button>
                 </div>
             </form>
         </div>

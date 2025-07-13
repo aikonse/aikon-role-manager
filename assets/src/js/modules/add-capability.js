@@ -49,7 +49,7 @@ function createCapabilityItem(capability, name, capabilityList) {
             type="button"
             class="button button-small button-text-danger dashicons-before dashicons-trash"
         >${removeText}</button>`;
-
+    capabilityItem.classList.add('capability-item');
     return capabilityItem;
 }
 
