@@ -1,7 +1,7 @@
 {
 	"phpVersion": "8.0",
 	"plugins": [ 
-		"https://downloads.wordpress.org/plugin/plugin-check.1.4.0.zip",
+		"https://downloads.wordpress.org/plugin/plugin-check.1.5.0.zip",
 		"."
 	],
 	"config": {
