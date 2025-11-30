@@ -1,7 +1,7 @@
 === Aikon Role Manager ===
 Contributors: andreas-andersson
 Tags: User, Role, Security
-Tested up to: 6.8
+Tested up to: 6.9
 Requires at least: 6.5
 Stable Tag: 1.0.5
 Requires PHP: 8.0
