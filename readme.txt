@@ -37,6 +37,9 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 
 == Changelog ==
 
+= 1.0.5 =
+* Tested with Wordpress 6.9
+
 = 1.0.4 =
 * Added blueprint.json to enable wp.org previews
 * Added warning when editing curent users role
