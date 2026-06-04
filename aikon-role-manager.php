@@ -43,6 +43,12 @@ use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 use Aikon\RoleManager\UserProfile\UserProfileEdit;
+use Aikon\RoleManager\UserSwitcher\UserSwitcher;
+
+/** Register the UserSwitcher */
+add_action('plugins_loaded', function () {
+    new UserSwitcher();
+});
 
 /** Register the Options page and pass the RoleManager with a config */
 add_action('admin_menu', function () {
