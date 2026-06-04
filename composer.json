@@ -11,6 +11,11 @@
             "src/helpers.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Aikon\\RoleManager\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
         "phpstan": "phpstan analyse src",
         "phpcs:fix": "php-cs-fixer fix",
@@ -24,7 +29,10 @@
         "szepeviktor/phpstan-wordpress": "^2.0",
         "rector/rector": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "friendsofphp/php-cs-fixer": "^3.68"
+        "friendsofphp/php-cs-fixer": "^3.68",
+        "phpunit/phpunit": "^9.6",
+        "yoast/phpunit-polyfills": "^2.0",
+        "brain/monkey": "^2.7"
     },
     "config": {
         "allow-plugins": {

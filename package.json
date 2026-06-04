@@ -11,7 +11,10 @@
     "wps:build": "wp-scripts build assets/src/js/main.js --output-path=assets/build",
     "wps:lint": "wp-scripts lint-js assets/src/js/main.js",
     "wps:format": "wp-scripts format ./assets/src",
-    "zip": "wp-scripts plugin-zip"
+    "zip": "wp-scripts plugin-zip",
+    "test": "wp-env run tests-cli --env-cwd=/var/www/html/wp-content/plugins/aikon-role-manager vendor/bin/phpunit",
+    "test:integration": "wp-env run tests-cli --env-cwd=/var/www/html/wp-content/plugins/aikon-role-manager vendor/bin/phpunit -c phpunit.integration.xml",
+    "test:all": "npm run test && npm run test:integration"
   },
   "author": "Andreas Andersson",
   "license": "MIT",
