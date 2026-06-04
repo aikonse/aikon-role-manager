@@ -3,3 +3,5 @@
 .DS_Store
 vendor
 node_modules
+.phpunit.result.cache
+.phpunit.integration.result.cache

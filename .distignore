@@ -8,12 +8,17 @@
 .DS_Store
 .nvmrc
 .php-cs-fixer
+.php-cs-fixer.cache
+.php-cs-fixer.php
 .phpcs.xml
 .phpcs.xml.dist
-.php-cs-fixer.php
+.phpunit.result.cache
+.phpunit.integration.result.cache
+.vscode
 .wp-env.json
 assets/src
 Thumbs.db
+composer.json
 composer.lock
 dependencies.yml
 DOCKER_ENV
@@ -25,6 +30,8 @@ package.json
 package-lock.json
 phpunit.xml
 phpunit.xml.dist
+phpunit.integration.xml
+wp-tests-config.php
 phpstan.neon
 rector.php
 multisite.xml
