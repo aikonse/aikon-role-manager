@@ -69,6 +69,35 @@ Ensure a robust and maintainable plugin with these tools:
 
 4. Test your plugin in the local environment.
 
+### Testing
+
+The plugin has two test suites managed by PHPUnit.
+
+**Unit tests** run without WordPress using [Brain Monkey](https://brain-wp.github.io/BrainMonkey/) to mock WP functions. No Docker required.
+
+```bash
+./vendor/bin/phpunit
+```
+
+**Integration tests** run inside the wp-env test container against a real WordPress installation. Start the test environment first, then run the suite:
+
+```bash
+npm run wp:test:start
+npm run test:integration
+```
+
+Run both suites in one command:
+
+```bash
+npm run test:all
+```
+
+Stop the test environment when you are done:
+
+```bash
+npm run wp:test:stop
+```
+
 ---
 
 ## Contributing
