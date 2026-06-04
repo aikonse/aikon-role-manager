@@ -12,10 +12,10 @@ class UserSwitcher
 
     public function __construct()
     {
-        add_filter('user_row_actions',  [$this, 'add_switch_action'], 10, 2);
-        add_action('admin_bar_menu',    [$this, 'add_admin_bar_item'], 100);
-        add_action('admin_head',        [$this, 'add_admin_bar_styles']);
-        add_action('init',              [$this, 'handle_switch_request']);
+        add_filter('user_row_actions', [$this, 'add_switch_action'], 10, 2);
+        add_action('admin_bar_menu', [$this, 'add_admin_bar_item'], 100);
+        add_action('admin_head', [$this, 'add_admin_bar_styles']);
+        add_action('init', [$this, 'handle_switch_request']);
     }
 
     // -------------------------------------------------------------------------
@@ -170,9 +170,14 @@ class UserSwitcher
             wp_die(esc_html__('You do not have permission to switch users.', 'aikon-role-manager'));
         }
 
-        $target_id = isset($_GET[self::ARG_USER]) ? absint($_GET[self::ARG_USER]) : 0;
+        $target_id = (
+            isset($_GET[self::ARG_USER]) &&
+            is_string($_GET[self::ARG_USER])
+        )
+            ? absint($_GET[self::ARG_USER])
+            : 0;
 
-        if (!$target_id || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'] ?? '')), 'aikon_role_manager_switch_' . $target_id)) {
+        if (!$target_id || !wp_verify_nonce($this->nonce_from_request(), 'aikon_role_manager_switch_' . $target_id)) {
             wp_die(esc_html__('Security check failed.', 'aikon-role-manager'));
         }
 
@@ -193,6 +198,16 @@ class UserSwitcher
         exit;
     }
 
+    /**
+     * Read and sanitize the _wpnonce GET parameter, returning an empty string
+     * if the key is absent or not a string (PHPStan: $_GET values are mixed).
+     */
+    private function nonce_from_request(): string
+    {
+        $raw = $_GET['_wpnonce'] ?? null;
+        return is_string($raw) ? sanitize_text_field(wp_unslash($raw)) : '';
+    }
+
     private function handle_switch_back(): void
     {
         $original_user_id = $this->get_original_user_id();
@@ -201,7 +216,7 @@ class UserSwitcher
             wp_die(esc_html__('No active user switch session found.', 'aikon-role-manager'));
         }
 
-        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'] ?? '')), 'aikon_role_manager_switch_back_' . $original_user_id)) {
+        if (!wp_verify_nonce($this->nonce_from_request(), 'aikon_role_manager_switch_back_' . $original_user_id)) {
             wp_die(esc_html__('Security check failed.', 'aikon-role-manager'));
         }
 
@@ -232,11 +247,12 @@ class UserSwitcher
 
     private function get_original_user_id(): ?int
     {
-        if (!isset($_COOKIE[self::COOKIE_NAME])) {
+        $raw_cookie = $_COOKIE[self::COOKIE_NAME] ?? null;
+        if (!is_string($raw_cookie)) {
             return null;
         }
 
-        $raw   = sanitize_text_field(wp_unslash($_COOKIE[self::COOKIE_NAME]));
+        $raw   = sanitize_text_field(wp_unslash($raw_cookie));
         $parts = explode('|', $raw, 2);
 
         if (count($parts) !== 2) {

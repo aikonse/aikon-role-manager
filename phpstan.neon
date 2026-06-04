@@ -2,5 +2,6 @@ parameters:
     level: max
     bootstrapFiles:
         - aikon-role-manager.php
+        - phpstan-bootstrap.php
     paths:
         - src

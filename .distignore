@@ -34,6 +34,7 @@ phpunit.xml.dist
 phpunit.integration.xml
 wp-tests-config.php
 phpstan.neon
+phpstan-bootstrap.php
 rector.php
 multisite.xml
 multisite.xml.dist

@@ -7,7 +7,6 @@ namespace Aikon\RoleManager\Tests\Integration\UserSwitcher;
 use Aikon\RoleManager\UserSwitcher\UserSwitcher;
 use WP_Admin_Bar;
 use WP_UnitTestCase;
-use WP_User;
 
 /**
  * Integration tests for UserSwitcher.
