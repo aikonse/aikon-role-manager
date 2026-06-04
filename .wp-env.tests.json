@@ -1,0 +1,10 @@
+{
+	"phpVersion": "8.0",
+	"plugins": ["."],
+	"mappings": {
+		"wp-content/plugins/aikon-role-manager": "./"
+	},
+	"port": 3000,
+	"mysqlPort": 13306,
+	"testsEnvironment": false
+}

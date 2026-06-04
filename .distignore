@@ -16,6 +16,7 @@
 .phpunit.integration.result.cache
 .vscode
 .wp-env.json
+.wp-env.tests.json
 assets/src
 Thumbs.db
 composer.json

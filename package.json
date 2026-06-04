@@ -5,6 +5,8 @@
   "scripts": {
     "wp:start": "wp-env start --xdebug",
     "wp:stop": "wp-env stop",
+    "wp:test:start": "wp-env --config=.wp-env.tests.json start",
+    "wp:test:stop": "wp-env --config=.wp-env.tests.json stop",
     "cli": "wp-env run cli",
     "composer": "wp-env run cli composer",
     "wps:start": "wp-scripts start assets/src/js/main.js --output-path=assets/build --watch",
@@ -12,8 +14,8 @@
     "wps:lint": "wp-scripts lint-js assets/src/js/main.js",
     "wps:format": "wp-scripts format ./assets/src",
     "zip": "wp-scripts plugin-zip",
-    "test": "wp-env run tests-cli --env-cwd=/var/www/html/wp-content/plugins/aikon-role-manager vendor/bin/phpunit",
-    "test:integration": "wp-env run tests-cli --env-cwd=/var/www/html/wp-content/plugins/aikon-role-manager vendor/bin/phpunit -c phpunit.integration.xml",
+    "test": "wp-env --config=.wp-env.tests.json run cli --env-cwd=/var/www/html/wp-content/plugins/aikon-role-manager vendor/bin/phpunit",
+    "test:integration": "wp-env --config=.wp-env.tests.json run cli --env-cwd=/var/www/html/wp-content/plugins/aikon-role-manager vendor/bin/phpunit -c phpunit.integration.xml",
     "test:all": "npm run test && npm run test:integration"
   },
   "author": "Andreas Andersson",

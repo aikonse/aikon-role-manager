@@ -1,23 +1,13 @@
 {
 	"phpVersion": "8.0",
-	"plugins": [ 
+	"plugins": [
 		"https://downloads.wordpress.org/plugin/plugin-check.1.9.0.zip",
 		"https://downloads.wordpress.org/plugin/wordpress-beta-tester.4.0.0.zip",
 		"."
 	],
-	"config": {
-	},
+	"config": {},
 	"mappings": {
 		"wp-content/plugins/aikon-role-manager":"./"
 	},
-	"env": {
-		"development": {
-		},
-		"tests": {
-			"config": {
-			},
-			"port": 3000,
-			"mysqlPort": 13306
-		}
-	}
+	"testsEnvironment": false
 }
