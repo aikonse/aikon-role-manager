@@ -31,7 +31,7 @@ class PostTypesTab implements TabInterface
      * Get all post types with their capabilities
      * @return array<string, array{label: string, capabilities: array<string,string>}>
      */
-    private function get_post_types_capabilities(): array
+    public function get_post_types_capabilities(): array
     {
         /** @var array<string,bool> */
         $args = config('post_type_query', [
