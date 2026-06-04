@@ -184,38 +184,51 @@ final class RoleManager
     /**
      * Update a role
      *
-     * @param string $role
+     * @param string $old_role_slug
      * @param string $display_name
      * @param string $slug
      * @return void
      */
-    public function update_role(string $role, string $display_name, string $slug): void
+    public function update_role(string $old_role_slug, string $display_name, string $slug): void
     {
-        if (! isset($this->wp_roles->roles[$role])) {
+        if (! isset($this->wp_roles->roles[$old_role_slug])) {
             throw new \Exception('Role does not exist');
         }
 
-        if ($role !== $slug && isset($this->wp_roles->roles[$slug])) {
+        if ($old_role_slug !== $slug && isset($this->wp_roles->roles[$slug])) {
             throw new \Exception('Role already exists');
         }
 
-        $this->wp_roles->roles[$role]['name'] = $display_name;
+        $this->wp_roles->roles[$old_role_slug]['name'] = $display_name;
+        $this->wp_roles->role_names[$old_role_slug]    = $display_name;
 
-        if ($role !== $slug) {
-            $this->wp_roles->roles[$slug] = $this->wp_roles->roles[$role];
-            unset($this->wp_roles->roles[$role]);
-
-            // Update user roles
+        if ($old_role_slug !== $slug) {
+            // Query users before renaming — WP_User_Query and WP_User::is_role()
+            // both rely on role_names being in sync, so the query must run while
+            // the old slug still exists in all three WP_Roles properties.
             /** @var \WP_User_Query */
             $query = new \WP_User_Query([
-                'role' => $role,
+                'role' => $old_role_slug,
             ]);
 
             /** @var \WP_User[] */
             $users = $query->get_results();
 
+            // Rename in all three WP_Roles properties so is_role() stays consistent
+            $this->wp_roles->roles[$slug]        = $this->wp_roles->roles[$old_role_slug];
+            $this->wp_roles->role_names[$slug]   = $display_name;
+            /** @var array<string, bool> $role_caps */
+            $role_caps = $this->wp_roles->roles[$slug]['capabilities'] ?? [];
+            $this->wp_roles->role_objects[$slug] = new \WP_Role($slug, $role_caps);
+
+            unset(
+                $this->wp_roles->roles[$old_role_slug],
+                $this->wp_roles->role_names[$old_role_slug],
+                $this->wp_roles->role_objects[$old_role_slug]
+            );
+
             foreach ($users as $user) {
-                $user->remove_role($role);
+                $user->remove_role($old_role_slug);
                 $user->add_role($slug);
             }
         }
