@@ -17,12 +17,16 @@ export function addNewCapability(inputSelector, addBtnSelector, listSelector) {
     const addBtn = document.querySelector(addBtnSelector);
     const capabilitiesList = document.querySelector(listSelector);
 
+    if (!input || !addBtn || !capabilitiesList) {
+        return;
+    }
+
     addBtn.addEventListener('click', function() {
         input.reportValidity();
         if (!input.validity.valid) {
             return;
         }
-        const name = `role_caps[${input.value.trim()}]`;
+        const name = `${checkBoxName}[${input.value.trim()}]`;
         capabilitiesList.appendChild(createCapabilityItem(input.value.trim(), name, capabilitiesList));
         input.value = '';
     });
@@ -64,7 +68,6 @@ export function addCapabilityFromList(checkboxSelector, submitButtonSelector, li
     const list = document.querySelector(listSelector);
 
     if (!checkBoxes || !submitButton || !list) {
-        console.warn('Aikon Role Manager: One or more elements not found in addCapabilityFromList()');
         return;
     }
 
