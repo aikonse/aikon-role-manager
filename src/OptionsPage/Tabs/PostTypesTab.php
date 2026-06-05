@@ -54,10 +54,10 @@ class PostTypesTab implements TabInterface
     {
         $request->validate([
             'capability_type' => 'string|minlength:1',
-            'post_type'       => 'string|minlength:1',
+            'edit_post_type_capability'       => 'string|minlength:1',
         ]);
 
-        $post_type = sanitize_key($request->string('post_type'));
+        $post_type = sanitize_key($request->string('edit_post_type_capability'));
         $capability_type = $this->manager->validate_capability_type($request->string('capability_type'));
 
         if (!$post_type || !get_post_type_object($post_type)) {
@@ -98,7 +98,7 @@ class PostTypesTab implements TabInterface
         $this->manager->remove_override($post_type);
         $this->add_notice(__('Override removed', 'aikon-role-manager'), 'success');
 
-        wp_redirect(url_parser([], ['edit_post_type', 'action', 'post_type']));
+        wp_redirect(url_parser([], ['edit_post_type_capability', 'action', 'post_type']));
         exit;
     }
 
@@ -130,8 +130,8 @@ class PostTypesTab implements TabInterface
 
     public function render(): void
     {
-        $edit_post_type = isset($_GET['edit_post_type']) && is_string($_GET['edit_post_type'])
-            ? sanitize_key($_GET['edit_post_type'])
+        $edit_post_type = isset($_GET['edit_post_type_capability']) && is_string($_GET['edit_post_type_capability'])
+            ? sanitize_key($_GET['edit_post_type_capability'])
             : null;
 
         if ($edit_post_type && get_post_type_object($edit_post_type)) {

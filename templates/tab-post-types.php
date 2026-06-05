@@ -27,7 +27,7 @@ use function Aikon\RoleManager\url_parser;
 
     <tbody id="the-list">
         <?php foreach ($post_types as $type => $data):
-            $edit_url   = url_parser(['tab' => $tab, 'edit_post_type' => $type]);
+            $edit_url   = url_parser(['tab' => $tab, 'edit_post_type_capability' => $type]);
             $has_override = isset($overrides[$type]);
             ?>
             <tr>

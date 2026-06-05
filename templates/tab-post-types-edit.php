@@ -28,7 +28,6 @@ if (isset($_POST['capability_type'])) {
 
 <form method="post" class="validate">
     <input type="hidden" name="action" value="save_post_type_override">
-    <input type="hidden" name="post_type" value="<?php echo esc_attr($post_type); ?>">
 
     <table class="form-table" role="presentation">
         <tbody>
