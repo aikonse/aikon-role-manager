@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
+use Aikon\RoleManager\Manager\PostTypeManager;
 use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
 use WP_UnitTestCase;
 
 /**
  * Integration tests for PostTypesTab.
  *
- * This tab is view-only — handle() is a no-op. Tests verify that
- * get_post_types_capabilities() returns correct data for the registered
- * WordPress post types.
+ * get_post_types_capabilities() is a read-only query — tested directly.
+ * handle() success paths (save/remove) call wp_redirect() + exit, so those
+ * are exercised via PostTypeManager directly. Validation failures are tested
+ * through PostTypesTab::handle() with a simulated POST, since those return
+ * early without redirecting.
  */
 class PostTypesTabTest extends WP_UnitTestCase
 {
@@ -21,7 +24,39 @@ class PostTypesTabTest extends WP_UnitTestCase
     public function set_up(): void
     {
         parent::set_up();
+
+        PostTypeManager::$instance = null;
+        delete_option(PostTypeManager::OPTION_KEY);
+
+        $admin_id = self::factory()->user->create(['role' => 'administrator']);
+        wp_set_current_user($admin_id);
+
         $this->tab = new PostTypesTab();
+    }
+
+    public function tear_down(): void
+    {
+        PostTypeManager::$instance = null;
+        delete_option(PostTypeManager::OPTION_KEY);
+
+        foreach (['action', 'post_type', 'capability_type'] as $key) {
+            unset($_POST[$key], $_GET[$key], $_REQUEST[$key]);
+        }
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        parent::tear_down();
+    }
+
+    /**
+     * @param array<string,string> $data
+     */
+    private function post(array $data): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        foreach ($data as $key => $value) {
+            $_POST[$key]    = $value;
+            $_REQUEST[$key] = $value;
+        }
     }
 
     // =========================================================================
@@ -131,5 +166,100 @@ class PostTypesTabTest extends WP_UnitTestCase
         $this->assertArrayNotHasKey('aikon_hidden_cpt', $result);
 
         unregister_post_type('aikon_hidden_cpt');
+    }
+
+    // =========================================================================
+    // Save override — validation failures (tested via handle())
+    // =========================================================================
+
+    public function test_save_override_form_rejected_when_capability_type_is_empty(): void
+    {
+        $this->post([
+            'action'          => 'save_post_type_override',
+            'post_type'       => 'post',
+            'capability_type' => '',
+        ]);
+
+        $this->tab->handle();
+
+        $this->assertArrayHasKey('capability_type', $this->tab->errors());
+        $this->assertFalse(PostTypeManager::getInstance()->has_override('post'));
+    }
+
+    public function test_save_override_form_rejected_when_post_type_does_not_exist(): void
+    {
+        $this->post([
+            'action'          => 'save_post_type_override',
+            'post_type'       => 'nonexistent_pt',
+            'capability_type' => 'product',
+        ]);
+
+        $this->tab->handle();
+
+        // Invalid post type is reported via notice only — no field error, nothing saved
+        $this->assertEmpty($this->tab->errors());
+        $this->assertFalse(PostTypeManager::getInstance()->has_override('nonexistent_pt'));
+    }
+
+    // =========================================================================
+    // Save override — success path (tested via PostTypeManager directly)
+    // =========================================================================
+
+    public function test_save_override_persists_capability_type_for_post_type(): void
+    {
+        PostTypeManager::getInstance()->set_override('post', 'article');
+
+        $this->assertTrue(PostTypeManager::getInstance()->has_override('post'));
+        $this->assertSame('article', PostTypeManager::getInstance()->get_overrides()['post']);
+    }
+
+    public function test_save_override_can_be_updated(): void
+    {
+        PostTypeManager::getInstance()->set_override('post', 'article');
+        PostTypeManager::getInstance()->set_override('post', 'entry');
+
+        $this->assertSame('entry', PostTypeManager::getInstance()->get_overrides()['post']);
+    }
+
+    // =========================================================================
+    // Remove override — validation failure (tested via handle())
+    // =========================================================================
+
+    public function test_remove_override_does_nothing_when_post_type_is_invalid(): void
+    {
+        PostTypeManager::getInstance()->set_override('post', 'article');
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['action']            = 'remove_post_type_override';
+        $_GET['post_type']         = 'nonexistent_pt';
+        $_REQUEST['action']        = 'remove_post_type_override';
+        $_REQUEST['post_type']     = 'nonexistent_pt';
+
+        $this->tab->handle();
+
+        // Override for 'post' is untouched
+        $this->assertTrue(PostTypeManager::getInstance()->has_override('post'));
+    }
+
+    // =========================================================================
+    // Remove override — success path (tested via PostTypeManager directly)
+    // =========================================================================
+
+    public function test_remove_override_clears_the_saved_override(): void
+    {
+        PostTypeManager::getInstance()->set_override('post', 'article');
+        PostTypeManager::getInstance()->remove_override('post');
+
+        $this->assertFalse(PostTypeManager::getInstance()->has_override('post'));
+    }
+
+    public function test_remove_override_does_not_affect_other_overrides(): void
+    {
+        PostTypeManager::getInstance()->set_override('post', 'article');
+        PostTypeManager::getInstance()->set_override('page', 'document');
+
+        PostTypeManager::getInstance()->remove_override('post');
+
+        $this->assertSame('document', PostTypeManager::getInstance()->get_overrides()['page']);
     }
 }

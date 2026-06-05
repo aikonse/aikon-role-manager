@@ -38,12 +38,18 @@ define('AIKON_ROLE_MANAGER_TEMPLATE_PATH', AIKON_ROLE_MANAGER_PATH . 'templates'
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Aikon\RoleManager\Manager\PostTypeManager;
 use Aikon\RoleManager\OptionsPage\OptionsPage;
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 use Aikon\RoleManager\UserProfile\UserProfileEdit;
 use Aikon\RoleManager\UserSwitcher\UserSwitcher;
+
+/** Apply post type capability overrides before post types register on init */
+add_action('plugins_loaded', function () {
+    PostTypeManager::getInstance()->apply_overrides();
+});
 
 /** Register the UserSwitcher */
 add_action('plugins_loaded', function () {

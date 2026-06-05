@@ -38,21 +38,25 @@ class OptionsPage
         }
         $this->default_tab = array_keys($this->views)[0];
 
-        // Load assets and handle actions
-        if ($this->is_current_page()) {
-            $slug = $this->current_tab();
-            $this->views[$slug]->handle();
-            $this->assets();
-        }
-
-        // Add the options page
-        add_users_page(
+        // Add the options page — must happen before handle() so the page is
+        // always registered even if handle() throws.
+        $hook = add_users_page(
             $this->page_title,
             $this->menu_title,
             'manage_options',
             $this->page_slug,
             [$this, 'page']
         );
+
+        // Handle form actions and enqueue assets on the page-specific load hook.
+        // This fires after the page is registered and only for authorised users.
+        if ($hook) {
+            add_action('load-' . $hook, function (): void {
+                $slug = $this->current_tab();
+                $this->views[$slug]->handle();
+                $this->assets();
+            });
+        }
     }
 
     public function is_current_page(): bool
@@ -124,10 +128,10 @@ class OptionsPage
     public function render_tab_nav(string $current_tab): void
     {
         $tabs = [];
-        foreach ($this->views as $slug => $view) {
+        foreach ($this->views as $view) {
             $tabs[] = [
                 'title' => $view->title(),
-                'slug' => $slug,
+                'slug' => $view->slug(),
                 'icon' => $view->icon(),
             ];
         }

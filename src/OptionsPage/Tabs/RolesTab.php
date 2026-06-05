@@ -26,7 +26,7 @@ class RolesTab implements TabInterface
     {
         $this->title = __('Manage roles', 'aikon-role-manager');
         $this->slug = 'roles';
-        $this->icon = 'dashicons-open-folder';
+        $this->icon = 'dashicons-admin-users';
 
         $this->manager = RoleManager::getInstance();
     }
