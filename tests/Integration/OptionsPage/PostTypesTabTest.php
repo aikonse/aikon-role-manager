@@ -175,8 +175,8 @@ class PostTypesTabTest extends WP_UnitTestCase
     public function test_save_override_form_rejected_when_capability_type_is_empty(): void
     {
         $this->post([
-            'action'          => 'save_post_type_override',
-            'post_type'       => 'post',
+            'action' => 'save_post_type_override',
+            'edit_post_type_capability' => 'post',
             'capability_type' => '',
         ]);
 
