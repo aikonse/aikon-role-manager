@@ -2,14 +2,14 @@
 # This file is distributed under the MIT.
 msgid ""
 msgstr ""
-"Project-Id-Version: Aikon Role Manager 1.0.7\n"
+"Project-Id-Version: Aikon Role Manager 1.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/aikon-role-manager\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-05T18:21:35+00:00\n"
+"POT-Creation-Date: 2026-06-06T18:55:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: aikon-role-manager\n"
@@ -34,84 +34,120 @@ msgstr ""
 msgid "Aikon Role Manager requires PHP 8.0 or higher."
 msgstr ""
 
-#: src/OptionsPage/Tabs/CapabilitiesTab.php:29
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:31
 #: templates/partials/tab-capabilities-accordion.php:14
 msgid "Capabilities"
 msgstr ""
 
-#: src/OptionsPage/Tabs/CapabilitiesTab.php:61
-#: src/OptionsPage/Tabs/RolesTab.php:113
-#: src/OptionsPage/Tabs/RolesTab.php:161
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:63
+#: src/OptionsPage/Tabs/RolesTab.php:115
+#: src/OptionsPage/Tabs/RolesTab.php:171
 msgid "Role does not exist"
 msgstr ""
 
-#: src/OptionsPage/Tabs/CapabilitiesTab.php:66
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:69
+msgid "This role is protected and its capabilities cannot be changed."
+msgstr ""
+
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:76
 msgid "Capabilities are required"
 msgstr ""
 
-#: src/OptionsPage/Tabs/CapabilitiesTab.php:86
+#: src/OptionsPage/Tabs/CapabilitiesTab.php:96
 msgid "Capabilities updated successfully"
 msgstr ""
 
-#: src/OptionsPage/Tabs/PostTypesTab.php:28
+#: src/OptionsPage/Tabs/PostTypesTab.php:32
 msgid "Post Types Capabilities"
 msgstr ""
 
-#: src/OptionsPage/Tabs/PostTypesTab.php:57
-#: src/OptionsPage/Tabs/PostTypesTab.php:83
+#: src/OptionsPage/Tabs/PostTypesTab.php:67
+#: src/OptionsPage/Tabs/PostTypesTab.php:105
 msgid "Invalid post type"
 msgstr ""
 
-#: src/OptionsPage/Tabs/PostTypesTab.php:62
-#: src/OptionsPage/Tabs/PostTypesTab.php:63
+#: src/OptionsPage/Tabs/PostTypesTab.php:73
+msgid "This post type is protected and its capability override cannot be changed."
+msgstr ""
+
+#: src/OptionsPage/Tabs/PostTypesTab.php:80
+#: src/OptionsPage/Tabs/PostTypesTab.php:81
 msgid "Capability type is required"
 msgstr ""
 
-#: src/OptionsPage/Tabs/PostTypesTab.php:68
+#: src/OptionsPage/Tabs/PostTypesTab.php:86
 msgid "Override saved"
 msgstr ""
 
-#: src/OptionsPage/Tabs/PostTypesTab.php:88
+#: src/OptionsPage/Tabs/PostTypesTab.php:111
+msgid "This post type is protected and its capability override cannot be removed."
+msgstr ""
+
+#: src/OptionsPage/Tabs/PostTypesTab.php:118
 msgid "Override removed"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:27
+#: src/OptionsPage/Tabs/PostTypesTab.php:161
+msgid "This post type is protected and cannot be edited."
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:29
 msgid "Manage roles"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:66
-#: src/OptionsPage/Tabs/RolesTab.php:67
-#: src/OptionsPage/Tabs/RolesTab.php:118
-#: src/OptionsPage/Tabs/RolesTab.php:119
+#: src/OptionsPage/Tabs/RolesTab.php:68
+#: src/OptionsPage/Tabs/RolesTab.php:69
+#: src/OptionsPage/Tabs/RolesTab.php:128
+#: src/OptionsPage/Tabs/RolesTab.php:129
 msgid "Role name is required"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:71
-#: src/OptionsPage/Tabs/RolesTab.php:72
-#: src/OptionsPage/Tabs/RolesTab.php:123
-#: src/OptionsPage/Tabs/RolesTab.php:124
+#: src/OptionsPage/Tabs/RolesTab.php:73
+#: src/OptionsPage/Tabs/RolesTab.php:74
+#: src/OptionsPage/Tabs/RolesTab.php:133
+#: src/OptionsPage/Tabs/RolesTab.php:134
 msgid "Role slug is required"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:80
-#: src/OptionsPage/Tabs/RolesTab.php:135
+#: src/OptionsPage/Tabs/RolesTab.php:82
+#: src/OptionsPage/Tabs/RolesTab.php:145
 msgid "Role already exists"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:85
+#: src/OptionsPage/Tabs/RolesTab.php:87
 msgid "Role added"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:140
+#: src/OptionsPage/Tabs/RolesTab.php:121
+msgid "This role is protected and cannot be edited."
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:150
 msgid "Role updated"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:166
+#: src/OptionsPage/Tabs/RolesTab.php:177
+msgid "This role is protected and cannot be deleted."
+msgstr ""
+
+#: src/OptionsPage/Tabs/RolesTab.php:184
 msgid "You cannot delete a default role"
 msgstr ""
 
-#: src/OptionsPage/Tabs/RolesTab.php:171
+#: src/OptionsPage/Tabs/RolesTab.php:189
 msgid "Role deleted"
+msgstr ""
+
+#: src/OptionsPage/Tabs/SettingsTab.php:28
+msgid "Settings"
+msgstr ""
+
+#: src/OptionsPage/Tabs/SettingsTab.php:44
+msgid "You do not have permission to manage settings."
+msgstr ""
+
+#: src/OptionsPage/Tabs/SettingsTab.php:105
+msgid "Settings saved"
 msgstr ""
 
 #: src/UserSwitcher/UserSwitcher.php:76
@@ -188,8 +224,10 @@ msgstr ""
 
 #: templates/partials/tab-roles-add-form.php:28
 #: templates/tab-roles-edit.php:45
-#: templates/tab-roles-view.php:46
-#: templates/tab-roles-view.php:106
+#: templates/tab-roles-view.php:48
+#: templates/tab-roles-view.php:117
+#: templates/tab-settings.php:29
+#: templates/tab-settings.php:68
 msgid "Slug"
 msgstr ""
 
@@ -198,28 +236,32 @@ msgstr ""
 msgid "A slug is the url friendly version of the name. It has lowercase a-z letters and underscores."
 msgstr ""
 
-#: templates/tab-capabilities.php:30
+#: templates/tab-capabilities.php:31
 msgid "Filter capabilities"
 msgstr ""
 
-#: templates/tab-capabilities.php:57
+#: templates/tab-capabilities.php:60
+msgid "This role is protected. Its capabilities are read-only."
+msgstr ""
+
+#: templates/tab-capabilities.php:66
 msgid "Restore"
 msgstr ""
 
-#: templates/tab-capabilities.php:58
-#: templates/tab-capabilities.php:77
+#: templates/tab-capabilities.php:67
+#: templates/tab-capabilities.php:88
 msgid "Remove"
 msgstr ""
 
-#: templates/tab-capabilities.php:84
+#: templates/tab-capabilities.php:96
 msgid "Check all"
 msgstr ""
 
-#: templates/tab-capabilities.php:85
+#: templates/tab-capabilities.php:97
 msgid "Uncheck all"
 msgstr ""
 
-#: templates/tab-capabilities.php:87
+#: templates/tab-capabilities.php:99
 msgid "Save capabilities"
 msgstr ""
 
@@ -227,63 +269,71 @@ msgstr ""
 msgid "Capability Override"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:37
-#: templates/tab-post-types.php:21
-#: templates/tab-post-types.php:60
+#: templates/tab-post-types-edit.php:36
+#: templates/tab-post-types.php:24
+#: templates/tab-post-types.php:71
 msgid "Capability Type"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:50
+#: templates/tab-post-types-edit.php:52
 msgid "The primitive type used to generate capabilities (e.g. \"post\", \"page\", or a custom slug). Saving clears any explicit capability mapping and lets WordPress regenerate from this type."
 msgstr ""
 
-#: templates/tab-post-types-edit.php:61
+#: templates/tab-post-types-edit.php:63
 msgid "Current Capabilities"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:63
+#: templates/tab-post-types-edit.php:65
 msgid "These reflect the active capability mapping after any override has been applied."
 msgstr ""
 
-#: templates/tab-post-types-edit.php:68
+#: templates/tab-post-types-edit.php:70
 msgid "Operation"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:69
+#: templates/tab-post-types-edit.php:71
 msgid "Capability"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:84
+#: templates/tab-post-types-edit.php:86
 msgid "Save Override"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:89
+#: templates/tab-post-types-edit.php:91
 msgid "Remove the override and restore default capabilities?"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:90
+#: templates/tab-post-types-edit.php:92
 msgid "Remove Override"
 msgstr ""
 
-#: templates/tab-post-types-edit.php:94
+#: templates/tab-post-types-edit.php:96
 #: templates/tab-roles-edit.php:69
 msgid "Back"
 msgstr ""
 
-#: templates/tab-post-types.php:18
-#: templates/tab-post-types.php:57
+#: templates/tab-post-types.php:21
+#: templates/tab-post-types.php:68
+#: templates/tab-settings.php:65
 msgid "Post Type"
 msgstr ""
 
-#: templates/tab-post-types.php:38
+#: templates/tab-post-types.php:40
+#: templates/tab-roles-view.php:77
+#: templates/tab-settings.php:24
+#: templates/tab-settings.php:63
+msgid "Protected"
+msgstr ""
+
+#: templates/tab-post-types.php:48
 msgid "Edit override"
 msgstr ""
 
-#: templates/tab-post-types.php:45
+#: templates/tab-post-types.php:56
 msgid "Override active"
 msgstr ""
 
-#: templates/tab-post-types.php:47
+#: templates/tab-post-types.php:58
 msgid "(default)"
 msgstr ""
 
@@ -304,25 +354,50 @@ msgid "Update"
 msgstr ""
 
 #: templates/tab-roles-edit.php:64
-#: templates/tab-roles-view.php:85
+#: templates/tab-roles-view.php:92
 msgid "Delete"
 msgstr ""
 
-#: templates/tab-roles-view.php:44
-#: templates/tab-roles-view.php:104
+#: templates/tab-roles-view.php:46
+#: templates/tab-roles-view.php:115
+#: templates/tab-settings.php:26
 msgid "Role"
 msgstr ""
 
-#: templates/tab-roles-view.php:77
+#: templates/tab-roles-view.php:83
 msgid "Edit"
 msgstr ""
 
-#: templates/tab-roles-view.php:83
+#: templates/tab-roles-view.php:90
 msgid "Are you sure you want to delete this role?"
 msgstr ""
 
-#: templates/tab-roles-view.php:91
+#: templates/tab-roles-view.php:98
+msgid "Show capabilities"
+msgstr ""
+
+#: templates/tab-roles-view.php:100
 msgid "Show/edit capabilities"
+msgstr ""
+
+#: templates/tab-settings.php:16
+msgid "Protected Roles"
+msgstr ""
+
+#: templates/tab-settings.php:18
+msgid "Protected roles cannot be edited, renamed, deleted, or have their capabilities changed."
+msgstr ""
+
+#: templates/tab-settings.php:55
+msgid "Protected Post Types"
+msgstr ""
+
+#: templates/tab-settings.php:57
+msgid "Protected post types cannot have their capability type override added, changed, or removed."
+msgstr ""
+
+#: templates/tab-settings.php:94
+msgid "Save Settings"
 msgstr ""
 
 #: templates/userprofile-edit.php:15

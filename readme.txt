@@ -3,7 +3,7 @@ Contributors: andreas-andersson
 Tags: User, Role, Security
 Tested up to: 7.0
 Requires at least: 6.5
-Stable Tag: 1.0.7
+Stable Tag: 1.1.0
 Requires PHP: 8.0
 License: MIT
 License URI: https://opensource.org/license/mit
@@ -42,6 +42,10 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 3. Add additional roles to a user
 
 == Changelog ==
+
+= 1.1.0 =
+* Feature: Override post type capabilities
+* Feature: Settings panel to set up protected post typs and roles to prevent changes
 
 = 1.0.7 =
 * Tested with Wordpress 7.0

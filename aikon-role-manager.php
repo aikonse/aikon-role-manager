@@ -4,7 +4,7 @@
  * Plugin Name:			Aikon Role Manager
  * Plugin Url:			https://github.com/aikonse/role-manager
  * Description: 		Manage roles and permisisons, allow users multiple roles and gain control
- * Version:				1.0.7
+ * Version:				1.1.0
  * Requires at least:   6.5
  * Tested up to:		7.0
  * Requires PHP:		8.0
@@ -31,7 +31,7 @@ if (version_compare(PHP_VERSION, '8.0', '<')) {
     exit;
 }
 
-define('AIKON_ROLE_MANAGER_VERSION', '1.0.7');
+define('AIKON_ROLE_MANAGER_VERSION', '1.1.0');
 define('AIKON_ROLE_MANAGER_PATH', plugin_dir_path(__FILE__));
 define('AIKON_ROLE_MANAGER_URL', plugin_dir_url(__FILE__));
 define('AIKON_ROLE_MANAGER_TEMPLATE_PATH', AIKON_ROLE_MANAGER_PATH . 'templates');
@@ -88,3 +88,12 @@ add_filter('aikon_role_manager_config', function ($config) {
 
     return $config;
 }, 10, 1);
+
+/** Deactivation hook to clean up plugin data */
+register_deactivation_hook(__FILE__, function () {
+    // Clear post type overrides
+    delete_option('aikon_post_type_capability_overrides');
+    
+    // Clear capabilities
+    delete_option('aikon_role_manager_settings');
+});
