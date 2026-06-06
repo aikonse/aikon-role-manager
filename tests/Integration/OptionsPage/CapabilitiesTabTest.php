@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
 use Aikon\RoleManager\Manager\RoleManager;
+use Aikon\RoleManager\Manager\SettingsManager;
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use WP_Roles;
 use WP_UnitTestCase;
@@ -29,7 +30,10 @@ class CapabilitiesTabTest extends WP_UnitTestCase
         global $wp_roles;
         $wp_roles = new WP_Roles();
 
-        RoleManager::$instance = null;
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
+        delete_option(SettingsManager::OPTION_KEY);
+
         $this->manager = RoleManager::getInstance();
 
         $admin_id = self::factory()->user->create(['role' => 'administrator']);
@@ -38,7 +42,9 @@ class CapabilitiesTabTest extends WP_UnitTestCase
 
     public function tear_down(): void
     {
-        RoleManager::$instance = null;
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
+        delete_option(SettingsManager::OPTION_KEY);
 
         foreach (['action', 'role', 'role_caps'] as $key) {
             unset($_POST[$key], $_REQUEST[$key]);
@@ -207,5 +213,60 @@ class CapabilitiesTabTest extends WP_UnitTestCase
         $this->expectExceptionMessage('You do not have permission to access this page.');
 
         (new CapabilitiesTab())->handle();
+    }
+
+    // =========================================================================
+    // Protected roles — 401 enforcement
+    //
+    // 'administrator' is protected by default. An attempt to save capabilities
+    // for a protected role must result in wp_die(401) → WPDieException.
+    // =========================================================================
+
+    public function test_save_capabilities_dies_401_for_protected_role(): void
+    {
+        // 'administrator' is protected by the SettingsManager default
+        $this->post([
+            'action'    => 'save_capabilities',
+            'role'      => 'administrator',
+            'role_caps' => ['manage_options' => '1'],
+        ]);
+
+        $this->expectException(\WPDieException::class);
+
+        (new CapabilitiesTab())->handle();
+    }
+
+    public function test_save_capabilities_dies_401_for_custom_protected_role(): void
+    {
+        $this->manager->add_role('custom-protected', 'Custom Protected', ['read' => true]);
+        SettingsManager::getInstance()->set_protected_roles(['custom-protected']);
+
+        $this->post([
+            'action'    => 'save_capabilities',
+            'role'      => 'custom-protected',
+            'role_caps' => ['read' => '1'],
+        ]);
+
+        $this->expectException(\WPDieException::class);
+
+        (new CapabilitiesTab())->handle();
+    }
+
+    public function test_save_capabilities_does_not_die_for_unprotected_role(): void
+    {
+        $this->manager->add_role('unprotected-role', 'Unprotected Role');
+
+        $this->post([
+            'action'    => 'save_capabilities',
+            'role'      => 'unprotected-role',
+            'role_caps' => ['read' => '1'],
+        ]);
+
+        // Should not throw WPDieException — no protection for this role
+        $tab = new CapabilitiesTab();
+        $tab->handle();
+
+        $this->assertEmpty($tab->errors());
+        $this->assertArrayHasKey('read', $this->manager->current_roles()['unprotected-role']['capabilities']);
     }
 }

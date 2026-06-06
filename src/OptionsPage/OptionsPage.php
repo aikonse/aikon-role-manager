@@ -53,7 +53,14 @@ class OptionsPage
         if ($hook) {
             add_action('load-' . $hook, function (): void {
                 $slug = $this->current_tab();
-                $this->views[$slug]->handle();
+                $tab  = $this->views[$slug];
+
+                if (!$tab->visible()) {
+                    wp_redirect(admin_url('users.php?page=' . $this->page_slug));
+                    exit;
+                }
+
+                $tab->handle();
                 $this->assets();
             });
         }
@@ -129,10 +136,13 @@ class OptionsPage
     {
         $tabs = [];
         foreach ($this->views as $view) {
+            if (!$view->visible()) {
+                continue;
+            }
             $tabs[] = [
                 'title' => $view->title(),
-                'slug' => $view->slug(),
-                'icon' => $view->icon(),
+                'slug'  => $view->slug(),
+                'icon'  => $view->icon(),
             ];
         }
 

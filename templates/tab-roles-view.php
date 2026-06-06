@@ -5,6 +5,7 @@
  * @var Aikon\RoleManager\Manager\RoleManager $manager
  * @var Aikon\RoleManager\OptionsPage\Tabs\RolesTab $view
  * @var array<string, string> $errors
+ * @var string[] $protected_roles
  */
 
 if (! defined('ABSPATH')) {
@@ -19,10 +20,11 @@ use function Aikon\RoleManager\url_parser;
  * @param array{name: string, capabilities: array<string,bool>} $role
  * @return array<int, array{slug: string, name: string}>
  */
-$roles = array_map(function ($slug, $role) {
+$roles = array_map(function ($slug, $role) use ($protected_roles) {
     return [
-        'slug' => $slug,
-        'name' => $role['name'],
+        'slug'      => $slug,
+        'name'      => $role['name'],
+        'protected' => in_array($slug, $protected_roles, true),
     ];
 }, array_keys($roles), $roles);
 
@@ -71,24 +73,33 @@ $roles = array_map(function ($slug, $role) {
 
                             <strong>
                                 <a href="<?php echo esc_attr($edit_caps_url); ?>"><?php echo esc_html($role['name']); ?></a>
+                                <?php if ($role['protected']): ?>
+                                    <span class="dashicons dashicons-lock" title="<?php esc_attr_e('Protected', 'aikon-role-manager'); ?>" style="color:#787c82;vertical-align:middle;font-size:1em;"></span>
+                                <?php endif; ?>
                             </strong>
 
                             <div class="row-actions">
-                                <span class="edit"><a href="<?php echo esc_attr($edit_url); ?>"><?php esc_html_e('Edit', 'aikon-role-manager'); ?></a> | </span>
-                                <?php if (!$manager->is_default_role($role['slug'])): ?>
+                                <?php if (!$role['protected']): ?>
+                                    <span class="edit"><a href="<?php echo esc_attr($edit_url); ?>"><?php esc_html_e('Edit', 'aikon-role-manager'); ?></a> | </span>
+                                <?php endif; ?>
+                                <?php if (!$role['protected'] && !$manager->is_default_role($role['slug'])): ?>
                                     <span class="trash">
-                                        <a 
-                                            href="#0" 
-                                            data-action="<?php echo esc_attr($delete_url); ?>" 
-                                            data-confirmationmessage="<?php esc_html_e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>" 
+                                        <a
+                                            href="#0"
+                                            data-action="<?php echo esc_attr($delete_url); ?>"
+                                            data-confirmationmessage="<?php esc_html_e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>"
                                             class="submitdelete delete_role_button"
-                                        ><?php esc_html_e('Delete', 'aikon-role-manager'); ?></a> | 
+                                        ><?php esc_html_e('Delete', 'aikon-role-manager'); ?></a> |
                                     </span>
                                 <?php endif; ?>
                                 <span class="view">
-                                    <a 
-                                        href="<?php echo esc_attr($edit_caps_url); ?>"
-                                    ><?php esc_html_e('Show/edit capabilities', 'aikon-role-manager'); ?></a>
+                                    <a href="<?php echo esc_attr($edit_caps_url); ?>">
+                                        <?php if ($role['protected']): ?>
+                                            <?php esc_html_e('Show capabilities', 'aikon-role-manager'); ?>
+                                        <?php else: ?>
+                                            <?php esc_html_e('Show/edit capabilities', 'aikon-role-manager'); ?>
+                                        <?php endif; ?>
+                                    </a>
                                 </span>
                             </div>
                         </td>

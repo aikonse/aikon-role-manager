@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aikon\RoleManager\Tests\Unit\OptionsPage;
 
 use Aikon\RoleManager\Manager\RoleManager;
+use Aikon\RoleManager\Manager\SettingsManager;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
@@ -46,13 +47,14 @@ class RolesTabTest extends TestCase
             'existing-role' => ['name' => 'Existing Role', 'capabilities' => []],
         ];
 
-        RoleManager::$instance = null;
-        // RoleManager::getInstance() will now create a real instance bound to the stub
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
     }
 
     protected function tearDown(): void
     {
-        RoleManager::$instance = null;
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
 
         global $wp_roles;
         $wp_roles = null;
@@ -92,6 +94,11 @@ class RolesTabTest extends TestCase
         Functions\when('sanitize_text_field')->returnArg(1);
         Functions\when('current_user_can')->justReturn(true);
         Functions\when('sanitize_key')->returnArg(1);
+        // SettingsManager::get_settings() calls get_option(); returning false
+        // triggers the defaults (administrator protected, no protected post types).
+        // The roles under test ('existing-role', 'ab') are not administrator, so
+        // change_role() returns true and the protection check passes through.
+        Functions\when('get_option')->justReturn(false);
     }
 
     // =========================================================================
