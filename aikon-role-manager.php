@@ -93,7 +93,7 @@ add_filter('aikon_role_manager_config', function ($config) {
 register_deactivation_hook(__FILE__, function () {
     // Clear post type overrides
     delete_option('aikon_post_type_capability_overrides');
-    
+
     // Clear capabilities
     delete_option('aikon_role_manager_settings');
 });
