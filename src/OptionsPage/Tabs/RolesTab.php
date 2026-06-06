@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aikon\RoleManager\OptionsPage\Tabs;
 
 use Aikon\RoleManager\Manager\RoleManager;
+use Aikon\RoleManager\Manager\SettingsManager;
 use Aikon\RoleManager\OptionsPage\Interfaces\TabInterface;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesActions;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesNotice;
@@ -21,14 +22,15 @@ class RolesTab implements TabInterface
     use HandlesActions;
 
     private RoleManager $manager;
+    private SettingsManager $settings;
 
     public function __construct()
     {
-        $this->title = __('Manage roles', 'aikon-role-manager');
-        $this->slug = 'roles';
-        $this->icon = 'dashicons-admin-users';
-
-        $this->manager = RoleManager::getInstance();
+        $this->title    = __('Manage roles', 'aikon-role-manager');
+        $this->slug     = 'roles';
+        $this->icon     = 'dashicons-admin-users';
+        $this->manager  = RoleManager::getInstance();
+        $this->settings = SettingsManager::getInstance();
     }
 
     public function handle(): void
@@ -114,6 +116,14 @@ class RolesTab implements TabInterface
             return;
         }
 
+        if (!$this->settings->change_role($updating)) {
+            wp_die(
+                esc_html__('This role is protected and cannot be edited.', 'aikon-role-manager'),
+                '',
+                ['response' => 401]
+            );
+        }
+
         if (!$name) {
             $this->add_notice(__('Role name is required', 'aikon-role-manager'), 'warning');
             $this->add_error('name', __('Role name is required', 'aikon-role-manager'));
@@ -158,17 +168,25 @@ class RolesTab implements TabInterface
             !$role_slug ||
             !$this->manager->role_exists($role_slug)
         ) {
-            $this->add_notice(__('Role does not exist', 'aikon-role-manager'), 'warning');
+            $this->add_notice(esc_html__('Role does not exist', 'aikon-role-manager'), 'warning');
             return;
         }
 
+        if (!$this->settings->change_role($role_slug)) {
+            wp_die(
+                esc_html__('This role is protected and cannot be deleted.', 'aikon-role-manager'),
+                '',
+                ['response' => 401]
+            );
+        }
+
         if ($this->manager->is_default_role($role_slug)) {
-            $this->add_notice(__('You cannot delete a default role', 'aikon-role-manager'), 'error');
+            $this->add_notice(esc_html__('You cannot delete a default role', 'aikon-role-manager'), 'error');
             return;
         }
 
         $this->manager->remove_role($role_slug);
-        $this->add_notice(__('Role deleted', 'aikon-role-manager'), 'success');
+        $this->add_notice(esc_html__('Role deleted', 'aikon-role-manager'), 'success');
 
         wp_redirect(url_parser([], ['delete_role', 'action']));
         exit;
@@ -179,11 +197,12 @@ class RolesTab implements TabInterface
         // View roles
         $template = 'tab-roles-view';
         $args = [
-           'tab' => $this->slug,
-           'roles' => $this->manager->current_roles(),
-           'manager' => $this->manager,
-           'view' => $this,
-           'errors' => $this->errors(),
+            'tab'             => $this->slug,
+            'roles'           => $this->manager->current_roles(),
+            'manager'         => $this->manager,
+            'view'            => $this,
+            'errors'          => $this->errors(),
+            'protected_roles' => $this->settings->get_protected_roles(),
         ];
 
         // Edit role

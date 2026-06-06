@@ -55,4 +55,13 @@ trait HasTitleAnSlug
     {
         return $this->icon;
     }
+
+    /**
+     * Whether the tab should be visible in the navigation.
+     * Override in a specific tab to restrict visibility.
+     */
+    public function visible(): bool
+    {
+        return true;
+    }
 }

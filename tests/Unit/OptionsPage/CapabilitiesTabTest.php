@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aikon\RoleManager\Tests\Unit\OptionsPage;
 
 use Aikon\RoleManager\Manager\RoleManager;
+use Aikon\RoleManager\Manager\SettingsManager;
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
@@ -38,12 +39,14 @@ class CapabilitiesTabTest extends TestCase
             'custom-role'   => ['name' => 'Custom Role',   'capabilities' => ['read' => true]],
         ];
 
-        RoleManager::$instance = null;
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
     }
 
     protected function tearDown(): void
     {
-        RoleManager::$instance = null;
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
 
         global $wp_roles;
         $wp_roles = null;
@@ -74,6 +77,10 @@ class CapabilitiesTabTest extends TestCase
         Functions\when('sanitize_text_field')->returnArg(1);
         Functions\when('current_user_can')->justReturn(true);
         Functions\when('sanitize_key')->returnArg(1);
+        // SettingsManager::get_settings() calls get_option(); returning false
+        // triggers the defaults (administrator protected). 'custom-role' is not
+        // administrator, so change_role() returns true and the test proceeds normally.
+        Functions\when('get_option')->justReturn(false);
     }
 
     // =========================================================================
@@ -124,6 +131,7 @@ class CapabilitiesTabTest extends TestCase
     {
         Functions\when('sanitize_text_field')->returnArg(1);
         Functions\when('current_user_can')->justReturn(true);
+        Functions\when('get_option')->justReturn(false);
         // sanitize_key returning 'a' (1 char) makes validate_capability() return null
         Functions\when('sanitize_key')->justReturn('a');
 

@@ -9,6 +9,7 @@ interface TabInterface
     public function title(): string;
     public function slug(): string;
     public function icon(): string;
+    public function visible(): bool;
     public function handle(): void;
     public function render(): void;
 }

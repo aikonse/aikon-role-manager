@@ -7,6 +7,7 @@
  * @var array<string, string> $all_capabilities
  * @var Aikon\RoleManager\Manager\RoleManager $manager
  * @var bool $is_current_user_role
+ * @var bool $is_role_protected
  */
 
 if (! defined('ABSPATH')) {
@@ -52,7 +53,15 @@ template('partials/tab-capabilities-warning', [
                 <input type="hidden" name="action" value="save_capabilities">
                 <input type="hidden" name="role" value="<?php echo esc_attr($current); ?>">
 
-                <ul 
+                <?php if ($is_role_protected): ?>
+                    <div class="notice notice-warning inline" style="margin:0 0 1rem;">
+                        <p>
+                            <span class="dashicons dashicons-lock" style="vertical-align:middle;"></span>
+                            <?php esc_html_e('This role is protected. Its capabilities are read-only.', 'aikon-role-manager'); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
+                <ul
                     id="capability-list"
                     data-restore-text="<?php esc_html_e('Restore', 'aikon-role-manager'); ?>"
                     data-remove-text="<?php esc_html_e('Remove', 'aikon-role-manager'); ?>"
@@ -63,29 +72,33 @@ template('partials/tab-capabilities-warning', [
                     $is_default = $manager->is_default_default_capabilitiy_for_role($current, $cap);
                     ?>
                     <li class="capability-item <?php echo $is_default ? 'default' : ''; ?>">
-                        <input type="hidden" name="<?php echo esc_attr($input_name); ?>" value="0">
+                        <?php if (!$is_role_protected): ?>
+                            <input type="hidden" name="<?php echo esc_attr($input_name); ?>" value="0">
+                        <?php endif; ?>
                         <label>
-                            <input type="checkbox" value="1" name="<?php echo esc_attr($input_name); ?>" <?php echo $has_cap ? 'checked' : ''; ?>>
+                            <input type="checkbox" value="1" name="<?php echo esc_attr($input_name); ?>" <?php echo $has_cap ? 'checked' : ''; ?> <?php echo $is_role_protected ? 'disabled' : ''; ?>>
                             <?php echo esc_html($cap); ?>
                         </label>
-                        <?php if ($is_default) : ?>
-                                <small class="default-indicator">(default)</small>
-                        <?php else: ?>
-                        <button
-                            type="button"
-                            class="button button-small button-text-danger dashicons-before dashicons-trash"
-                        ><?php esc_html_e('Remove', 'aikon-role-manager'); ?></button>
+                        <?php if ($is_default): ?>
+                            <small class="default-indicator">(default)</small>
+                        <?php elseif (!$is_role_protected): ?>
+                            <button
+                                type="button"
+                                class="button button-small button-text-danger dashicons-before dashicons-trash"
+                            ><?php esc_html_e('Remove', 'aikon-role-manager'); ?></button>
                         <?php endif; ?>
                     </li>
                     <?php endforeach; ?>
                 </ul>
-                <div class="arm_roles-manager-form-toolbar">
-                    <div class="actions">
-                        <button type="button" class="button button-secondary" id="check-all"><?php esc_html_e('Check all', 'aikon-role-manager'); ?></button>
-                        <button type="button" class="button button-secondary" id="check-none"><?php esc_html_e('Uncheck all', 'aikon-role-manager'); ?></button>
+                <?php if (!$is_role_protected): ?>
+                    <div class="arm_roles-manager-form-toolbar">
+                        <div class="actions">
+                            <button type="button" class="button button-secondary" id="check-all"><?php esc_html_e('Check all', 'aikon-role-manager'); ?></button>
+                            <button type="button" class="button button-secondary" id="check-none"><?php esc_html_e('Uncheck all', 'aikon-role-manager'); ?></button>
+                        </div>
+                        <button type="submit" class="button button-primary"><?php esc_html_e('Save capabilities', 'aikon-role-manager'); ?></button>
                     </div>
-                    <button type="submit" class="button button-primary"><?php esc_html_e('Save capabilities', 'aikon-role-manager');?></button>
-                </div>
+                <?php endif; ?>
             </form>
         </div>
     </div>

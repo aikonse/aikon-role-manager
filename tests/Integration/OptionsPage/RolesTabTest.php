@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
 use Aikon\RoleManager\Manager\RoleManager;
+use Aikon\RoleManager\Manager\SettingsManager;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 use WP_Roles;
 use WP_UnitTestCase;
@@ -33,7 +34,10 @@ class RolesTabTest extends WP_UnitTestCase
         $wp_roles = new WP_Roles();
 
         // Reset singleton so it binds to the freshly initialised $wp_roles.
-        RoleManager::$instance = null;
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
+        delete_option(SettingsManager::OPTION_KEY);
+
         $this->manager = RoleManager::getInstance();
 
         $admin_id = self::factory()->user->create(['role' => 'administrator']);
@@ -42,11 +46,13 @@ class RolesTabTest extends WP_UnitTestCase
 
     public function tear_down(): void
     {
-        RoleManager::$instance = null;
+        RoleManager::$instance    = null;
+        SettingsManager::$instance = null;
+        delete_option(SettingsManager::OPTION_KEY);
 
-        // Clean up simulated request state from both $_POST and $_REQUEST.
-        foreach (['action', 'name', 'slug', 'role'] as $key) {
-            unset($_POST[$key], $_REQUEST[$key]);
+        // Clean up simulated request state from both $_POST, $_GET, and $_REQUEST.
+        foreach (['action', 'name', 'slug', 'role', 'delete_role'] as $key) {
+            unset($_POST[$key], $_GET[$key], $_REQUEST[$key]);
         }
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
@@ -286,5 +292,82 @@ class RolesTabTest extends WP_UnitTestCase
 
         $this->assertArrayHasKey('name', $tab->errors());
         $this->assertSame('Custom Role', $this->manager->current_roles()['custom-role']['name']);
+    }
+
+    // =========================================================================
+    // Protected roles — 401 enforcement
+    //
+    // 'administrator' is protected by the SettingsManager default. Sending an
+    // update or delete action for a protected role must result in a wp_die(401),
+    // which the WP test suite converts to WPDieException.
+    // =========================================================================
+
+    public function test_update_role_dies_401_when_role_is_protected(): void
+    {
+        // 'administrator' is protected by default — no SettingsManager setup needed
+        $this->post([
+            'action' => 'update_role',
+            'role'   => 'administrator',
+            'name'   => 'Super Admin',
+            'slug'   => 'administrator',
+        ]);
+
+        $this->expectException(\WPDieException::class);
+
+        (new RolesTab())->handle();
+    }
+
+    public function test_update_role_does_not_die_for_custom_unprotected_role(): void
+    {
+        $this->manager->add_role('custom-role', 'Custom Role');
+
+        // custom-role is not in the protected list — the tab should proceed to
+        // validation/update rather than dying with 401. We post a valid payload
+        // which succeeds and redirects (terminating with a redirect, not an error).
+        $this->post([
+            'action' => 'update_role',
+            'role'   => 'custom-role',
+            'name'   => 'Custom Role',
+            'slug'   => 'custom-role',
+        ]);
+
+        // If no WPDieException is thrown before the redirect, the role is unprotected
+        try {
+            (new RolesTab())->handle();
+        } catch (\Exception $e) {
+            $this->assertNotInstanceOf(\WPDieException::class, $e, 'Unprotected role must not trigger a 401');
+        }
+
+        $this->addToAssertionCount(1);
+    }
+
+    public function test_delete_role_dies_401_when_role_is_protected(): void
+    {
+        // 'administrator' is protected by default
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['action']            = 'delete_role';
+        $_GET['delete_role']       = 'administrator';
+        $_REQUEST['action']        = 'delete_role';
+        $_REQUEST['delete_role']   = 'administrator';
+
+        $this->expectException(\WPDieException::class);
+
+        (new RolesTab())->handle();
+    }
+
+    public function test_delete_role_dies_401_for_custom_protected_role(): void
+    {
+        $this->manager->add_role('custom-protected', 'Custom Protected');
+        SettingsManager::getInstance()->set_protected_roles(['custom-protected']);
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['action']            = 'delete_role';
+        $_GET['delete_role']       = 'custom-protected';
+        $_REQUEST['action']        = 'delete_role';
+        $_REQUEST['delete_role']   = 'custom-protected';
+
+        $this->expectException(\WPDieException::class);
+
+        (new RolesTab())->handle();
     }
 }

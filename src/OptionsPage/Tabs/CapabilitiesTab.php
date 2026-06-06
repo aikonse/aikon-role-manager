@@ -7,6 +7,7 @@ namespace Aikon\RoleManager\OptionsPage\Tabs;
 use function Aikon\RoleManager\config;
 
 use Aikon\RoleManager\Manager\RoleManager;
+use Aikon\RoleManager\Manager\SettingsManager;
 use Aikon\RoleManager\OptionsPage\Interfaces\TabInterface;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesActions;
 use Aikon\RoleManager\OptionsPage\Traits\HandlesNotice;
@@ -23,14 +24,15 @@ class CapabilitiesTab implements TabInterface
     use HandlesNotice;
 
     private RoleManager $manager;
+    private SettingsManager $settings;
 
     public function __construct()
     {
-        $this->title = __('Capabilities', 'aikon-role-manager');
-        $this->slug = 'capabilities';
-        $this->icon = 'dashicons-privacy';
-
-        $this->manager = RoleManager::getInstance();
+        $this->title    = __('Capabilities', 'aikon-role-manager');
+        $this->slug     = 'capabilities';
+        $this->icon     = 'dashicons-privacy';
+        $this->manager  = RoleManager::getInstance();
+        $this->settings = SettingsManager::getInstance();
     }
 
     public function handle(): void
@@ -60,6 +62,14 @@ class CapabilitiesTab implements TabInterface
         if (!is_string($role) || !$this->manager->role_exists($role)) {
             $this->add_error('role', __('Role does not exist', 'aikon-role-manager'));
             return;
+        }
+
+        if (!$this->settings->change_role($role)) {
+            wp_die(
+                esc_html__('This role is protected and its capabilities cannot be changed.', 'aikon-role-manager'),
+                '',
+                ['response' => 401]
+            );
         }
 
         if (!is_array($capabilities) || empty($capabilities)) {
@@ -160,10 +170,9 @@ class CapabilitiesTab implements TabInterface
 
     public function render(): void
     {
-        $roles = $this->manager->current_roles();
-        $slugs = array_keys($roles);
-        /** @var string */
-        $default_selected = end($slugs);
+        $roles            = $this->manager->current_roles();
+        $slugs            = array_keys($roles);
+        $default_selected = (string) array_key_last($roles);
 
         $nav = array_combine(
             $slugs,
@@ -187,15 +196,17 @@ class CapabilitiesTab implements TabInterface
         }
 
         $is_current_user_role = current_user_can($current);
+        $is_role_protected    = !$this->settings->change_role($current);
 
         template('tab-capabilities', [
-            'view' => $this,
-            'nav' => $nav,
-            'current' => $current,
-            'role' => $roles[$current],
-            'all_capabilities' => $this->manager->all_capabilities(),
-            'manager' => $this->manager,
+            'view'                 => $this,
+            'nav'                  => $nav,
+            'current'              => $current,
+            'role'                 => $roles[$current],
+            'all_capabilities'     => $this->manager->all_capabilities(),
+            'manager'              => $this->manager,
             'is_current_user_role' => $is_current_user_role,
+            'is_role_protected'    => $is_role_protected,
         ]);
     }
 }

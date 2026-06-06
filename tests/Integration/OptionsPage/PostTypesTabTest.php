@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
 use Aikon\RoleManager\Manager\PostTypeManager;
+use Aikon\RoleManager\Manager\SettingsManager;
 use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
 use WP_UnitTestCase;
 
@@ -28,6 +29,9 @@ class PostTypesTabTest extends WP_UnitTestCase
         PostTypeManager::$instance = null;
         delete_option(PostTypeManager::OPTION_KEY);
 
+        SettingsManager::$instance = null;
+        delete_option(SettingsManager::OPTION_KEY);
+
         $admin_id = self::factory()->user->create(['role' => 'administrator']);
         wp_set_current_user($admin_id);
 
@@ -39,7 +43,10 @@ class PostTypesTabTest extends WP_UnitTestCase
         PostTypeManager::$instance = null;
         delete_option(PostTypeManager::OPTION_KEY);
 
-        foreach (['action', 'post_type', 'capability_type'] as $key) {
+        SettingsManager::$instance = null;
+        delete_option(SettingsManager::OPTION_KEY);
+
+        foreach (['action', 'post_type', 'capability_type', 'edit_post_type_capability'] as $key) {
             unset($_POST[$key], $_GET[$key], $_REQUEST[$key]);
         }
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -261,5 +268,84 @@ class PostTypesTabTest extends WP_UnitTestCase
         PostTypeManager::getInstance()->remove_override('post');
 
         $this->assertSame('document', PostTypeManager::getInstance()->get_overrides()['page']);
+    }
+
+    // =========================================================================
+    // Protected post types — 401 enforcement
+    //
+    // When a post type is in the protected list, any attempt to save or remove
+    // its override must result in wp_die(401) → WPDieException.
+    // =========================================================================
+
+    public function test_save_override_dies_401_when_post_type_is_protected(): void
+    {
+        SettingsManager::getInstance()->set_protected_post_types(['post']);
+
+        $this->post([
+            'action'                    => 'save_post_type_override',
+            'edit_post_type_capability' => 'post',
+            'capability_type'           => 'article',
+        ]);
+
+        $this->expectException(\WPDieException::class);
+
+        $this->tab->handle();
+    }
+
+    public function test_save_override_does_not_die_for_unprotected_post_type(): void
+    {
+        // 'page' is not protected — the tab should proceed (and ultimately redirect)
+        // We only care that no WPDieException is thrown here.
+        SettingsManager::getInstance()->set_protected_post_types(['post']);
+
+        $this->post([
+            'action'                    => 'save_post_type_override',
+            'edit_post_type_capability' => 'page',
+            'capability_type'           => 'document',
+        ]);
+
+        try {
+            $this->tab->handle();
+        } catch (\Exception $e) {
+            $this->assertNotInstanceOf(\WPDieException::class, $e, 'Unprotected post type must not trigger a 401');
+        }
+
+        $this->addToAssertionCount(1);
+    }
+
+    public function test_remove_override_dies_401_when_post_type_is_protected(): void
+    {
+        PostTypeManager::getInstance()->set_override('post', 'article');
+        SettingsManager::getInstance()->set_protected_post_types(['post']);
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['action']            = 'remove_post_type_override';
+        $_GET['post_type']         = 'post';
+        $_REQUEST['action']        = 'remove_post_type_override';
+        $_REQUEST['post_type']     = 'post';
+
+        $this->expectException(\WPDieException::class);
+
+        $this->tab->handle();
+    }
+
+    public function test_remove_override_does_not_die_for_unprotected_post_type(): void
+    {
+        PostTypeManager::getInstance()->set_override('page', 'document');
+        SettingsManager::getInstance()->set_protected_post_types(['post']);
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['action']            = 'remove_post_type_override';
+        $_GET['post_type']         = 'page';
+        $_REQUEST['action']        = 'remove_post_type_override';
+        $_REQUEST['post_type']     = 'page';
+
+        try {
+            $this->tab->handle();
+        } catch (\Exception $e) {
+            $this->assertNotInstanceOf(\WPDieException::class, $e, 'Unprotected post type must not trigger a 401');
+        }
+
+        $this->addToAssertionCount(1);
     }
 }

@@ -43,6 +43,7 @@ use Aikon\RoleManager\OptionsPage\OptionsPage;
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
+use Aikon\RoleManager\OptionsPage\Tabs\SettingsTab;
 use Aikon\RoleManager\UserProfile\UserProfileEdit;
 use Aikon\RoleManager\UserSwitcher\UserSwitcher;
 
@@ -62,6 +63,7 @@ add_action('admin_menu', function () {
         new RolesTab(),
         new CapabilitiesTab(),
         new PostTypesTab(),
+        new SettingsTab(),
     ]);
     new UserProfileEdit();
 }, 10);
