@@ -17,6 +17,9 @@ use function Aikon\RoleManager\url_parser;
 
 class RolesTab implements TabInterface
 {
+    private const INITIAL_DUPLICATE_SUFFIX = 2;
+    private const NEXT_DUPLICATE_SUFFIX = 3;
+
     use HasTitleAnSlug;
     use HandlesNotice;
     use HandlesActions;
@@ -213,9 +216,9 @@ class RolesTab implements TabInterface
         }
 
         $source_role = $this->manager->current_roles()[$role_slug];
-        $new_slug = $role_slug . '2';
-        $new_name = $source_role['name'] . ' 2';
-        $index = 3;
+        $new_slug = $role_slug . (string) self::INITIAL_DUPLICATE_SUFFIX;
+        $new_name = $source_role['name'] . ' ' . (string) self::INITIAL_DUPLICATE_SUFFIX;
+        $index = self::NEXT_DUPLICATE_SUFFIX;
 
         while ($this->manager->role_exists($new_slug)) {
             $new_slug = $role_slug . (string) $index;
