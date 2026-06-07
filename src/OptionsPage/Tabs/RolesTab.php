@@ -17,9 +17,6 @@ use function Aikon\RoleManager\url_parser;
 
 class RolesTab implements TabInterface
 {
-    private const INITIAL_DUPLICATE_SUFFIX = 2;
-    private const DUPLICATE_SUFFIX_INCREMENT_START = 3;
-
     use HasTitleAnSlug;
     use HandlesNotice;
     use HandlesActions;
@@ -204,8 +201,16 @@ class RolesTab implements TabInterface
      */
     private function handle_duplicate_role($request)
     {
-        $request->validate(['duplicate_role' => 'string|minlength:2']);
-        $role_slug = $this->manager->validate_role_slug($request->get('duplicate_role'));
+        $request->validate([
+            'duplicate_role' => 'string|minlength:2'
+        ]);
+
+        if ($request->hasErrors()) {
+            $this->add_notice(esc_html__('Invalid role', 'aikon-role-manager'), 'warning');
+            return;
+        }
+
+        $role_slug = $this->manager->validate_role_slug($request->string('duplicate_role'));
         $roles = $this->manager->current_roles();
 
         if (
@@ -217,18 +222,18 @@ class RolesTab implements TabInterface
         }
 
         $source_role = $roles[$role_slug];
-        $existing_roles = $roles;
-        $new_slug = $role_slug . self::INITIAL_DUPLICATE_SUFFIX;
-        $new_name = $source_role['name'] . ' ' . self::INITIAL_DUPLICATE_SUFFIX;
-        $index = self::DUPLICATE_SUFFIX_INCREMENT_START;
+        $index = 2;
+        $new_slug = $role_slug . '-' . $index;
+        $new_name = $source_role['name'] . ' ' . $index;
 
-        while (isset($existing_roles[$new_slug])) {
-            $new_slug = $role_slug . $index;
+        while (isset($roles[$new_slug])) {
+            $new_slug = $role_slug . '-' . $index;
             $new_name = $source_role['name'] . ' ' . $index;
             $index++;
         }
 
         $this->manager->add_role($new_slug, $new_name, $source_role['capabilities']);
+
         $this->add_notice(esc_html__('Role duplicated', 'aikon-role-manager'), 'success');
 
         wp_redirect(url_parser([], ['duplicate_role', 'action']));

@@ -134,11 +134,11 @@ final class RoleManager
     /**
      * Get the current roles
      *
-     * @return array<string, array<string, array{name: string, capabilities: array<string>}>>
+     * @return array<string, array{name: string, capabilities: array<string, bool>}>
      */
     public function current_roles(): array
     {
-        /** @var array<string, array<string, array{name: string, capabilities: array<string>}>> */
+        /** @var array<string, array{name: string, capabilities: array<string, bool>}> */
         return $this->wp_roles->roles;
     }
 
@@ -154,7 +154,7 @@ final class RoleManager
     }
 
     /**
-     * Get the current role
+     * Add a new role
      *
      * @param string $role
      * @param string $display_name
