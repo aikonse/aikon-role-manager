@@ -45,6 +45,7 @@ class RolesTab implements TabInterface
         $this->post_action('action', 'add_role', [$this, 'handle_add_role']);
         $this->post_action('action', 'update_role', [$this, 'handle_update_role']);
         $this->get_action('action', 'delete_role', [$this, 'handle_delete_role']);
+        $this->get_action('action', 'duplicate_role', [$this, 'handle_duplicate_role']);
     }
 
     /**
@@ -189,6 +190,43 @@ class RolesTab implements TabInterface
         $this->add_notice(esc_html__('Role deleted', 'aikon-role-manager'), 'success');
 
         wp_redirect(url_parser([], ['delete_role', 'action']));
+        exit;
+    }
+
+    /**
+     * Duplicate a role
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function handle_duplicate_role($request)
+    {
+        $request->validate(['duplicate_role' => 'string|minlength:2']);
+        $role_slug = $this->manager->validate_role_slug($request->get('duplicate_role'));
+
+        if (
+            !$role_slug ||
+            !$this->manager->role_exists($role_slug)
+        ) {
+            $this->add_notice(esc_html__('Role does not exist', 'aikon-role-manager'), 'warning');
+            return;
+        }
+
+        $source_role = $this->manager->current_roles()[$role_slug];
+        $new_slug = $role_slug . '2';
+        $new_name = $source_role['name'] . ' 2';
+        $index = 3;
+
+        while ($this->manager->role_exists($new_slug)) {
+            $new_slug = $role_slug . (string) $index;
+            $new_name = $source_role['name'] . ' ' . (string) $index;
+            $index++;
+        }
+
+        $this->manager->add_role($new_slug, $new_name, $source_role['capabilities']);
+        $this->add_notice(esc_html__('Role duplicated', 'aikon-role-manager'), 'success');
+
+        wp_redirect(url_parser([], ['duplicate_role', 'action']));
         exit;
     }
 
