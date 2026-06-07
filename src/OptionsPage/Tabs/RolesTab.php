@@ -206,17 +206,18 @@ class RolesTab implements TabInterface
     {
         $request->validate(['duplicate_role' => 'string|minlength:2']);
         $role_slug = $this->manager->validate_role_slug($request->get('duplicate_role'));
+        $roles = $this->manager->current_roles();
 
         if (
             !$role_slug ||
-            !$this->manager->role_exists($role_slug)
+            !isset($roles[$role_slug])
         ) {
             $this->add_notice(esc_html__('Role does not exist', 'aikon-role-manager'), 'warning');
             return;
         }
 
-        $source_role = $this->manager->current_roles()[$role_slug];
-        $existing_roles = $this->manager->current_roles();
+        $source_role = $roles[$role_slug];
+        $existing_roles = $roles;
         $new_slug = $role_slug . self::INITIAL_DUPLICATE_SUFFIX;
         $new_name = $source_role['name'] . ' ' . self::INITIAL_DUPLICATE_SUFFIX;
         $index = self::DUPLICATE_SUFFIX_INCREMENT_START;

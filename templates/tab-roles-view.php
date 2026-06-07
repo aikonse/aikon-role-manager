@@ -85,7 +85,12 @@ $roles = array_map(function ($slug, $role) use ($protected_roles) {
                             </strong>
 
                             <div class="row-actions">
-                                <span class="edit"><a href="<?php echo esc_attr($duplicate_url); ?>"><?php esc_html_e('Duplicate', 'aikon-role-manager'); ?></a> | </span>
+                                <span class="edit">
+                                    <a
+                                        href="<?php echo esc_attr($duplicate_url); ?>"
+                                        aria-label="<?php echo esc_attr(sprintf(__('Duplicate %s', 'aikon-role-manager'), $role['name'])); ?>"
+                                    ><?php esc_html_e('Duplicate', 'aikon-role-manager'); ?></a> |
+                                </span>
                                 <?php if (!$role['protected']): ?>
                                     <span class="edit"><a href="<?php echo esc_attr($edit_url); ?>"><?php esc_html_e('Edit', 'aikon-role-manager'); ?></a> | </span>
                                 <?php endif; ?>
