@@ -67,6 +67,12 @@ $roles = array_map(function ($slug, $role) use ($protected_roles) {
                     'tab' => 'capabilities',
                     'role' => $role['slug'],
                 ]);
+
+                $duplicate_url = url_parser([
+                    'tab' => $tab,
+                    'action' => 'duplicate_role',
+                    'duplicate_role' => $role['slug'],
+                ]);
                 ?>
                     <tr class="iedit author-self level-0 post-1 type-post status-publish format-standard hentry">
                         <td class="title column-title has-row-actions column-primary page-title" data-colname="Role">
@@ -92,6 +98,12 @@ $roles = array_map(function ($slug, $role) use ($protected_roles) {
                                         ><?php esc_html_e('Delete', 'aikon-role-manager'); ?></a> |
                                     </span>
                                 <?php endif; ?>
+                                <span class="edit">
+                                    <a
+                                        href="<?php echo esc_attr($duplicate_url); ?>"
+                                        aria-label="<?php echo esc_attr(sprintf(__('Duplicate %s', 'aikon-role-manager'), $role['name'])); ?>"
+                                    ><?php esc_html_e('Duplicate', 'aikon-role-manager'); ?></a> |
+                                </span>
                                 <span class="view">
                                     <a href="<?php echo esc_attr($edit_caps_url); ?>">
                                         <?php if ($role['protected']): ?>
