@@ -4,9 +4,65 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cfb150f51e82af7f5f409be16fc7b5e7",
+    "content-hash": "b4ec9ac3424e60709c253a62231a8438",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "andreas-andersson/wp-specter",
+            "version": "v0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andreas-andersson/wp-specter.git",
+                "reference": "280c413cbb4c4a7817bc947706c9265d3111b2e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andreas-andersson/wp-specter/zipball/280c413cbb4c4a7817bc947706c9265d3111b2e0",
+                "reference": "280c413cbb4c4a7817bc947706c9265d3111b2e0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "phpstan/phpstan": "^2.2",
+                "phpunit/phpunit": "^11.0"
+            },
+            "bin": [
+                "bin/wp-specter"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WpSpecter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Andersson",
+                    "email": "andreas@aikon.se",
+                    "homepage": "https://aikon.se",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CLI tool to find unused code in WordPress projects",
+            "keywords": [
+                "cli",
+                "static analysis",
+                "unused code",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/andreas-andersson/wp-specter/issues",
+                "source": "https://github.com/andreas-andersson/wp-specter/tree/v0.2.2"
+            },
+            "time": "2026-08-08T22:49:00+00:00"
+        },
         {
             "name": "antecedent/patchwork",
             "version": "2.2.3",

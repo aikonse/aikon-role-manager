@@ -32,7 +32,8 @@
         "friendsofphp/php-cs-fixer": "^3.68",
         "phpunit/phpunit": "^9.6",
         "yoast/phpunit-polyfills": "^2.0",
-        "brain/monkey": "^2.7"
+        "brain/monkey": "^2.7",
+        "andreas-andersson/wp-specter": "^0.2.2"
     },
     "config": {
         "allow-plugins": {
