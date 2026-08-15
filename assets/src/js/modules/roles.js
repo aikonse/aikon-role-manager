@@ -1,40 +1,36 @@
-
 /**
- * @param {PointerEvent} e 
+ * @param {PointerEvent} e
  */
-export function deleteRole(e) {
+export function deleteRole( e ) {
+	const link = e.target;
+	const url = link.dataset.action;
+	const msg = link.dataset.confirmationmessage;
 
-    const link = e.target;
-    const url = link.dataset.action;
-    const msg = link.dataset.confirmationmessage;
+	if ( ! confirm( msg ) ) {
+		return;
+	}
 
-    if (!confirm(msg)) {
-        return;
-    }
-
-    window.location = url;
+	window.location = url;
 }
 
 /**
  * @typedef {Object} DefaultConfig
  * @property {string} deleteSelector - Selectior for the delete role button.
  *
- * @param {object} config 
+ * @param {object} config
  */
-export function rolesInit(config) {
+export function rolesInit( config ) {
+	const defaultConfig = {
+		deleteSelector: '.delete_role_button',
+	};
 
-    const defaultConfig = {
-        deleteSelector: '.delete_role_button',
-    };
+	config = {
+		...defaultConfig,
+		...config,
+	};
 
-    config = {
-        ...defaultConfig,
-        ...config,
-    };
-
-    const deleteLinks = document.querySelectorAll(config.deleteSelector);
-    deleteLinks.forEach(link => {
-        link.addEventListener('click', deleteRole);
-    });
-
+	const deleteLinks = document.querySelectorAll( config.deleteSelector );
+	deleteLinks.forEach( ( link ) => {
+		link.addEventListener( 'click', deleteRole );
+	} );
 }
