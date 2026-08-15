@@ -16,7 +16,7 @@ if (! defined('ABSPATH')) {
 use function Aikon\RoleManager\url_parser;
 
 $back_url      = url_parser(['tab' => $tab], ['edit_post_type']);
-$remove_url    = url_parser(['action' => 'remove_post_type_override', 'post_type' => $post_type]);
+$remove_url    = url_parser(['action' => 'remove_post_type_override', 'remove_override_post_type' => $post_type]);
 $invalid_cap   = $errors['capability_type'] ?? false;
 
 $current_value = $override ?? '';

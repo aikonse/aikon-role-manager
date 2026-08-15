@@ -57,7 +57,7 @@ class PostTypesTab implements TabInterface
     {
         $request->validate([
             'capability_type' => 'string|minlength:1',
-            'edit_post_type_capability'       => 'string|minlength:1',
+            'edit_post_type_capability' => 'string|minlength:1',
         ]);
 
         $post_type = sanitize_key($request->string('edit_post_type_capability'));
@@ -96,10 +96,10 @@ class PostTypesTab implements TabInterface
     public function handle_remove_override(Request $request): void
     {
         $request->validate([
-            'post_type' => 'string|minlength:1',
+            'remove_override_post_type' => 'string|minlength:1',
         ]);
 
-        $post_type = sanitize_key($request->string('post_type'));
+        $post_type = sanitize_key($request->string('remove_override_post_type'));
 
         if (!$post_type || !get_post_type_object($post_type)) {
             $this->add_notice(__('Invalid post type', 'aikon-role-manager'), 'error');
