@@ -17,7 +17,7 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 ## Features
 
 ### Manage Roles
-- Create, edit, and delete user roles with ease.
+- Create, edit, duplicate and delete user roles with ease.
 - Maintain flexibility and control over your site's access permissions.
 
 ### Manage Capabilities
@@ -45,6 +45,7 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 
 = 1.1.1 =
 * Fix: Issue with restoring a post type capabilities solved
+* Feature: Duplicate roles
 * Tested with Wordpress 7.1 
 
 = 1.1.0 =
