@@ -1,9 +1,9 @@
 === Aikon Role Manager ===
 Contributors: andreas-andersson
 Tags: User, Role, Security
-Tested up to: 7.0
+Tested up to: 7.1
 Requires at least: 6.5
-Stable Tag: 1.1.0
+Stable Tag: 1.1.1
 Requires PHP: 8.0
 License: MIT
 License URI: https://opensource.org/license/mit
@@ -42,6 +42,10 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 3. Add additional roles to a user
 
 == Changelog ==
+
+= 1.1.1 =
+* Fix: Issue with restoring a post type capabilities solved
+* Tested with Wordpress 7.1 
 
 = 1.1.0 =
 * Feature: Override post type capabilities
