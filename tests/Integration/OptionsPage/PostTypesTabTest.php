@@ -238,9 +238,9 @@ class PostTypesTabTest extends WP_UnitTestCase
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET['action']            = 'remove_post_type_override';
-        $_GET['post_type']         = 'nonexistent_pt';
-        $_REQUEST['action']        = 'remove_post_type_override';
-        $_REQUEST['post_type']     = 'nonexistent_pt';
+        $_GET['remove_override_post_type']     = 'nonexistent_pt';
+        $_REQUEST['action']                    = 'remove_post_type_override';
+        $_REQUEST['remove_override_post_type'] = 'nonexistent_pt';
 
         $this->tab->handle();
 
@@ -320,9 +320,9 @@ class PostTypesTabTest extends WP_UnitTestCase
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET['action']            = 'remove_post_type_override';
-        $_GET['post_type']         = 'post';
-        $_REQUEST['action']        = 'remove_post_type_override';
-        $_REQUEST['post_type']     = 'post';
+        $_GET['remove_override_post_type']     = 'post';
+        $_REQUEST['action']                    = 'remove_post_type_override';
+        $_REQUEST['remove_override_post_type'] = 'post';
 
         $this->expectException(\WPDieException::class);
 
@@ -336,9 +336,9 @@ class PostTypesTabTest extends WP_UnitTestCase
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET['action']            = 'remove_post_type_override';
-        $_GET['post_type']         = 'page';
-        $_REQUEST['action']        = 'remove_post_type_override';
-        $_REQUEST['post_type']     = 'page';
+        $_GET['remove_override_post_type']     = 'page';
+        $_REQUEST['action']                    = 'remove_post_type_override';
+        $_REQUEST['remove_override_post_type'] = 'page';
 
         try {
             $this->tab->handle();
