@@ -26,7 +26,7 @@ template('partials/tab-capabilities-nav', [
 template('partials/tab-capabilities-warning', [
     'is_current_user_role' => $is_current_user_role,
     'is_role_protected' => $is_role_protected,
-]); 
+]);
 ?>
 <p class="search-box">
     <label class=label" for="capability-filter"><?php esc_html_e('Filter capabilities', 'aikon-role-manager');?></label>
