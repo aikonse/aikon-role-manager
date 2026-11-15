@@ -1,8 +1,8 @@
 {
 	"phpVersion": "8.0",
 	"plugins": [
-		"https://downloads.wordpress.org/plugin/plugin-check.2.0.0.zip",
-		"https://downloads.wordpress.org/plugin/wordpress-beta-tester.4.0.0.zip",
+		"https://downloads.wordpress.org/plugin/plugin-check.2.2.0.zip",
+		"https://downloads.wordpress.org/plugin/wordpress-beta-tester.4.0.1.zip",
 		"."
 	],
 	"config": {},
