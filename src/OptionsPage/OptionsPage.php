@@ -94,7 +94,7 @@ class OptionsPage
      */
     public function assets(): void
     {
-        /** @var array{dependencies: array<string>, version: string} */
+        /** @var array{dependencies: array<non-empty-string>, version: string} */
         $asset_config = require AIKON_ROLE_MANAGER_PATH . 'assets/build/main.asset.php';
 
         [

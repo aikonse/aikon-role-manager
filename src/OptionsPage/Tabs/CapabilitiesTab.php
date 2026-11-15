@@ -118,16 +118,18 @@ class CapabilitiesTab implements TabInterface
         $post_types = get_post_types($args, 'objects');
 
         foreach ($post_types as $post_type) {
-            $sorted_caps[$post_type->name] = [ 'label' => $post_type->label, 'caps' => []];
+            $post_type_caps = [];
 
             /** @var array<string,string> */
             $caps = (array) $post_type->cap;
             foreach ($caps as $value) {
-                $sorted_caps[$post_type->name]['caps'][] = $value;
+                $post_type_caps[] = $value;
                 if (isset($capabilities[$value])) {
                     unset($capabilities[$value]);
                 }
             }
+
+            $sorted_caps[$post_type->name] = [ 'label' => $post_type->label, 'caps' => $post_type_caps];
         }
 
         // Add core capabilities
@@ -135,13 +137,12 @@ class CapabilitiesTab implements TabInterface
         $defaul_capabilities = config('default_capabilities', []);
         foreach ($defaul_capabilities as $role => $caps) {
             $label = ucwords(str_replace('_', ' ', $role));
-            $sorted_caps[$role] = [ 'label' => $label, 'caps' => []];
             foreach ($caps as $cap) {
-                $sorted_caps[$role]['caps'][] = $cap;
                 if (isset($capabilities[$cap])) {
                     unset($capabilities[$cap]);
                 }
             }
+            $sorted_caps[$role] = [ 'label' => $label, 'caps' => $caps];
         }
 
         // Add remaining capabilities

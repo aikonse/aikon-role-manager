@@ -46,11 +46,7 @@ class UserProfileEdit
         $user_roles = $user->roles;
         $roles = $this->manager->current_roles();
         $primary_role = array_shift($user_roles);
-        $other_roles = $user_roles;
-
-        if (isset($other_roles[$primary_role])) {
-            unset($other_roles[$primary_role]);
-        }
+        $other_roles = array_values(array_diff($user_roles, [$primary_role]));
 
         template('userprofile-edit', [
             'primary_role' => $primary_role,
