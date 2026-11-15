@@ -7,6 +7,7 @@
     "wp:stop": "wp-env stop",
     "wp:test:start": "wp-env --config=.wp-env.tests.json start",
     "wp:test:stop": "wp-env --config=.wp-env.tests.json stop",
+    "wp:destroy": "wp-env destroy",
     "cli": "wp-env run cli",
     "composer": "wp-env run cli composer",
     "wps:start": "wp-scripts start assets/src/js/main.js --output-path=assets/build --watch",
