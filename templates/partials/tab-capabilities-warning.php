@@ -2,13 +2,14 @@
 
 /**
  * @var bool $is_current_user_role
+ * @var bool $is_role_protected
  */
 
 if (! defined('ABSPATH')) {
     exit;
 }
 
-if (!$is_current_user_role) {
+if (!$is_current_user_role || $is_role_protected) {
     return;
 }
 ?>
