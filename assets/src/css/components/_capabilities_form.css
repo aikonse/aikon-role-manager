@@ -30,3 +30,7 @@
 .arm_roles-manager-form .default-indicator {
     color: #999;
 }
+
+.capability-item input[type="checkbox"]:disabled {
+    --wp-admin-theme-color: #949494;
+}
