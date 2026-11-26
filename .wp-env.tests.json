@@ -1,4 +1,5 @@
 {
+	"core": "https://wordpress.org/wordpress-7.2-RC3.zip",
 	"phpVersion": "8.0",
 	"plugins": ["."],
 	"mappings": {
