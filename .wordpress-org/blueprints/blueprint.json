@@ -12,6 +12,14 @@
             "step": "login",
             "username": "admin",
             "password": "password"
+        },
+        {
+            "step": "wp-cli",
+            "command": "wp user create editor editor@example.com --role=editor --user_pass=password --display_name='Demo Editor'"
+        },
+        {
+            "step": "wp-cli",
+            "command": "wp user create contributor contributor@example.com --role=contributor --user_pass=password --display_name='Demo Contributor'"
         }
     ]
 }
