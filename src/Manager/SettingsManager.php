@@ -38,8 +38,8 @@ final class SettingsManager
 
         /** @var array{protected_roles: string[], protected_post_types: string[]} */
         $defaults = [
-            'protected_roles'      => ['administrator'],
-            'protected_post_types' => [],
+            'protected_roles'      => ['administrator','editor'],
+            'protected_post_types' => ['attachment', 'wp_block', 'wp_navigation'],
         ];
 
         if (!is_array($option) || empty($option)) {
