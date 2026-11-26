@@ -23,28 +23,8 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@wordpress/env": "^11.14.0",
-    "@wordpress/scripts": "^34.2.0"
-  },
-  "overrides": {
-    "@puppeteer/browsers": "3.2.2",
-    "@sentry/node": "10.73.0",
-    "copy-webpack-plugin": {
-      "serialize-javascript": "7.0.5"
-    },
-    "express": {
-      "qs": "6.16.0"
-    },
-    "lighthouse": "13.4.1",
-    "linkify-it": "6.1.0",
-    "markdown-it": "15.0.1",
-    "markdownlint": "0.41.1",
-    "markdownlint-cli": "0.49.1",
-    "minimatch": "10.2.5",
-    "puppeteer-core": "25.10.0",
-    "sockjs": {
-      "uuid": "11.1.1"
-    }
+    "@wordpress/env": "^12.2.0",
+    "@wordpress/scripts": "^37.2.0"
   },
   "files": [
     "assets/build",
@@ -57,5 +37,17 @@
     "LICENCE",
     "readme.txt",
     "!README.md"
-  ]
+  ],
+  "overrides": {
+    "copy-webpack-plugin": {
+      "serialize-javascript": "7.1.4"
+    },
+    "glob@>=9 <14.0.2": "14.0.6",
+    "isomorphic-git": "1.44.19",
+    "js-yaml@>=5 <5.5.0": "5.5.0",
+    "katex": "0.19.1",
+    "minimatch@>=7 <11.0.1": "11.0.9",
+    "qs": "6.17.1",
+    "smol-toml": "1.9.1"
+  }
 }
