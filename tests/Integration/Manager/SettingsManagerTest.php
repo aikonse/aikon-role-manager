@@ -40,14 +40,14 @@ class SettingsManagerTest extends WP_UnitTestCase
     // Defaults (no option stored)
     // =========================================================================
 
-    public function test_get_protected_roles_returns_administrator_by_default(): void
+    public function test_get_protected_roles_returns_administrator_and_editor_by_default(): void
     {
-        $this->assertSame(['administrator'], $this->manager->get_protected_roles());
+        $this->assertSame(['administrator', 'editor'], $this->manager->get_protected_roles());
     }
 
-    public function test_get_protected_post_types_returns_empty_array_by_default(): void
+    public function test_get_protected_post_types_returns_core_internal_types_by_default(): void
     {
-        $this->assertSame([], $this->manager->get_protected_post_types());
+        $this->assertSame(['attachment', 'wp_block', 'wp_navigation'], $this->manager->get_protected_post_types());
     }
 
     public function test_change_role_returns_false_for_administrator_by_default(): void
