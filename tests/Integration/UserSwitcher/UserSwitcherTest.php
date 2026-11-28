@@ -29,6 +29,7 @@ class UserSwitcherTest extends WP_UnitTestCase
     private const COOKIE_NAME  = 'aikon_role_manager_user_switcher';
     private const ARG_ACTION   = 'aikon_role_manager_switch_action';
     private const ARG_USER     = 'aikon_role_manager_switch_user';
+    private const META_KEY     = '_aikon_role_manager_switch_session';
 
     public function set_up(): void
     {
@@ -52,12 +53,27 @@ class UserSwitcherTest extends WP_UnitTestCase
     }
 
     // -------------------------------------------------------------------------
-    // Cookie helper — replicates the signing logic of set_switcher_cookie()
+    // Session helper — creates a real server-side switch session
     // -------------------------------------------------------------------------
 
-    private function set_valid_switcher_cookie(int $original_user_id): void
+    private function start_switch_session(int $original_user_id, int $target_user_id): string
     {
-        $_COOKIE[self::COOKIE_NAME] = $original_user_id . '|' . wp_hash($original_user_id . \AUTH_SALT);
+        $method = new \ReflectionMethod(UserSwitcher::class, 'create_switch_session');
+        $method->setAccessible(true);
+
+        /** @var string $value */
+        $value = $method->invoke($this->switcher, $original_user_id, $target_user_id);
+        $_COOKIE[self::COOKIE_NAME] = $value;
+
+        return $value;
+    }
+
+    private function switch_back_node_present(): bool
+    {
+        $bar = new WP_Admin_Bar();
+        $this->switcher->add_admin_bar_item($bar);
+
+        return $bar->get_node('aikon-role-manager-switch-back') !== null;
     }
 
     // =========================================================================
@@ -113,7 +129,7 @@ class UserSwitcherTest extends WP_UnitTestCase
     public function test_login_as_action_hidden_when_already_switched(): void
     {
         // Simulate the admin having switched to the editor
-        $this->set_valid_switcher_cookie($this->admin_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
         wp_set_current_user($this->editor_id);
 
         $subscriber_id = self::factory()->user->create(['role' => 'subscriber']);
@@ -136,7 +152,7 @@ class UserSwitcherTest extends WP_UnitTestCase
 
     public function test_admin_bar_indicator_present_when_switched(): void
     {
-        $this->set_valid_switcher_cookie($this->admin_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
         wp_set_current_user($this->editor_id);
 
         $bar = new WP_Admin_Bar();
@@ -147,7 +163,7 @@ class UserSwitcherTest extends WP_UnitTestCase
 
     public function test_admin_bar_indicator_shows_impersonated_user_name(): void
     {
-        $this->set_valid_switcher_cookie($this->admin_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
         $editor = get_userdata($this->editor_id);
         wp_set_current_user($this->editor_id);
 
@@ -160,7 +176,7 @@ class UserSwitcherTest extends WP_UnitTestCase
 
     public function test_switch_back_node_present_when_switched(): void
     {
-        $this->set_valid_switcher_cookie($this->admin_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
         wp_set_current_user($this->editor_id);
 
         $bar = new WP_Admin_Bar();
@@ -171,7 +187,7 @@ class UserSwitcherTest extends WP_UnitTestCase
 
     public function test_switch_back_node_title_contains_original_user_name(): void
     {
-        $this->set_valid_switcher_cookie($this->admin_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
         $admin = get_userdata($this->admin_id);
         wp_set_current_user($this->editor_id);
 
@@ -184,7 +200,7 @@ class UserSwitcherTest extends WP_UnitTestCase
 
     public function test_switch_back_node_href_contains_switch_back_action(): void
     {
-        $this->set_valid_switcher_cookie($this->admin_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
         wp_set_current_user($this->editor_id);
 
         $bar = new WP_Admin_Bar();
@@ -279,7 +295,7 @@ class UserSwitcherTest extends WP_UnitTestCase
 
     public function test_handle_switch_back_dies_with_invalid_nonce(): void
     {
-        $this->set_valid_switcher_cookie($this->admin_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
         wp_set_current_user($this->editor_id);
 
         $_GET[self::ARG_ACTION] = 'switch_back';
@@ -287,6 +303,121 @@ class UserSwitcherTest extends WP_UnitTestCase
 
         $this->expectException(\WPDieException::class);
         $this->expectExceptionMessage('Security check failed.');
+
+        $this->switcher->handle_switch_request();
+    }
+
+    // =========================================================================
+    // Switch session hardening
+    // =========================================================================
+
+    public function test_session_tokens_are_random(): void
+    {
+        $first  = $this->start_switch_session($this->admin_id, $this->editor_id);
+        $second = $this->start_switch_session($this->admin_id, $this->editor_id);
+
+        $this->assertNotSame($first, $second);
+    }
+
+    public function test_only_token_hash_is_stored(): void
+    {
+        $cookie = $this->start_switch_session($this->admin_id, $this->editor_id);
+        [, $token] = explode('|', $cookie, 2);
+
+        $stored = get_user_meta($this->admin_id, self::META_KEY, true);
+
+        $this->assertIsArray($stored);
+        $this->assertStringNotContainsString($token, (string) wp_json_encode($stored));
+    }
+
+    public function test_legacy_static_cookie_is_rejected(): void
+    {
+        // The pre-1.1.3 cookie format: deterministic and never expiring
+        $_COOKIE[self::COOKIE_NAME] = $this->admin_id . '|' . wp_hash($this->admin_id . \AUTH_SALT);
+        wp_set_current_user($this->editor_id);
+
+        $this->assertFalse($this->switch_back_node_present());
+    }
+
+    public function test_session_is_not_usable_by_a_user_other_than_the_target(): void
+    {
+        // Shared browser: the admin switched to the editor, then someone else
+        // logs in on the same browser while the switch cookie is still present
+        $this->start_switch_session($this->admin_id, $this->editor_id);
+        $subscriber_id = self::factory()->user->create(['role' => 'subscriber']);
+        wp_set_current_user($subscriber_id);
+
+        $this->assertFalse($this->switch_back_node_present());
+
+        $_GET[self::ARG_ACTION] = 'switch_back';
+        $_GET['_wpnonce']       = wp_create_nonce('aikon_role_manager_switch_back_' . $this->admin_id);
+
+        $this->expectException(\WPDieException::class);
+        $this->expectExceptionMessage('No active user switch session found.');
+
+        $this->switcher->handle_switch_request();
+    }
+
+    public function test_expired_session_is_rejected_and_removed(): void
+    {
+        $this->start_switch_session($this->admin_id, $this->editor_id);
+        $stored            = get_user_meta($this->admin_id, self::META_KEY, true);
+        $stored['expires'] = time() - 1;
+        update_user_meta($this->admin_id, self::META_KEY, $stored);
+        wp_set_current_user($this->editor_id);
+
+        $this->assertFalse($this->switch_back_node_present());
+        $this->assertSame('', get_user_meta($this->admin_id, self::META_KEY, true));
+    }
+
+    public function test_new_session_invalidates_previous_token(): void
+    {
+        $old_cookie = $this->start_switch_session($this->admin_id, $this->editor_id);
+        $this->start_switch_session($this->admin_id, $this->editor_id);
+
+        $_COOKIE[self::COOKIE_NAME] = $old_cookie;
+        wp_set_current_user($this->editor_id);
+
+        $this->assertFalse($this->switch_back_node_present());
+    }
+
+    public function test_logout_discards_session(): void
+    {
+        $cookie = $this->start_switch_session($this->admin_id, $this->editor_id);
+        wp_set_current_user($this->editor_id);
+
+        do_action('wp_logout', $this->editor_id);
+
+        $this->assertArrayNotHasKey(self::COOKIE_NAME, $_COOKIE);
+        $this->assertSame('', get_user_meta($this->admin_id, self::META_KEY, true));
+
+        // Replaying the captured cookie no longer works
+        $_COOKIE[self::COOKIE_NAME] = $cookie;
+        $this->assertFalse($this->switch_back_node_present());
+    }
+
+    public function test_login_discards_session(): void
+    {
+        $this->start_switch_session($this->admin_id, $this->editor_id);
+
+        do_action('wp_login', 'someone', get_userdata($this->editor_id));
+
+        $this->assertArrayNotHasKey(self::COOKIE_NAME, $_COOKIE);
+        $this->assertSame('', get_user_meta($this->admin_id, self::META_KEY, true));
+    }
+
+    public function test_switch_is_refused_while_already_switched(): void
+    {
+        $other_admin_id = self::factory()->user->create(['role' => 'administrator']);
+        $this->start_switch_session($this->admin_id, $other_admin_id);
+        wp_set_current_user($other_admin_id);
+
+        $_GET[self::ARG_ACTION] = 'switch';
+        $_GET[self::ARG_USER]   = (string) $this->editor_id;
+        $_GET['_wpnonce']       = wp_create_nonce('aikon_role_manager_switch_' . $this->editor_id);
+
+        $this->expectException(\WPDieException::class);
+        $this->expectExceptionMessage('Switch back to your own account');
 
         $this->switcher->handle_switch_request();
     }
