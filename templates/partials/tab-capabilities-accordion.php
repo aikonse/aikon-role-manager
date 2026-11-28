@@ -4,6 +4,7 @@
  * @var Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab $view
  * @var array<string, string> $all_capabilities
  * @var string[] $restricted_capabilities
+ * @var bool $is_role_protected
  */
 
 if (! defined('ABSPATH')) {
@@ -16,9 +17,9 @@ if (! defined('ABSPATH')) {
     </div>
     <div class="arm-postbox-form">
         <label for="capability-filter"><?php esc_html_e('Add new capability', 'aikon-role-manager');?></label>
-        <input type="text" pattern="[a-z_0-9]+" required minlength="2" maxlength="20" id="new-capability" name="filter_roles" value="" placeholder="">
+        <input type="text" pattern="[a-z_0-9]+" required minlength="2" maxlength="20" id="new-capability" name="filter_roles" value="" placeholder="" <?php disabled($is_role_protected); ?>>
         <span class="description"><?php esc_html_e('Use lowercase letters, underscores and numbers', 'aikon-role-manager');?></span>
-        <button type="button" id="add-capability" class="button button-primary"><?php esc_html_e('Add', 'aikon-role-manager');?></button>
+        <button type="button" id="add-capability" class="button button-primary" <?php disabled($is_role_protected); ?>><?php esc_html_e('Add', 'aikon-role-manager');?></button>
     </div>
     <?php foreach ($view->categorized_capabilities($all_capabilities) as $cat_slug => $cat): ?>
     <div class="arm-postbox-accordion" aria-expanded="false">
@@ -33,7 +34,7 @@ if (! defined('ABSPATH')) {
             <?php foreach ($cat['caps'] as $cap): ?>
                 <li>
                     <label>
-                        <input type="checkbox" name="role_caps[<?php echo esc_attr($cap); ?>]" <?php echo $view->role_has_cap($current, $cap) || in_array($cap, $restricted_capabilities, true) ? 'disabled' : '';?> value="1">
+                        <input type="checkbox" name="role_caps[<?php echo esc_attr($cap); ?>]" <?php echo $is_role_protected || $view->role_has_cap($current, $cap) || in_array($cap, $restricted_capabilities, true) ? 'disabled' : '';?> value="1">
                         <?php echo esc_html($cap); ?>
                     </label>
                 </li>

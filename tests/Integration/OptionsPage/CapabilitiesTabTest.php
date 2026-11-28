@@ -279,4 +279,53 @@ class CapabilitiesTabTest extends WP_UnitTestCase
         $this->assertEmpty($tab->errors());
         $this->assertArrayHasKey('read', $this->manager->current_roles()['unprotected-role']['capabilities']);
     }
+
+    // =========================================================================
+    // Add-capability controls are read-only for protected roles
+    // =========================================================================
+
+    private function render_for_role(string $role): string
+    {
+        $_GET['role']     = $role;
+        $_REQUEST['role'] = $role;
+
+        ob_start();
+        (new CapabilitiesTab())->render();
+        $html = (string) ob_get_clean();
+
+        unset($_GET['role'], $_REQUEST['role']);
+
+        return $html;
+    }
+
+    public function test_add_capability_controls_disabled_for_protected_role(): void
+    {
+        // 'administrator' is protected by default
+        $html = $this->render_for_role('administrator');
+
+        $this->assertMatchesRegularExpression('/<input[^>]*id="new-capability"[^>]*disabled/', $html);
+        $this->assertMatchesRegularExpression('/<button[^>]*id="add-capability"[^>]*disabled/', $html);
+
+        // Every checkbox in the "add capabilities" list is disabled
+        preg_match('/<div id="add-capabilities-list".*?<div class="arm-postbox-footer">/s', $html, $panel);
+        $this->assertNotEmpty($panel);
+        preg_match_all('/<input type="checkbox"[^>]*>/', $panel[0], $boxes);
+        $this->assertNotEmpty($boxes[0]);
+        foreach ($boxes[0] as $box) {
+            $this->assertStringContainsString('disabled', $box);
+        }
+    }
+
+    public function test_add_capability_controls_enabled_for_unprotected_role(): void
+    {
+        $this->manager->add_role('unprotected-role', 'Unprotected Role', ['read' => true]);
+
+        $html = $this->render_for_role('unprotected-role');
+
+        $this->assertDoesNotMatchRegularExpression('/<input[^>]*id="new-capability"[^>]*disabled/', $html);
+        $this->assertDoesNotMatchRegularExpression('/<button[^>]*id="add-capability"[^>]*disabled/', $html);
+
+        // Capabilities the role doesn't have yet can still be picked from the list
+        $this->assertMatchesRegularExpression('/<input type="checkbox" name="role_caps\[edit_posts\]"\s+value="1">/', $html);
+    }
 }

@@ -46,6 +46,7 @@ template('partials/tab-capabilities-warning', [
                 'current' => $current,
                 'all_capabilities' => $all_capabilities,
                 'restricted_capabilities' => $restricted_capabilities,
+                'is_role_protected' => $is_role_protected,
             ]);
 ?>
     </div>
