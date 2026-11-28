@@ -63,8 +63,9 @@ if (isset($_POST['slug'])) {
             <span id="delete-link">
                 <a 
                     href="#0" 
-                    data-url="<?php echo esc_attr($delete_url); ?>" 
-                    data-role="<?php echo esc_attr($slug); ?>" 
+                    data-action="<?php echo esc_attr($delete_url); ?>"
+                    data-confirmationmessage="<?php esc_attr_e('Are you sure you want to delete this role?', 'aikon-role-manager'); ?>"
+                    data-role="<?php echo esc_attr($slug); ?>"
                     class="delete delete_role_button"
                 ><?php esc_html_e('Delete', 'aikon-role-manager'); ?></a>
             </span>
