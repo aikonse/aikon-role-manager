@@ -252,6 +252,79 @@ final class RoleManager
     }
 
     /**
+     * Capabilities the current user is not allowed to grant or revoke.
+     *
+     * On multisite, network-level capabilities and those WordPress reserves for
+     * super admins can only be changed by a super admin. Otherwise a site
+     * administrator could grant themselves e.g. manage_network_users and edit
+     * (or switch to) users across the whole network.
+     *
+     * @return string[]
+     */
+    public function restricted_capabilities(): array
+    {
+        $restricted = [];
+
+        if (is_multisite() && !is_super_admin()) {
+            $restricted = array_merge(
+                (array) config('default_capabilities.super_admin', []),
+                (array) config('multisite_capabilities', [])
+            );
+        }
+
+        /**
+         * Filter the capabilities the current user may not grant or revoke.
+         *
+         * @param string[] $restricted
+         */
+        /** @var mixed $filtered Third-party callbacks may return anything */
+        $filtered = apply_filters('aikon_role_manager_restricted_capabilities', $restricted);
+
+        if (!is_array($filtered)) {
+            return [];
+        }
+
+        /** @var string[] */
+        return array_values(array_unique(array_filter($filtered, 'is_string')));
+    }
+
+    /**
+     * Keep restricted capabilities exactly as they currently are on the role.
+     *
+     * @param string $role
+     * @param array<string, bool> $capabilities The submitted capabilities
+     * @return array{capabilities: array<string, bool>, rejected: string[]}
+     *     The capabilities to save, and the restricted ones the submission tried to change
+     */
+    public function enforce_restricted_capabilities(string $role, array $capabilities): array
+    {
+        $current  = $this->current_roles()[$role]['capabilities'] ?? [];
+        $rejected = [];
+
+        foreach ($this->restricted_capabilities() as $cap) {
+            $had = array_key_exists($cap, $current);
+
+            if (
+                array_key_exists($cap, $capabilities) &&
+                (!$had || (bool) $current[$cap] !== $capabilities[$cap])
+            ) {
+                $rejected[] = $cap;
+            }
+
+            unset($capabilities[$cap]);
+
+            if ($had) {
+                $capabilities[$cap] = (bool) $current[$cap];
+            }
+        }
+
+        return [
+            'capabilities' => $capabilities,
+            'rejected'     => $rejected,
+        ];
+    }
+
+    /**
      * Remove a role
      *  - When removing a role from the system we also remove it from all users
      *

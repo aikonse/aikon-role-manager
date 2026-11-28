@@ -88,10 +88,25 @@ class CapabilitiesTab implements TabInterface
             $valid_capabilities[$cap] = $value === '1' ? true : false;
         }
 
+        [
+            'capabilities' => $valid_capabilities,
+            'rejected'     => $rejected,
+        ] = $this->manager->enforce_restricted_capabilities($role, $valid_capabilities);
+
         $this->manager->update_role_capabilities(
             $role,
             $valid_capabilities
         );
+
+        if (!empty($rejected)) {
+            $message = sprintf(
+                /* translators: %s: comma separated list of capabilities */
+                __('Only a network super admin can change these capabilities, so they were left unchanged: %s', 'aikon-role-manager'),
+                implode(', ', $rejected)
+            );
+            $this->add_error('restricted_capabilities', $message);
+            $this->add_notice($message, 'warning');
+        }
 
         $this->add_notice(__('Capabilities updated successfully', 'aikon-role-manager'), 'success');
     }
@@ -208,6 +223,7 @@ class CapabilitiesTab implements TabInterface
             'manager'              => $this->manager,
             'is_current_user_role' => $is_current_user_role,
             'is_role_protected'    => $is_role_protected,
+            'restricted_capabilities' => $this->manager->restricted_capabilities(),
         ]);
     }
 }

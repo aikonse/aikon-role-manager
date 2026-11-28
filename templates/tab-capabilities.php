@@ -8,6 +8,7 @@
  * @var Aikon\RoleManager\Manager\RoleManager $manager
  * @var bool $is_current_user_role
  * @var bool $is_role_protected
+ * @var string[] $restricted_capabilities
  */
 
 if (! defined('ABSPATH')) {
@@ -44,6 +45,7 @@ template('partials/tab-capabilities-warning', [
                 'view'    => $view,
                 'current' => $current,
                 'all_capabilities' => $all_capabilities,
+                'restricted_capabilities' => $restricted_capabilities,
             ]);
 ?>
     </div>
@@ -73,18 +75,22 @@ template('partials/tab-capabilities-warning', [
                 foreach ($role['capabilities'] as $cap => $has_cap) :
                     $input_name = 'role_caps[' . $cap . ']';
                     $is_default = $manager->is_default_default_capabilitiy_for_role($current, $cap);
+                    $is_locked  = $is_role_protected || in_array($cap, $restricted_capabilities, true);
                     ?>
                     <li class="capability-item <?php echo $is_default ? 'default' : ''; ?>">
-                        <?php if (!$is_role_protected): ?>
+                        <?php if (!$is_locked): ?>
                             <input type="hidden" name="<?php echo esc_attr($input_name); ?>" value="0">
                         <?php endif; ?>
                         <label>
-                            <input type="checkbox" value="1" name="<?php echo esc_attr($input_name); ?>" <?php echo $has_cap ? 'checked' : ''; ?> <?php echo $is_role_protected ? 'disabled' : ''; ?>>
+                            <input type="checkbox" value="1" name="<?php echo esc_attr($input_name); ?>" <?php echo $has_cap ? 'checked' : ''; ?> <?php echo $is_locked ? 'disabled' : ''; ?>>
                             <?php echo esc_html($cap); ?>
                         </label>
+                        <?php if (!$is_role_protected && $is_locked): ?>
+                            <span class="dashicons dashicons-lock" title="<?php esc_attr_e('Only a network super admin can change this capability', 'aikon-role-manager'); ?>" style="color:#787c82;vertical-align:middle;font-size:1em;"></span>
+                        <?php endif; ?>
                         <?php if ($is_default): ?>
                             <small class="default-indicator">(default)</small>
-                        <?php elseif (!$is_role_protected): ?>
+                        <?php elseif (!$is_locked): ?>
                             <button
                                 type="button"
                                 class="button button-small button-text-danger dashicons-before dashicons-trash"

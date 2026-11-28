@@ -3,6 +3,7 @@
  * @var string $current
  * @var Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab $view
  * @var array<string, string> $all_capabilities
+ * @var string[] $restricted_capabilities
  */
 
 if (! defined('ABSPATH')) {
@@ -32,7 +33,7 @@ if (! defined('ABSPATH')) {
             <?php foreach ($cat['caps'] as $cap): ?>
                 <li>
                     <label>
-                        <input type="checkbox" name="role_caps[<?php echo esc_attr($cap); ?>]" <?php echo $view->role_has_cap($current, $cap) ? 'disabled' : '';?> value="1">
+                        <input type="checkbox" name="role_caps[<?php echo esc_attr($cap); ?>]" <?php echo $view->role_has_cap($current, $cap) || in_array($cap, $restricted_capabilities, true) ? 'disabled' : '';?> value="1">
                         <?php echo esc_html($cap); ?>
                     </label>
                 </li>

@@ -36,6 +36,6 @@ export function initToggleAllCapabilities() {
  */
 function getCheckboxes() {
 	return document.querySelectorAll(
-		'#capability-list .capability-item input[type="checkbox"]'
+		'#capability-list .capability-item input[type="checkbox"]:not(:disabled)'
 	);
 }
