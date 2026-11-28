@@ -12,6 +12,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+use function Aikon\RoleManager\nonce_action;
 use function Aikon\RoleManager\template;
 use function Aikon\RoleManager\url_parser;
 
@@ -52,11 +53,11 @@ $roles = array_map(function ($slug, $role) use ($protected_roles) {
             <tbody id="the-list">
                 <?php
             foreach ($roles as $role):
-                $delete_url = url_parser([
+                $delete_url = wp_nonce_url(url_parser([
                     'tab' => $tab,
                     'action' => 'delete_role',
                     'delete_role' => $role['slug'],
-                ]);
+                ]), nonce_action('delete_role'));
 
                 $edit_url = url_parser([
                     'tab' => $tab,
@@ -68,11 +69,11 @@ $roles = array_map(function ($slug, $role) use ($protected_roles) {
                     'role' => $role['slug'],
                 ]);
 
-                $duplicate_url = url_parser([
+                $duplicate_url = wp_nonce_url(url_parser([
                     'tab' => $tab,
                     'action' => 'duplicate_role',
                     'duplicate_role' => $role['slug'],
-                ]);
+                ]), nonce_action('duplicate_role'));
                 ?>
                     <tr class="iedit author-self level-0 post-1 type-post status-publish format-standard hentry">
                         <td class="title column-title has-row-actions column-primary page-title" data-colname="Role">

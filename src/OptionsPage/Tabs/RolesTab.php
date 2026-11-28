@@ -189,7 +189,7 @@ class RolesTab implements TabInterface
         $this->manager->remove_role($role_slug);
         $this->add_notice(esc_html__('Role deleted', 'aikon-role-manager'), 'success');
 
-        wp_redirect(url_parser([], ['delete_role', 'action']));
+        wp_redirect(url_parser([], ['delete_role', 'action', '_wpnonce']));
         exit;
     }
 
@@ -236,7 +236,7 @@ class RolesTab implements TabInterface
 
         $this->add_notice(esc_html__('Role duplicated', 'aikon-role-manager'), 'success');
 
-        wp_redirect(url_parser([], ['duplicate_role', 'action']));
+        wp_redirect(url_parser([], ['duplicate_role', 'action', '_wpnonce']));
         exit;
     }
 

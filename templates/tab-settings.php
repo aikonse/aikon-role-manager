@@ -9,9 +9,13 @@
 if (! defined('ABSPATH')) {
     exit;
 }
+
+use function Aikon\RoleManager\nonce_action;
+
 ?>
 <form method="post" style="padding-block: 2rem;">
     <input type="hidden" name="action" value="save_settings">
+    <?php wp_nonce_field(nonce_action('save_settings')); ?>
 
     <h2><?php esc_html_e('Protected Roles', 'aikon-role-manager'); ?></h2>
     <p class="description">

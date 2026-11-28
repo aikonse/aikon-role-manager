@@ -40,6 +40,17 @@ function url_parser(array $query = [], array $remove_query = []): string
 }
 
 /**
+ * Nonce action name for an options page action
+ *
+ * @param string $action The action value, e.g. "save_capabilities"
+ * @return string
+ */
+function nonce_action(string $action): string
+{
+    return 'aikon_role_manager_' . $action;
+}
+
+/**
  * Load the config file
  * @return array<string, mixed>
  */

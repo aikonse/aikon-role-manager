@@ -6,8 +6,12 @@ namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
 use Aikon\RoleManager\Manager\RoleManager;
 use Aikon\RoleManager\Manager\SettingsManager;
+
+use function Aikon\RoleManager\nonce_action;
+
 use Aikon\RoleManager\OptionsPage\Tabs\RolesTab;
 use WP_Roles;
+
 use WP_UnitTestCase;
 use WP_User;
 
@@ -51,7 +55,7 @@ class RolesTabTest extends WP_UnitTestCase
         delete_option(SettingsManager::OPTION_KEY);
 
         // Clean up simulated request state from both $_POST, $_GET, and $_REQUEST.
-        foreach (['action', 'name', 'slug', 'role', 'delete_role'] as $key) {
+        foreach (['action', '_wpnonce', 'name', 'slug', 'role', 'delete_role'] as $key) {
             unset($_POST[$key], $_GET[$key], $_REQUEST[$key]);
         }
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -72,6 +76,12 @@ class RolesTabTest extends WP_UnitTestCase
         foreach ($data as $key => $value) {
             $_POST[$key] = $value;
             $_REQUEST[$key] = $value;
+        }
+
+        if (isset($data['action']) && is_string($data['action']) && !isset($data['_wpnonce'])) {
+            $nonce              = wp_create_nonce(nonce_action($data['action']));
+            $_POST['_wpnonce']    = $nonce;
+            $_REQUEST['_wpnonce'] = $nonce;
         }
     }
 
@@ -348,6 +358,7 @@ class RolesTabTest extends WP_UnitTestCase
         $_GET['action']            = 'delete_role';
         $_GET['delete_role']       = 'administrator';
         $_REQUEST['action']        = 'delete_role';
+        $_REQUEST['_wpnonce']  = wp_create_nonce(nonce_action('delete_role'));
         $_REQUEST['delete_role']   = 'administrator';
 
         $this->expectException(\WPDieException::class);
@@ -364,10 +375,70 @@ class RolesTabTest extends WP_UnitTestCase
         $_GET['action']            = 'delete_role';
         $_GET['delete_role']       = 'custom-protected';
         $_REQUEST['action']        = 'delete_role';
+        $_REQUEST['_wpnonce']  = wp_create_nonce(nonce_action('delete_role'));
         $_REQUEST['delete_role']   = 'custom-protected';
 
         $this->expectException(\WPDieException::class);
 
         (new RolesTab())->handle();
+    }
+
+    // =========================================================================
+    // CSRF protection — every action must carry a valid nonce
+    // =========================================================================
+
+    public function test_post_action_dies_without_nonce(): void
+    {
+        $this->manager->add_role('custom-role', 'Custom Role');
+
+        $this->post([
+            'action'   => 'update_role',
+            'role'     => 'custom-role',
+            'name'     => 'Hijacked',
+            'slug'     => 'custom-role',
+            '_wpnonce' => '',
+        ]);
+
+        try {
+            (new RolesTab())->handle();
+            $this->fail('Expected wp_die for missing nonce');
+        } catch (\WPDieException $e) {
+            $this->assertSame('Custom Role', $this->manager->current_roles()['custom-role']['name']);
+        }
+    }
+
+    public function test_post_action_dies_with_nonce_for_another_action(): void
+    {
+        $this->post([
+            'action'   => 'add_role',
+            'name'     => 'Forged Role',
+            'slug'     => 'forged-role',
+            '_wpnonce' => wp_create_nonce(nonce_action('save_settings')),
+        ]);
+
+        try {
+            (new RolesTab())->handle();
+            $this->fail('Expected wp_die for mismatched nonce');
+        } catch (\WPDieException $e) {
+            $this->assertFalse($this->manager->role_exists('forged-role'));
+        }
+    }
+
+    public function test_get_action_dies_without_nonce(): void
+    {
+        $this->manager->add_role('custom-role', 'Custom Role');
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['action']            = 'delete_role';
+        $_GET['delete_role']       = 'custom-role';
+        $_REQUEST['action']        = 'delete_role';
+        $_REQUEST['delete_role']   = 'custom-role';
+
+        try {
+            (new RolesTab())->handle();
+            $this->fail('Expected wp_die for missing nonce');
+        } catch (\WPDieException $e) {
+            $this->assertTrue($this->manager->role_exists('custom-role'));
+        }
     }
 }

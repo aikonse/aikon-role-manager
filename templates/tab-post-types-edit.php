@@ -13,10 +13,14 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+use function Aikon\RoleManager\nonce_action;
 use function Aikon\RoleManager\url_parser;
 
 $back_url      = url_parser(['tab' => $tab], ['edit_post_type']);
-$remove_url    = url_parser(['action' => 'remove_post_type_override', 'remove_override_post_type' => $post_type]);
+$remove_url    = wp_nonce_url(
+    url_parser(['action' => 'remove_post_type_override', 'remove_override_post_type' => $post_type]),
+    nonce_action('remove_post_type_override')
+);
 $invalid_cap   = $errors['capability_type'] ?? false;
 
 $current_value = $override ?? '';
@@ -28,6 +32,7 @@ if (isset($_POST['capability_type'])) {
 
 <form method="post" class="validate">
     <input type="hidden" name="action" value="save_post_type_override">
+    <?php wp_nonce_field(nonce_action('save_post_type_override')); ?>
 
     <table class="form-table" role="presentation">
         <tbody>

@@ -30,6 +30,9 @@ class CapabilitiesTabTest extends TestCase
         parent::setUp();
         Monkey\setUp();
 
+        // Nonce verification is covered by the integration tests
+        Functions\when('check_admin_referer')->justReturn(1);
+
         Functions\when('__')->returnArg(1);
 
         global $wp_roles;

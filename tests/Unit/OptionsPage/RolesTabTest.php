@@ -34,6 +34,9 @@ class RolesTabTest extends TestCase
         parent::setUp();
         Monkey\setUp();
 
+        // Nonce verification is covered by the integration tests
+        Functions\when('check_admin_referer')->justReturn(1);
+
         // Translation passthrough — RolesTab calls __() in error messages
         Functions\when('__')->returnArg(1);
 

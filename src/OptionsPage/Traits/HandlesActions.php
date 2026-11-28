@@ -2,6 +2,8 @@
 
 namespace Aikon\RoleManager\OptionsPage\Traits;
 
+use function Aikon\RoleManager\nonce_action;
+
 use Aikon\RoleManager\Request;
 
 trait HandlesActions
@@ -43,6 +45,8 @@ trait HandlesActions
 
         $request = $this->run_middleware();
 
+        $this->verify_nonce($action_value);
+
         $callback($request);
     }
 
@@ -69,7 +73,20 @@ trait HandlesActions
 
         $this->run_middleware();
 
+        $this->verify_nonce($action_value);
+
         $callback(new Request());
+    }
+
+    /**
+     * Verify the request nonce for an action, dies on failure
+     *
+     * @param string $action_value The action value
+     * @return void
+     */
+    private function verify_nonce(string $action_value): void
+    {
+        check_admin_referer(nonce_action($action_value));
     }
 
     /**

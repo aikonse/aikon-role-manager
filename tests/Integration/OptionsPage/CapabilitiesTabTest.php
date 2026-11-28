@@ -6,8 +6,12 @@ namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
 use Aikon\RoleManager\Manager\RoleManager;
 use Aikon\RoleManager\Manager\SettingsManager;
+
+use function Aikon\RoleManager\nonce_action;
+
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
 use WP_Roles;
+
 use WP_UnitTestCase;
 
 /**
@@ -46,7 +50,7 @@ class CapabilitiesTabTest extends WP_UnitTestCase
         SettingsManager::$instance = null;
         delete_option(SettingsManager::OPTION_KEY);
 
-        foreach (['action', 'role', 'role_caps'] as $key) {
+        foreach (['action', '_wpnonce', 'role', 'role_caps'] as $key) {
             unset($_POST[$key], $_REQUEST[$key]);
         }
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -63,6 +67,12 @@ class CapabilitiesTabTest extends WP_UnitTestCase
         foreach ($data as $key => $value) {
             $_POST[$key]    = $value;
             $_REQUEST[$key] = $value;
+        }
+
+        if (isset($data['action']) && is_string($data['action']) && !isset($data['_wpnonce'])) {
+            $nonce              = wp_create_nonce(nonce_action($data['action']));
+            $_POST['_wpnonce']    = $nonce;
+            $_REQUEST['_wpnonce'] = $nonce;
         }
     }
 

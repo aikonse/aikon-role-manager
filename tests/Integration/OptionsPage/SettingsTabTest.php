@@ -6,8 +6,12 @@ namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
 use Aikon\RoleManager\Manager\RoleManager;
 use Aikon\RoleManager\Manager\SettingsManager;
+
+use function Aikon\RoleManager\nonce_action;
+
 use Aikon\RoleManager\OptionsPage\Tabs\SettingsTab;
 use WP_Roles;
+
 use WP_UnitTestCase;
 
 /**
@@ -45,7 +49,7 @@ class SettingsTabTest extends WP_UnitTestCase
         delete_option(SettingsManager::OPTION_KEY);
         RoleManager::$instance = null;
 
-        foreach (['action', 'protected_roles', 'protected_post_types'] as $key) {
+        foreach (['action', '_wpnonce', 'protected_roles', 'protected_post_types'] as $key) {
             unset($_POST[$key], $_GET[$key], $_REQUEST[$key]);
         }
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -62,6 +66,12 @@ class SettingsTabTest extends WP_UnitTestCase
         foreach ($data as $key => $value) {
             $_POST[$key]    = $value;
             $_REQUEST[$key] = $value;
+        }
+
+        if (isset($data['action']) && is_string($data['action']) && !isset($data['_wpnonce'])) {
+            $nonce              = wp_create_nonce(nonce_action($data['action']));
+            $_POST['_wpnonce']    = $nonce;
+            $_REQUEST['_wpnonce'] = $nonce;
         }
     }
 

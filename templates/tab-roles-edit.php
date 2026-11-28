@@ -10,9 +10,13 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+use function Aikon\RoleManager\nonce_action;
 use function Aikon\RoleManager\url_parser;
 
-$delete_url = url_parser(['action' => 'delete_role', 'delete_role' => $slug]);
+$delete_url = wp_nonce_url(
+    url_parser(['action' => 'delete_role', 'delete_role' => $slug]),
+    nonce_action('delete_role')
+);
 $view_url = url_parser(['tab' => 'edit_roles', 'edit_role' => false]);
 
 $invalid_name = $errors['name'] ?? false;
@@ -30,6 +34,7 @@ if (isset($_POST['slug'])) {
 <h2><?php esc_html_e('Edit role', 'aikon-role-manager'); ?></h2>
 <form method="post" class="validate" id="edittag">
     <input type="hidden" name="action" value="update_role">
+    <?php wp_nonce_field(nonce_action('update_role')); ?>
     <input type="hidden" name="role" value="<?php echo esc_attr($slug); ?>">
 
     <table class="form-table" role="presentation">

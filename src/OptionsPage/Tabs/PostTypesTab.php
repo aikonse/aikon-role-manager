@@ -117,7 +117,7 @@ class PostTypesTab implements TabInterface
         $this->manager->remove_override($post_type);
         $this->add_notice(esc_html__('Override removed', 'aikon-role-manager'), 'success');
 
-        wp_redirect(url_parser([], ['edit_post_type_capability', 'action', 'post_type']));
+        wp_redirect(url_parser([], ['edit_post_type_capability', 'action', 'post_type', 'remove_override_post_type', '_wpnonce']));
         exit;
     }
 

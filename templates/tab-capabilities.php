@@ -14,6 +14,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+use function Aikon\RoleManager\nonce_action;
 use function Aikon\RoleManager\template;
 
 ?>
@@ -52,6 +53,7 @@ template('partials/tab-capabilities-warning', [
             <form action="" method="post" class="arm_roles-manager-form">
                 <h2><?php echo esc_attr($role['name']); ?></h2>
                 <input type="hidden" name="action" value="save_capabilities">
+                <?php wp_nonce_field(nonce_action('save_capabilities')); ?>
                 <input type="hidden" name="role" value="<?php echo esc_attr($current); ?>">
 
                 <?php if ($is_role_protected): ?>

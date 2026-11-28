@@ -6,7 +6,11 @@ namespace Aikon\RoleManager\Tests\Integration\OptionsPage;
 
 use Aikon\RoleManager\Manager\PostTypeManager;
 use Aikon\RoleManager\Manager\SettingsManager;
+
+use function Aikon\RoleManager\nonce_action;
+
 use Aikon\RoleManager\OptionsPage\Tabs\PostTypesTab;
+
 use WP_UnitTestCase;
 
 /**
@@ -46,7 +50,7 @@ class PostTypesTabTest extends WP_UnitTestCase
         SettingsManager::$instance = null;
         delete_option(SettingsManager::OPTION_KEY);
 
-        foreach (['action', 'post_type', 'capability_type', 'edit_post_type_capability'] as $key) {
+        foreach (['action', '_wpnonce', 'post_type', 'capability_type', 'edit_post_type_capability'] as $key) {
             unset($_POST[$key], $_GET[$key], $_REQUEST[$key]);
         }
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -63,6 +67,12 @@ class PostTypesTabTest extends WP_UnitTestCase
         foreach ($data as $key => $value) {
             $_POST[$key]    = $value;
             $_REQUEST[$key] = $value;
+        }
+
+        if (isset($data['action']) && is_string($data['action']) && !isset($data['_wpnonce'])) {
+            $nonce              = wp_create_nonce(nonce_action($data['action']));
+            $_POST['_wpnonce']    = $nonce;
+            $_REQUEST['_wpnonce'] = $nonce;
         }
     }
 
@@ -240,6 +250,7 @@ class PostTypesTabTest extends WP_UnitTestCase
         $_GET['action']            = 'remove_post_type_override';
         $_GET['remove_override_post_type']     = 'nonexistent_pt';
         $_REQUEST['action']                    = 'remove_post_type_override';
+        $_REQUEST['_wpnonce']  = wp_create_nonce(nonce_action('remove_post_type_override'));
         $_REQUEST['remove_override_post_type'] = 'nonexistent_pt';
 
         $this->tab->handle();
@@ -322,6 +333,7 @@ class PostTypesTabTest extends WP_UnitTestCase
         $_GET['action']            = 'remove_post_type_override';
         $_GET['remove_override_post_type']     = 'post';
         $_REQUEST['action']                    = 'remove_post_type_override';
+        $_REQUEST['_wpnonce']  = wp_create_nonce(nonce_action('remove_post_type_override'));
         $_REQUEST['remove_override_post_type'] = 'post';
 
         $this->expectException(\WPDieException::class);
@@ -338,6 +350,7 @@ class PostTypesTabTest extends WP_UnitTestCase
         $_GET['action']            = 'remove_post_type_override';
         $_GET['remove_override_post_type']     = 'page';
         $_REQUEST['action']                    = 'remove_post_type_override';
+        $_REQUEST['_wpnonce']  = wp_create_nonce(nonce_action('remove_post_type_override'));
         $_REQUEST['remove_override_post_type'] = 'page';
 
         try {
