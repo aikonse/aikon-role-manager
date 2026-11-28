@@ -48,7 +48,7 @@ class UserProfileEditTest extends WP_UnitTestCase
     public function tear_down(): void
     {
         RoleManager::$instance = null;
-        unset($_REQUEST[$this->form]);
+        unset($_REQUEST[$this->form], $_POST['_aikon_rm_other_roles_nonce']);
         parent::tear_down();
     }
 
@@ -75,9 +75,7 @@ class UserProfileEditTest extends WP_UnitTestCase
     public function test_can_add_a_secondary_role_to_a_user(): void
     {
         $user_id = self::factory()->user->create(['role' => 'subscriber']);
-        $this->request(['editor']);
-
-        $this->profile_edit->handle_other_roles($user_id);
+        $this->submit_profile_form($user_id, ['editor']);
 
         $roles = $this->fresh_user($user_id)->roles;
         $this->assertContains('subscriber', $roles);
@@ -87,9 +85,7 @@ class UserProfileEditTest extends WP_UnitTestCase
     public function test_can_add_multiple_roles_to_a_user(): void
     {
         $user_id = self::factory()->user->create(['role' => 'subscriber']);
-        $this->request(['editor', 'author']);
-
-        $this->profile_edit->handle_other_roles($user_id);
+        $this->submit_profile_form($user_id, ['editor', 'author']);
 
         $roles = $this->fresh_user($user_id)->roles;
         $this->assertContains('subscriber', $roles);
@@ -108,9 +104,7 @@ class UserProfileEditTest extends WP_UnitTestCase
         $user->add_role('editor');
 
         // Re-submit with only 'author' — 'editor' should be removed
-        $this->request(['author']);
-
-        $this->profile_edit->handle_other_roles($user_id);
+        $this->submit_profile_form($user_id, ['author']);
 
         $roles = $this->fresh_user($user_id)->roles;
         $this->assertContains('author', $roles);
@@ -123,9 +117,7 @@ class UserProfileEditTest extends WP_UnitTestCase
         $user = new WP_User($user_id);
         $user->add_role('editor');
 
-        $this->request([]);
-
-        $this->profile_edit->handle_other_roles($user_id);
+        $this->submit_profile_form($user_id, []);
 
         $roles = $this->fresh_user($user_id)->roles;
         $this->assertCount(1, $roles);
@@ -139,9 +131,7 @@ class UserProfileEditTest extends WP_UnitTestCase
     public function test_nonexistent_role_is_silently_filtered_out(): void
     {
         $user_id = self::factory()->user->create(['role' => 'subscriber']);
-        $this->request(['made-up-role', 'editor']);
-
-        $this->profile_edit->handle_other_roles($user_id);
+        $this->submit_profile_form($user_id, ['made-up-role', 'editor']);
 
         $roles = $this->fresh_user($user_id)->roles;
         $this->assertNotContains('made-up-role', $roles);
@@ -160,9 +150,7 @@ class UserProfileEditTest extends WP_UnitTestCase
         RoleManager::$instance = null;
         $this->profile_edit = new UserProfileEdit();
 
-        $this->request(['temp-role']);
-
-        $this->profile_edit->handle_other_roles($user_id);
+        $this->submit_profile_form($user_id, ['temp-role']);
 
         $roles = $this->fresh_user($user_id)->roles;
         $this->assertNotContains('temp-role', $roles);
@@ -179,9 +167,7 @@ class UserProfileEditTest extends WP_UnitTestCase
         wp_set_current_user($editor_id);
 
         $user_id = self::factory()->user->create(['role' => 'subscriber']);
-        $this->request(['administrator']);
-
-        $this->profile_edit->handle_other_roles($user_id);
+        $this->submit_profile_form($user_id, ['administrator']);
 
         $roles = $this->fresh_user($user_id)->roles;
         $this->assertNotContains('administrator', $roles);
@@ -192,13 +178,152 @@ class UserProfileEditTest extends WP_UnitTestCase
     // Error handling
     // =========================================================================
 
-    public function test_handle_other_roles_throws_when_user_does_not_exist(): void
+    public function test_handle_other_roles_does_nothing_when_user_does_not_exist(): void
     {
         $this->request(['editor']);
+        $_POST['_aikon_rm_other_roles_nonce'] = wp_create_nonce('aikon_role_manager_other_roles_999999');
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('User not found');
-
+        // Must not throw: profile_update runs mid-request and an exception would be fatal
         $this->profile_edit->handle_other_roles(999999);
+        unset($_POST['_aikon_rm_other_roles_nonce']);
+
+        $this->assertFalse(get_userdata(999999));
+    }
+
+    // =========================================================================
+    // Privilege escalation and integrity
+    // =========================================================================
+
+    /**
+     * A delegated user manager: can promote and edit users, but is not an admin.
+     */
+    private function create_user_manager(): int
+    {
+        $this->manager->add_role('user-manager', 'User Manager', [
+            'read'          => true,
+            'list_users'    => true,
+            'edit_users'    => true,
+            'promote_users' => true,
+        ]);
+
+        return self::factory()->user->create(['role' => 'user-manager']);
+    }
+
+    /**
+     * Run the handler the way WordPress does after a profile form save.
+     *
+     * @param string[] $roles
+     */
+    private function submit_profile_form(int $user_id, array $roles): void
+    {
+        $old_user = $this->fresh_user($user_id);
+
+        $this->request($roles);
+        $_POST['_aikon_rm_other_roles_nonce'] = wp_create_nonce('aikon_role_manager_other_roles_' . $user_id);
+
+        $this->profile_edit->handle_other_roles($user_id, $old_user);
+
+        unset($_POST['_aikon_rm_other_roles_nonce']);
+    }
+
+    public function test_user_manager_cannot_give_themselves_administrator(): void
+    {
+        $manager_id = $this->create_user_manager();
+        wp_set_current_user($manager_id);
+
+        $this->submit_profile_form($manager_id, ['administrator']);
+
+        $this->assertNotContains('administrator', $this->fresh_user($manager_id)->roles);
+    }
+
+    public function test_user_can_add_own_role_that_grants_nothing_new(): void
+    {
+        $manager_id = $this->create_user_manager();
+        wp_set_current_user($manager_id);
+
+        $this->submit_profile_form($manager_id, ['subscriber']);
+
+        $this->assertContains('subscriber', $this->fresh_user($manager_id)->roles);
+    }
+
+    public function test_roles_excluded_by_editable_roles_cannot_be_assigned(): void
+    {
+        $manager_id = $this->create_user_manager();
+        wp_set_current_user($manager_id);
+
+        add_filter('editable_roles', function (array $roles): array {
+            unset($roles['administrator']);
+            return $roles;
+        });
+
+        $user_id = self::factory()->user->create(['role' => 'subscriber']);
+        $this->submit_profile_form($user_id, ['administrator', 'author']);
+
+        $roles = $this->fresh_user($user_id)->roles;
+        $this->assertNotContains('administrator', $roles);
+        $this->assertContains('author', $roles);
+    }
+
+    public function test_roles_excluded_by_editable_roles_are_not_removed(): void
+    {
+        $user_id = self::factory()->user->create(['role' => 'subscriber']);
+        (new WP_User($user_id))->add_role('administrator');
+
+        $manager_id = $this->create_user_manager();
+        wp_set_current_user($manager_id);
+        add_filter('editable_roles', function (array $roles): array {
+            unset($roles['administrator']);
+            return $roles;
+        });
+
+        // The administrator checkbox is not submitted (disabled in the form)
+        $this->submit_profile_form($user_id, []);
+
+        $this->assertContains('administrator', $this->fresh_user($user_id)->roles);
+    }
+
+    public function test_secondary_roles_kept_when_profile_updated_without_the_form(): void
+    {
+        // e.g. wp_update_user() from the REST API or another plugin
+        $user_id = self::factory()->user->create(['role' => 'subscriber']);
+        (new WP_User($user_id))->add_role('editor');
+
+        wp_update_user(['ID' => $user_id, 'display_name' => 'Renamed']);
+
+        $this->assertContains('editor', $this->fresh_user($user_id)->roles);
+    }
+
+    public function test_submission_without_valid_nonce_is_ignored(): void
+    {
+        $user_id = self::factory()->user->create(['role' => 'subscriber']);
+
+        $this->request(['editor']);
+        $_POST['_aikon_rm_other_roles_nonce'] = 'forged';
+        $this->profile_edit->handle_other_roles($user_id, $this->fresh_user($user_id));
+        unset($_POST['_aikon_rm_other_roles_nonce']);
+
+        $this->assertNotContains('editor', $this->fresh_user($user_id)->roles);
+    }
+
+    public function test_secondary_roles_survive_core_resetting_the_primary_role(): void
+    {
+        // On the user-edit screen core calls set_role() with the primary role,
+        // which drops all other roles before profile_update fires.
+        $user_id = self::factory()->user->create(['role' => 'subscriber']);
+        $user    = new WP_User($user_id);
+        $user->add_role('editor');
+        $user->add_role('author');
+
+        $old_user = $this->fresh_user($user_id);
+        $this->fresh_user($user_id)->set_role('subscriber');
+
+        $this->request(['editor', 'author']);
+        $_POST['_aikon_rm_other_roles_nonce'] = wp_create_nonce('aikon_role_manager_other_roles_' . $user_id);
+        $this->profile_edit->handle_other_roles($user_id, $old_user);
+        unset($_POST['_aikon_rm_other_roles_nonce']);
+
+        $roles = $this->fresh_user($user_id)->roles;
+        $this->assertContains('editor', $roles);
+        $this->assertContains('author', $roles);
     }
 }

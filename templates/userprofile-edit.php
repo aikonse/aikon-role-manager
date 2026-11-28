@@ -6,6 +6,9 @@
  * @var array<string, mixed> $user_other_roles
  * @var string $form
  * @var boolean $can_edit_roles
+ * @var string[] $toggleable_roles Roles the current user may add or remove here
+ * @var string $nonce_field
+ * @var string $nonce_action
  */
 
 if (! defined('ABSPATH')) {
@@ -15,6 +18,9 @@ if (! defined('ABSPATH')) {
 <h3><?php esc_html_e('Additional Roles', 'aikon-role-manager'); ?></h3>
 <p><?php esc_html_e('Select additional roles for this user.', 'aikon-role-manager'); ?></p>
 
+<?php if ($can_edit_roles) {
+    wp_nonce_field($nonce_action, $nonce_field, false);
+} ?>
 <table class="form-table">
     <tr>
         <th>
@@ -29,7 +35,7 @@ if (! defined('ABSPATH')) {
                         <label>
                             <input 
                                 type="checkbox" 
-                                <?php if (!$can_edit_roles) {
+                                <?php if (!in_array($role, $toggleable_roles, true)) {
                                     echo 'disabled';
                                 } ?>
                                 name="<?php echo esc_attr($form);?>[]" 

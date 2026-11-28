@@ -289,6 +289,23 @@ final class RoleManager
     }
 
     /**
+     * Whether a role grants any capability the current user may not hand out.
+     */
+    public function role_grants_restricted_capabilities(string $role): bool
+    {
+        $capabilities = $this->current_roles()[$role]['capabilities'] ?? [];
+        $restricted   = $this->restricted_capabilities();
+
+        foreach ($capabilities as $cap => $granted) {
+            if ($granted && in_array($cap, $restricted, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Keep restricted capabilities exactly as they currently are on the role.
      *
      * @param string $role

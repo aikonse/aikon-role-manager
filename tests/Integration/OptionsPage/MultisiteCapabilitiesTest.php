@@ -10,6 +10,7 @@ use Aikon\RoleManager\Manager\SettingsManager;
 use function Aikon\RoleManager\nonce_action;
 
 use Aikon\RoleManager\OptionsPage\Tabs\CapabilitiesTab;
+use Aikon\RoleManager\UserProfile\UserProfileEdit;
 use WP_Roles;
 
 use WP_UnitTestCase;
@@ -240,5 +241,31 @@ class MultisiteCapabilitiesTest extends WP_UnitTestCase
 
         // Restricted caps cannot be added from the list either
         $this->assertMatchesRegularExpression('/name="role_caps\[manage_sites\]"\s+disabled/', $html);
+    }
+
+    public function test_site_admin_cannot_assign_role_holding_network_capabilities(): void
+    {
+        // A super admin set up a role with network capabilities; a site admin
+        // tries to hand it out as an additional role
+        $this->manager->update_role_capabilities('custom-role', [
+            'read'                 => true,
+            'manage_network_users' => true,
+        ]);
+
+        $user_id  = self::factory()->user->create(['role' => 'subscriber']);
+        $old_user = get_userdata($user_id);
+
+        $_REQUEST['aikon_role_manager_other_roles'] = ['custom-role', 'author'];
+        $_POST[UserProfileEdit::NONCE_FIELD]        = wp_create_nonce('aikon_role_manager_other_roles_' . $user_id);
+
+        (new UserProfileEdit())->handle_other_roles($user_id, $old_user);
+
+        unset($_REQUEST['aikon_role_manager_other_roles'], $_POST[UserProfileEdit::NONCE_FIELD]);
+
+        clean_user_cache($user_id);
+        $roles = (new \WP_User($user_id))->roles;
+
+        $this->assertNotContains('custom-role', $roles);
+        $this->assertContains('author', $roles);
     }
 }
