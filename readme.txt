@@ -3,7 +3,7 @@ Contributors: andreas-andersson
 Tags: User, Role, Security
 Tested up to: 7.2
 Requires at least: 6.5
-Stable Tag: 1.1.2
+Stable Tag: 1.1.3
 Requires PHP: 8.0
 License: MIT
 License URI: https://opensource.org/license/mit
@@ -37,11 +37,30 @@ With this plugin, you can manage roles responsibly, define custom capabilities, 
 
 == Screenshots ==
 
-1. Create, Edit and Delete Roles
-2. Edit Role capabilities
-3. Add additional roles to a user
+1. Create, edit, duplicate and delete Roles
+2. Manage role capabilities
+3. Protect critical roles
+4. Override default post type capabilities
+5. Override default post type capabilities - Form
+6. Configure your security settings
+7. Allow multiple roles on a single user
+8. Simple login as your users
+9. Switch back in the wp admin bar
 
 == Changelog ==
+
+= 1.1.3 =
+This is a security release. Updating is strongly recommended.
+
+* Security: All actions on the Role Manager page are now protected against cross-site request forgery (CSRF)
+* Security: The user switcher's switch-back cookie is replaced with a random, single-use token stored on the server. It only works for the user you switched to and is cleared on logout and login
+* Security: On multisite, only super admins can grant or revoke network-level and super-admin-only capabilities. These are shown as locked to site administrators
+* Security: Additional roles on the user profile now follow the same rules as core: only editable roles can be changed, and users can no longer give themselves roles with capabilities they don't already have
+* Fix: Saving a user from anywhere other than the profile form (e.g. the REST API or another plugin) no longer removes the user's additional roles
+* Fix: The Delete button on the role edit screen now works
+* Fix: Switching to another user is refused while already switched
+* Change: If you are switched to another user when updating, you will need to log in again as yourself
+* Change: "Check all" and "Uncheck all" on the capabilities screen skip capabilities that can't be changed
 
 = 1.1.2 =
 * Tested with Wordpress 7.2

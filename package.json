@@ -1,6 +1,6 @@
 {
   "name": "aikon-role-manager",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "main": "index.js",
   "scripts": {
     "wp:start": "wp-env start --xdebug",
